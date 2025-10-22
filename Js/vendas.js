@@ -64,7 +64,6 @@ function atualizarCodigoVenda() {
   inputPesquisaDataVenda.value = dataFormatada;
 }
 
-//Guarda o valor do Produto Escolhido [OK]
 function localizaProduto() {
     const produtoVendaManual = document.getElementById('produtoVendaManual').value;
     let resultadoEscolhaProduto = '';  // Use "let" em vez de "const" aqui para permitir a reatribuição.
@@ -90,30 +89,34 @@ function localizaProduto() {
     return resultadoEscolhaProduto; // Retorna o valor para uso posterior
 }
 
-//Faz a validação da data de Entrega [OK]
 function verificaDataEntrega() {
-    const tipoProduto = localizaProduto();
+    const tipoProduto = localizaProduto(); // Armazena o valor retornado de localizaProduto
     const dataVendaManual = document.getElementById("dataVendaManual");
 
-    console.log(dataVendaManual.value.length);
+    console.log(dataEntregaManual)
 
-    if(dataVendaManual.length<10){
+    if(dataEntregaManual.length<8){
         console.log('Data preenchida incorretamente')
     }
     else{
-        if (tipoProduto === 'caderneta') {
-        verificaDataEntrega15dias();
-        } else if (tipoProduto === 'capa') {
-            verificaDataEntrega7dias();
+        if(dataVendaManual.value.length <8){
+            console.log('Data Incompleta');
         }
-        else {
-            console.log("Produto não identificado");
+        else{
+            if (tipoProduto === 'caderneta') {
+            verificaDataEntrega15dias();
+            } else if (tipoProduto === 'capa') {
+                verificaDataEntrega7dias();
+            }
+            else {
+                console.log("Produto não identificado");
+            }
         }
+
     }
     
 }
 
-//Calcula a data de entrega + 7 dias [OK]
 function verificaDataEntrega7dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -138,12 +141,12 @@ function verificaDataEntrega7dias() {
 
     // Atualiza o input type="date" com yyyy-mm-dd
     const inputEntrega = document.getElementById("dataEntregaManual");
+
     inputEntrega.value = `${ano}-${mes}-${dia}`;
 
     console.log("Data de entrega:", dataEntregaFormatada);
 }
 
-//Calcula a data de Entrega + 15 dias [OK]
 function verificaDataEntrega15dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -263,24 +266,21 @@ function salvarVendaManual() {
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 
-    const vendaExistente = listaVendasManuais.find(venda => venda.codigo === codigo);
-
-    if (vendaExistente) {
-        alert("Código de venda já cadastrado. Não é possível adicionar a venda.");
-    } else if (cliente === '' || 
-               produto === '' || 
-               qtd === '' || 
-               qtd <= 0 || 
-               sexo === 'escolha' || 
-               modeloCapa === '' || 
-               modeloCapa <= 0 || 
-               NomePersonalizado === '') {
-        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
-    } else {
+    if(cliente === '' || 
+        produto === '' || 
+        qtd === '' || 
+        qtd <=0 || 
+        sexo === 'escolha' || 
+        modeloCapa === '' || 
+        modeloCapa <=0 || 
+        NomePersonalizado === ''){
+        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
+    }
+    else{
         listaVendasManuais.push(NovaVenda);
         console.log(listaVendasManuais);
         congelarVendaManual();
-        console.log(tamanhoListaVendasManuais);
+        console.log(tamanhoListaVendasManuais)
     }
 }
 
