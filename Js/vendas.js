@@ -7,10 +7,15 @@ window.onload = function() {
     // Mostra o modal automaticamente
     modal.show();
 
+    // Atualiza badge e código da venda
     muda_badge();
     atualizarCodigoVenda();
-};
 
+    // Quando o modal abrir, calcula a data de entrega
+    modalElement.addEventListener('shown.bs.modal', function () {
+        verificaDataEntrega();  // Calcula automaticamente a data de entrega
+    });
+};
 /*---------------------------------------------------*/ 
 //VARIAVEIS / CONSTANTES / ARRAYS
 
@@ -59,12 +64,121 @@ function atualizarCodigoVenda() {
   inputPesquisaDataVenda.value = dataFormatada;
 }
 
+//Guarda o valor do Produto Escolhido
+function localizaProduto() {
+    const produtoVendaManual = document.getElementById('produtoVendaManual').value;
+    let resultadoEscolhaProduto = '';  // Use "let" em vez de "const" aqui para permitir a reatribuição.
+
+    // Verificação correta com operadores lógicos
+    if (produtoVendaManual === 'Caderneta de Vacina - Completa' ||
+        produtoVendaManual === 'Caderneta de Vacina - Apenas Elástico' ||
+        produtoVendaManual === 'Caderneta de Vacina - Sem Acessórios') {
+        resultadoEscolhaProduto = 'caderneta';
+        console.log(resultadoEscolhaProduto);
+    }
+    else if (produtoVendaManual === 'Capa de Caderneta - Completa' ||
+        produtoVendaManual === 'Capa de Caderneta - Apenas Elástico' ||
+        produtoVendaManual === 'Capa de Caderneta - Sem Acessórios') {
+        resultadoEscolhaProduto = 'capa';
+        console.log(resultadoEscolhaProduto);
+    }
+    else {
+        resultadoEscolhaProduto = '';
+        console.log(resultadoEscolhaProduto);
+    }
+
+    return resultadoEscolhaProduto; // Retorna o valor para uso posterior
+}
+
+//Faz a validação da data de Entrega
+function verificaDataEntrega() {
+    const tipoProduto = localizaProduto();
+    const dataVendaManual = document.getElementById("dataVendaManual");
+
+    console.log(dataVendaManual.value.length);
+
+    if(dataVendaManual.length<10){
+        console.log('Data preenchida incorretamente')
+    }
+    else{
+        if (tipoProduto === 'caderneta') {
+        verificaDataEntrega15dias();
+        } else if (tipoProduto === 'capa') {
+            verificaDataEntrega7dias();
+        }
+        else {
+            console.log("Produto não identificado");
+        }
+    }
+    
+}
+
+//Calcula a data de entrega + 7 dias
+function verificaDataEntrega7dias() {
+    // Pega o valor do input de data da venda
+    const dataVenda = document.getElementById("dataVendaManual").value;
+
+    // Se não tiver preenchido, não faz nada
+    if (!dataVenda) {
+        console.log("Data da venda não preenchida");
+        return;
+    }
+
+    // Cria objeto Date a partir da string yyyy-mm-dd
+    const data = new Date(dataVenda);
+
+    // Soma 8 dias
+    data.setDate(data.getDate() + 8);
+
+    // Formata para dd/mm/aaaa
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0"); // Janeiro é 0
+    const ano = data.getFullYear();
+    const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+
+    // Atualiza o input type="date" com yyyy-mm-dd
+    const inputEntrega = document.getElementById("dataEntregaManual");
+    inputEntrega.value = `${ano}-${mes}-${dia}`;
+
+    console.log("Data de entrega:", dataEntregaFormatada);
+}
+
+//Calcula a data de Entrega + 15 dias
+function verificaDataEntrega15dias() {
+    // Pega o valor do input de data da venda
+    const dataVenda = document.getElementById("dataVendaManual").value;
+
+    // Se não tiver preenchido, não faz nada
+    if (!dataVenda) {
+        console.log("Data da venda não preenchida");
+        return;
+    }
+
+    // Cria objeto Date a partir da string yyyy-mm-dd
+    const data = new Date(dataVenda);
+
+    // Soma 8 dias
+    data.setDate(data.getDate() + 16);
+
+    // Formata para dd/mm/aaaa
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0"); // Janeiro é 0
+    const ano = data.getFullYear();
+    const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+
+    // Atualiza o input type="date" com yyyy-mm-dd
+    const inputEntrega = document.getElementById("dataEntregaManual");
+    inputEntrega.value = `${ano}-${mes}-${dia}`;
+
+    console.log("Data de entrega:", dataEntregaFormatada);
+}
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, data, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
         this.codigo = codigo;
-        this.data = data;
+        this.dataVenda = dataVenda;
+        this.dataEntrega = dataEntrega;
         this.plataforma = plataforma;
         this.cliente = cliente;
         this.produto = produto;
@@ -130,7 +244,8 @@ function congelarVendaManual(){
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
-    var data = document.getElementById("dataVendaManual").value;
+    var dataVenda = document.getElementById("dataVendaManual").value;
+    var dataEntrega = document.getElementById("dataEntregaManual").value;
     var plataforma = document.getElementById("plataformaVendaManual").value;
     var cliente = document.getElementById("clienteVendaManual").value;
     var produto = document.getElementById("produtoVendaManual").value;
@@ -144,7 +259,7 @@ function salvarVendaManual() {
     var observacao = document.getElementById("observacoesVendaManual").value;
 
     const NovaVenda = new VendaManual(
-        codigo, data, plataforma, cliente, produto, preco, qtd, desconto, total,
+        codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 

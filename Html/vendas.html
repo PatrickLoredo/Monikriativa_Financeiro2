@@ -396,7 +396,8 @@
                                         <div class="col-1">
                                             <button type="button" 
                                             class="btn bg-danger text-white" 
-                                            data-bs-dismiss="modal" aria-label="Fechar">
+                                            data-bs-dismiss="modal" aria-label="Fechar"
+                                            onclick="verificaDataEntrega()">
                                             <i class="fa fa-x"></i>
                                             </button>
                                         </div>
@@ -429,7 +430,8 @@
                                                             </span>
                                                             <input type="date" name="" 
                                                             id="dataVendaManual" 
-                                                            class="form-control text-center">
+                                                            class="form-control text-center"
+                                                            onchange="verificaDataEntrega()">
                                                         </div>
                                                     </div>
 
@@ -450,6 +452,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                    
                                                     <!--DATA ENTREGA-->
                                                     <div class="col-4 mt-3">
                                                         <label for="">Data da Entrega</label>
@@ -458,8 +461,8 @@
                                                                 <i class="fa-solid fa-truck-fast"></i>
                                                             </span>
                                                             <input type="date" name="" 
-                                                            id="dataVendaManual" 
-                                                            class="form-control text-center">
+                                                            id="dataEntregaManual" 
+                                                            class="form-control text-center" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col"></div>
@@ -488,11 +491,16 @@
                                                             <span class="input-group-text bg-danger text-white">
                                                                 <i class="fa-solid fa-box-open"></i>
                                                             </span>
-                                                            <select name="" id="produtoVendaManual" class="form-select text-center">
+                                                            <select name="" id="produtoVendaManual" 
+                                                            class="form-select text-center"
+                                                            onchange="verificaDataEntrega()">
                                                                 <option value="escolha" selected>Escolha o Produto</option>
-                                                                <option value="Produto01">Produto 01</option>
-                                                                <option value="Produto02">Produto 02</option>
-                                                                <option value="Produto03">Produto 03</option>
+                                                                <option value="Caderneta de Vacina - Completa">Caderneta de Vacina - Completa</option>
+                                                                <option value="Caderneta de Vacina - Apenas Elástico">Caderneta de Vacina - Apenas Elástico</option>
+                                                                <option value="Caderneta de Vacina - Sem Acessórios">Caderneta de Vacina - Sem Acessórios</option>
+                                                                <option value="Capa de Caderneta - Completa">Capa de Caderneta - Completa</option>
+                                                                <option value="Capa de Caderneta - Apenas Elástico">Capa de Caderneta - Apenas Elástico</option>
+                                                                <option value="Capa de Caderneta - Sem Acessórios">Capa de Caderneta - Sem Acessórios</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -626,11 +634,6 @@
                                     </div>
 
                                     <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-dark"
-                                        onclick="adicionarVendaManual()">
-                                            <i class="fa-solid fas fa-plus-circle"></i>
-                                            &nbsp; Adicionar Venda
-                                        </button>
                                         <button type="button" class="btn btn-success"
                                         onclick="salvarVendaManual()">
                                             <i class="fa-solid fa-save"></i>&nbsp; Salvar
@@ -642,6 +645,11 @@
                                         <button type="button" class="btn btn-danger"
                                         onclick="limparVendaManual()">
                                             <i class="fa-solid fa-broom"></i>&nbsp; Limpar
+                                        </button>
+                                        <button type="button" class="btn btn-dark"
+                                        onclick="adicionarVendaManual()">
+                                            <i class="fa-solid fas fa-plus-circle"></i>
+                                            &nbsp; Adicionar Venda
                                         </button>
                                     </div>
                                 </div>
