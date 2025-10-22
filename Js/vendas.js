@@ -64,7 +64,7 @@ function atualizarCodigoVenda() {
   inputPesquisaDataVenda.value = dataFormatada;
 }
 
-//Guarda o valor do Produto Escolhido
+//Guarda o valor do Produto Escolhido [OK]
 function localizaProduto() {
     const produtoVendaManual = document.getElementById('produtoVendaManual').value;
     let resultadoEscolhaProduto = '';  // Use "let" em vez de "const" aqui para permitir a reatribuição.
@@ -90,7 +90,7 @@ function localizaProduto() {
     return resultadoEscolhaProduto; // Retorna o valor para uso posterior
 }
 
-//Faz a validação da data de Entrega
+//Faz a validação da data de Entrega [OK]
 function verificaDataEntrega() {
     const tipoProduto = localizaProduto();
     const dataVendaManual = document.getElementById("dataVendaManual");
@@ -113,7 +113,7 @@ function verificaDataEntrega() {
     
 }
 
-//Calcula a data de entrega + 7 dias
+//Calcula a data de entrega + 7 dias [OK]
 function verificaDataEntrega7dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -143,7 +143,7 @@ function verificaDataEntrega7dias() {
     console.log("Data de entrega:", dataEntregaFormatada);
 }
 
-//Calcula a data de Entrega + 15 dias
+//Calcula a data de Entrega + 15 dias [OK]
 function verificaDataEntrega15dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -263,21 +263,24 @@ function salvarVendaManual() {
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 
-    if(cliente === '' || 
-        produto === '' || 
-        qtd === '' || 
-        qtd <=0 || 
-        sexo === 'escolha' || 
-        modeloCapa === '' || 
-        modeloCapa <=0 || 
-        NomePersonalizado === ''){
-        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
-    }
-    else{
+    const vendaExistente = listaVendasManuais.find(venda => venda.codigo === codigo);
+
+    if (vendaExistente) {
+        alert("Código de venda já cadastrado. Não é possível adicionar a venda.");
+    } else if (cliente === '' || 
+               produto === '' || 
+               qtd === '' || 
+               qtd <= 0 || 
+               sexo === 'escolha' || 
+               modeloCapa === '' || 
+               modeloCapa <= 0 || 
+               NomePersonalizado === '') {
+        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
+    } else {
         listaVendasManuais.push(NovaVenda);
         console.log(listaVendasManuais);
         congelarVendaManual();
-        console.log(tamanhoListaVendasManuais)
+        console.log(tamanhoListaVendasManuais);
     }
 }
 
