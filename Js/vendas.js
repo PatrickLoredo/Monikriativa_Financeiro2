@@ -148,7 +148,7 @@ function salvarVendaManual() {
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 
-    /*if(cliente === '' || 
+    if(cliente === '' || 
         produto === '' || 
         qtd === '' || 
         qtd <=0 || 
@@ -158,12 +158,12 @@ function salvarVendaManual() {
         NomePersonalizado === ''){
         alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
     }
-    else{*/
+    else{
         listaVendasManuais.push(NovaVenda);
         console.log(listaVendasManuais);
         congelarVendaManual();
         console.log(tamanhoListaVendasManuais)
-    /*}*/
+    }
 }
 
 function adicionarVendaManual(){
