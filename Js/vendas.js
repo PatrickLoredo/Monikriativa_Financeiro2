@@ -37,12 +37,12 @@ function muda_badge(){
     notificacoes++;
 }
 
-
 /*---------------------------------------------------*/ 
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
   const inputCodigo = document.getElementById("codigoVendaManual");
-  const proximoCodigo = 'VM ' + tamanhoListaVendasManuais;
+  const proximoCodigo = 'VM ' + (listaVendasManuais.length + 1); // <-- aqui
+
   inputCodigo.value = proximoCodigo;
 
   const inputDataVenda = document.getElementById("dataVendaManual");
@@ -58,6 +58,7 @@ function atualizarCodigoVenda() {
   inputDataVenda.value = dataFormatada;
   inputPesquisaDataVenda.value = dataFormatada;
 }
+
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
@@ -147,11 +148,22 @@ function salvarVendaManual() {
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 
-    listaVendasManuais.push(NovaVenda);
-    console.log(listaVendasManuais);
-
-    congelarVendaManual();
-    console.log(tamanhoListaVendasManuais)
+    /*if(cliente === '' || 
+        produto === '' || 
+        qtd === '' || 
+        qtd <=0 || 
+        sexo === 'escolha' || 
+        modeloCapa === '' || 
+        modeloCapa <=0 || 
+        NomePersonalizado === ''){
+        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
+    }
+    else{*/
+        listaVendasManuais.push(NovaVenda);
+        console.log(listaVendasManuais);
+        congelarVendaManual();
+        console.log(tamanhoListaVendasManuais)
+    /*}*/
 }
 
 function adicionarVendaManual(){
