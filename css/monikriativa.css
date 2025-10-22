@@ -99,15 +99,14 @@
 }
 #bodyTabelaVendasFiltro .bg-shopee,
 #bodyTabelaVendas .bg-shopee,
-#bodyTabelaVendasFiltro .bg-elo7,
-#bodyTabelaVendas .bg-elo7{
+#bodyTabelaVendasFiltro .bg-elo,
+#bodyTabelaVendas .bg-elo{
     font-size: 0.8rem;
     font-weight: 600;
 }
-#bodyTabelaVendasFiltro .bg-elo7,
-#bodyTabelaVendas .bg-elo7{
+#bodyTabelaVendasFiltro .bg-elo,
+#bodyTabelaVendas .bg-elo{
     background: rgb(214, 150, 214);
-
 }
 .modal-backdrop.show {
     background-color: rgba(0, 0, 0, 0.8); /* mais escuro */

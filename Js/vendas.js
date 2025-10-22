@@ -1,55 +1,24 @@
-/*window.onload = function() {
+window.onload = function() {
     // Seleciona o modal pelo ID
     var modalElement = document.getElementById('modalCadastroVenda');
     
-    if(modalElement){
-        var modal = new bootstrap.Modal(modalElement);
-        // Mostra o modal automaticamente
-        modal.show();
-    }
+    var modal = new bootstrap.Modal(modalElement);
+    
+    // Mostra o modal automaticamente
+    modal.show();
 
     muda_badge();
     atualizarCodigoVenda();
-};*/
+};
 
 /*---------------------------------------------------*/ 
-//FUNÇÃO PARA CRIAR ARRAYS PERSISTENTES AUTOMATICAMENTE
-function criarArrayPersistente(nomeChave, arrayInicial) {
-    return new Proxy(arrayInicial, {
-        set(target, property, value) {
-            target[property] = value;
-            localStorage.setItem(nomeChave, JSON.stringify(target));
-            return true;
-        },
-        deleteProperty(target, property) {
-            delete target[property];
-            localStorage.setItem(nomeChave, JSON.stringify(target));
-            return true;
-        }
-    });
-}
+//VARIAVEIS / CONSTANTES / ARRAYS
 
-function preencherTabelaVendasManuais() {
-    const tbody = document.getElementById("bodyTabelaVendas");
-    tbody.innerHTML = ""; // limpa tabela antes de preencher
-
-    listaVendasManuais.forEach((venda, index) => {
-        adicionarVendaNaTabela(venda, index);
-    });
-}
-
-// Chame esta função quando a página carregar
-document.addEventListener("DOMContentLoaded", function() {
-    preencherTabelaVendasManuais();
-});
-
-/*---------------------------------------------------*/ 
-//VARIÁVEIS / ARRAYS
-var listaVendas = criarArrayPersistente("listaVendas", JSON.parse(localStorage.getItem("listaVendas")) || []);
-var listaVendasManuais = criarArrayPersistente("listaVendasManuais", JSON.parse(localStorage.getItem("listaVendasManuais")) || []);
-
+var listaVendas = [];
 var tamanhoListaVendas = listaVendas.length;
-var tamanhoListaVendasManuais = listaVendasManuais.length;
+
+var listaVendasManuais =[]
+var tamanhoListaVendasManuais = listaVendasManuais.length+1;
 
 const btnBaixarRelatorioVendas = document.getElementById("btnBaixarRelatorioVendas");
 const btnSalvarVendaRealizada = document.getElementById("btnSalvarVendaRealizada");
@@ -58,23 +27,22 @@ const btnSalvarProdutoCadastrado = document.getElementById("btnSalvarProdutoCada
 const btnEditarProdutoCadastrado = document.getElementById("btnEditarProdutoCadastrado");
 
 console.log(tamanhoListaVendasManuais)
-
 /*-------------------------BADGE---------------------------------*/
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 0;
 var badgeNotificacao = document.getElementById("badge-notificacao");
 
-//Atualiza Badge [OK]
+//Teste de Badge [OK]
 function muda_badge(){
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
-    localStorage.setItem("notificacoes", notificacoes); // persiste o valor
 }
+
 
 /*---------------------------------------------------*/ 
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
   const inputCodigo = document.getElementById("codigoVendaManual");
-  const proximoCodigo = 'VM ' + (listaVendasManuais.length + 1);
+  const proximoCodigo = 'VM ' + tamanhoListaVendasManuais;
   inputCodigo.value = proximoCodigo;
 
   const inputDataVenda = document.getElementById("dataVendaManual");
@@ -86,6 +54,7 @@ function atualizarCodigoVenda() {
   const ano = hoje.getFullYear();
 
   const dataFormatada = `${ano}-${mes}-${dia}`;
+
   inputDataVenda.value = dataFormatada;
   inputPesquisaDataVenda.value = dataFormatada;
 }
@@ -157,52 +126,6 @@ function congelarVendaManual(){
     document.getElementById("observacoesVendaManual").disabled = true;
 }
 
-function adicionarVendaNaTabela(venda, index) {
-    const tbody = document.getElementById("bodyTabelaVendas");
-
-    const novaLinha = document.createElement("tr");
-    novaLinha.id = `venda${index}`;
-    novaLinha.innerHTML = `
-        <th scope="row">${index + 1}</th>
-        <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
-            ${venda.plataforma}
-        </td>
-        <td>${venda.cliente}</td>
-        <td>
-            <select name="produtoVenda" class="form-select text-center">
-                <option selected>${venda.produto}</option>
-            </select>
-        </td>
-        <td>
-            <select class="form-select text-center">
-                <option value="">Feminino</option>
-                <option value="">Masculino</option>
-            </select>
-        </td>
-        <td>${venda.qtd}</td>
-        <td>R$ ${venda.preco.toFixed(2).replace('.', ',')}</td>
-        <td>
-            <select class="form-select text-center">
-                <option value="">Produção</option>
-                <option value="">Enviado</option>
-                <option value="">Entregue</option>
-            </select>
-        </td>
-        <td class="btn-container">
-            <button class="btn btn-primary">
-                <i class="fa-solid fa-eye"></i>
-            </button>
-            <button class="btn btn-danger" onclick="excluirVenda(${index})">
-                <i class="fa-solid fa-trash"></i>
-            </button>
-        </td>
-    `;
-
-    tbody.appendChild(novaLinha);
-}
-
-
-
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
@@ -224,19 +147,11 @@ function salvarVendaManual() {
         sexo, modeloCapa, NomePersonalizado, observacao
     );
 
-    if(cliente == ''|| produto == 'escolha' || qtd <=0 || modeloCapa == '' || modeloCapa <1 || NomePersonalizado == ''){
-        alert('Confira se os campos abaixo foram preenchidos:\n\n* NOME CLIENTE\n* NOME PRODUTO\n* QUANTIDADE\n* MODELO DA CAPA\n* NOME PARA PERSONALIZAR\n')
-        editarVendaManual();
-    }
-    else{
-        listaVendasManuais.push(NovaVenda); // Proxy salva automaticamente
-        congelarVendaManual();
-        console.log(listaVendasManuais)
-        const indice = listaVendasManuais.length - 1;
+    listaVendasManuais.push(NovaVenda);
+    console.log(listaVendasManuais);
 
-        // Passa a venda e o índice
-        adicionarVendaNaTabela(NovaVenda, indice);    
-    }
+    congelarVendaManual();
+    console.log(tamanhoListaVendasManuais)
 }
 
 function adicionarVendaManual(){
@@ -249,21 +164,24 @@ function adicionarVendaManual(){
         limparVendaManual();
         atualizarCodigoVenda();
     }
+
 }
 
-/*---------------------------------------------------*/ 
 //Controle de Collapse de Pesquisa Vendas [OK]
 document.addEventListener("DOMContentLoaded", function () {
+    // Exibir modal automaticamente, se existir
     const modalElement = document.getElementById('modalCadastroInsumo');
     if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
         modal.show();
     }
 
+    // Controle do collapse
     const collapse = document.getElementById('campo');
     const button = document.getElementById('button-esconde-collapse');
     const buttonIcon = button.querySelector('i');
 
+    // Atualiza o ícone conforme o estado do collapse
     collapse.addEventListener('show.bs.collapse', () => {
         buttonIcon.classList.remove('fa-angle-down');
         buttonIcon.classList.add('fa-angle-up');
@@ -274,6 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
         buttonIcon.classList.add('fa-angle-down');
     });
 
+    // Corrige o bug: garante que o clique sempre funcione
     button.addEventListener('click', () => {
         const bsCollapse = bootstrap.Collapse.getOrCreateInstance(collapse);
         bsCollapse.toggle();
@@ -320,7 +239,9 @@ function verificaVenda(){
 function alternarModoEdicao(botao) {
     const icone = botao.querySelector('i');
 
+    // Se o botão estiver no modo "editar"
     if (botao.classList.contains('btn-primary')) {
+        // muda para modo "salvar"
         botao.classList.remove('btn-primary');
         botao.classList.add('btn-success');
 
@@ -330,6 +251,7 @@ function alternarModoEdicao(botao) {
         console.log('Entrou no modo de edição');
     } 
     else {
+        // volta para modo "editar"
         botao.classList.remove('btn-success');
         botao.classList.add('btn-primary');
 
@@ -339,3 +261,4 @@ function alternarModoEdicao(botao) {
         console.log('Saiu do modo de edição');
     }
 }
+
