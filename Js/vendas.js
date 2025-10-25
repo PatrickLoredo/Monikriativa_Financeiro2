@@ -191,7 +191,7 @@ class VendaManual {
         this.totalm = totalm;
         this.sexo = sexo;
         this.modeloCapa = modeloCapa;
-        this.NomePersonalizado = NomePersonalizado;
+        this.nomePersonalizado = NomePersonalizado;
         this.observacao = observacao;
     }
 }
@@ -252,8 +252,6 @@ function atualizarTabelaVendas() {
     listaVendasManuais.forEach((venda, index) => {
         const linha = document.createElement("tr");
 
-        alert(`bg-${venda.plataforma}`);
-
         linha.innerHTML = `
             <th scope="row">${index + 1}</th>
             <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
@@ -280,7 +278,7 @@ function atualizarTabelaVendas() {
                 </select>
             </td>
             <td class="btn-container">
-                <button class="btn btn-primary">
+                <button class="btn btn-primary" onclick="visualizarVendaManualPorId('${venda.codigo}')">
                     <i class="fa-solid fa-eye"></i>
                 </button>
                 <button class="btn btn-danger" onclick="excluirVenda(${index})">
@@ -293,6 +291,39 @@ function atualizarTabelaVendas() {
     });
 }
 
+//Visualizar a venda manual no modal
+function visualizarVendaManualPorId(idVenda) {
+    // 1️⃣ Busca a venda no array
+    const venda = listaVendasManuais.find(v => v.codigo == idVenda);
+
+    if (!venda) {
+        alert("Venda não encontrada!");
+        return;
+    }
+
+    // 2️⃣ Preenche todos os campos do modal
+    document.getElementById("codigoVendaManual").value = venda.codigo || "";
+    document.getElementById("dataVendaManual").value = venda.dataVenda || "";
+    document.getElementById("plataformaVendaManual").value = venda.plataforma || "escolha";
+    document.getElementById("clienteVendaManual").value = venda.cliente || "";
+    document.getElementById("produtoVendaManual").value = venda.produto || "escolha";
+    document.getElementById("precoUnitarioVendaManual").value = venda.precoUnitario ? venda.precoUnitario.toFixed(2) : "";
+    document.getElementById("qtdVendaManual").value = venda.qtd || 1;
+    document.getElementById("descontoAcrescimoVendaManual").value = venda.descontoAcrescimo || "0,00";
+    document.getElementById("totalVendaManual").value = venda.totalm ? venda.totalm.toFixed(2) : "0,00";
+    document.getElementById("sexoVendaManual").value = venda.sexo || "nao escolhido";
+    document.getElementById("modeloCapaVendaManual").value = venda.modeloCapa || "";
+    document.getElementById("nomePersonalizadoVendaManual").value = venda.nomePersonalizado || "";
+    document.getElementById("observacoesVendaManual").value = venda.observacoes || "";
+    document.getElementById("dataEntregaManual").value = venda.dataEntrega || "";
+
+    // 3️⃣ (Opcional) Desabilita campos para visualização
+    congelarVendaManual(); // se você já tiver essa função
+
+    // 4️⃣ Abre o modal do Bootstrap
+    const modal = new bootstrap.Modal(document.getElementById('modalCadastroVenda'));
+    modal.show();
+}
 
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
@@ -313,8 +344,7 @@ function salvarVendaManual() {
 
     const NovaVenda = new VendaManual(
         codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
-        sexo, modeloCapa, NomePersonalizado, observacao
-    );
+        sexo, modeloCapa, NomePersonalizado, observacao);
 
     if(cliente === '' || 
         produto === '' || 
