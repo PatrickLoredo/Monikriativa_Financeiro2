@@ -244,6 +244,53 @@ function congelarVendaManual(){
     document.getElementById("observacoesVendaManual").disabled = true;
 }
 
+//Adiciona o objeto cadastrado na listaVendasManuais
+function atualizarTabelaVendas() {
+    const tabela = document.getElementById("bodyTabelaVendas");
+    tabela.innerHTML = ""; // limpa o conteúdo atual
+
+    listaVendasManuais.forEach((venda, index) => {
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <th scope="row">${index + 1}</th>
+            <td class="bg-shopee rounded-pill d-flex align-items-center justify-content-center mt-1">
+                ${venda.plataforma}
+            </td>
+            <td>${venda.cliente}</td>
+            <td>
+                <select name="produtoVenda" class="form-select text-center" disabled>
+                    <option selected>${venda.produto}</option>
+                </select>
+            </td>
+            <td>
+                <select class="form-select text-center" disabled>
+                    <option selected>${venda.sexo}</option>
+                </select>
+            </td>
+            <td>${venda.qtd}</td>
+            <td>R$ ${venda.totalm.toFixed(2).replace('.', ',')}</td>
+            <td>
+                <select class="form-select text-center">
+                    <option selected>Produção</option>
+                    <option>Enviado</option>
+                    <option>Entregue</option>
+                </select>
+            </td>
+            <td class="btn-container">
+                <button class="btn btn-primary">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="btn btn-danger" onclick="excluirVenda(${index})">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </td>
+        `;
+
+        tabela.appendChild(linha);
+    });
+}
+
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
@@ -276,12 +323,16 @@ function salvarVendaManual() {
         NomePersonalizado === ''){
         alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
     }
-    else{
-        listaVendasManuais.push(NovaVenda);
-        console.log(listaVendasManuais);
-        congelarVendaManual();
-        console.log(tamanhoListaVendasManuais)
-    }
+else {
+    listaVendasManuais.push(NovaVenda);
+    console.log(listaVendasManuais);
+    
+    // Atualiza tabela na tela
+    atualizarTabelaVendas();
+
+    // Congela os campos depois de salvar
+    congelarVendaManual();
+}
 }
 
 function adicionarVendaManual(){

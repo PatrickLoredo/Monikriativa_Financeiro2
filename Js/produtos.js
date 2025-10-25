@@ -28,6 +28,7 @@ function alternarModoEdicao(botao) {
 
     // Se o botão estiver no modo "editar"
     if (botao.classList.contains('btn-primary')) {
+
         // muda para modo "salvar"
         botao.classList.remove('btn-primary');
         botao.classList.add('btn-success');
@@ -36,6 +37,7 @@ function alternarModoEdicao(botao) {
         icone.classList.add('fa-save');
 
         console.log('Entrou no modo de edição');
+
     } 
     else {
         // volta para modo "editar"
@@ -46,6 +48,7 @@ function alternarModoEdicao(botao) {
         icone.classList.add('fa-edit');
 
         console.log('Saiu do modo de edição');
+        
     }
 }
 
@@ -116,6 +119,7 @@ function salvarNovaCategoriaProduto() {
     const input = document.getElementById("inputNovaCategoriaProduto");
     const btnAdicionar = document.getElementById('btnAdicionarNovaCategoriaProduto');
     const btnSalvar = document.getElementById('btnSalvarNovaCategoriaProduto');
+    const amostradeCategorias = document.getElementById('amostradeCategorias');
 
     input.disabled = true;
     btnAdicionar.classList.remove('d-none');
@@ -128,8 +132,18 @@ function salvarNovaCategoriaProduto() {
     }
     else{
         listaCategoriasProdutos.push(novaCategoria);
-        alert(`Categoria adicionada: \n${novaCategoria.categoria}`);
+        alert(`Categoria adicionada: \n\n${novaCategoria.categoria}`);
         console.log(listaCategoriasProdutos);
     }
 
+}
+function mostraCategoriaCadastradaProduto(categoria) {
+    // Find the index of the category in the list
+    const indice = listaCategoriasProdutos.findIndex(cat => cat.categoria === categoria.categoria);
+    
+    if (indice !== -1) {
+        alert('Indice da Categoria: ' + indice);
+    } else {
+        alert('Categoria não encontrada.');
+    }
 }
