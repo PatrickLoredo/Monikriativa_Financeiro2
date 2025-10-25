@@ -339,33 +339,53 @@ function salvarVendaManual() {
     var total = parseFloat(document.getElementById("totalVendaManual").value) || 0;
     var sexo = document.getElementById("sexoVendaManual").value;
     var modeloCapa = document.getElementById("modeloCapaVendaManual").value;
-    var NomePersonalizado = document.getElementById("nomePersonalizadoVendaManual").value;
+    var nomePersonalizado = document.getElementById("nomePersonalizadoVendaManual").value;
     var observacao = document.getElementById("observacoesVendaManual").value;
 
-    const NovaVenda = new VendaManual(
-        codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
-        sexo, modeloCapa, NomePersonalizado, observacao);
-
-    if(cliente === '' || 
-        produto === '' || 
-        qtd === '' || 
-        qtd <=0 || 
-        sexo === 'escolha' || 
-        modeloCapa === '' || 
-        modeloCapa <=0 || 
-        NomePersonalizado === ''){
-        alert("Verifique se os campos abaixo foram preenchidos: \n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n")
-    }
-else {
-    listaVendasManuais.push(NovaVenda);
-    console.log(listaVendasManuais);
+    console.log(listaVendasManuais)
     
+    // Validação básica
+    if (
+        cliente === '' ||
+        produto === '' ||
+        qtd <= 0 ||
+        sexo === 'escolha' ||
+        modeloCapa === '' ||
+        nomePersonalizado === ''
+    ) {
+        alert("Verifique se os campos abaixo foram preenchidos:\n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
+        return;
+    }
+
+    // Cria o objeto da venda
+    const novaVenda = new VendaManual(
+        codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
+        sexo, modeloCapa, nomePersonalizado, observacao
+    );
+
+    // Verifica se já existe venda com o mesmo código
+    const indiceExistente = listaVendasManuais.findIndex(venda => venda.codigo === codigo);
+
+    if (indiceExistente !== -1) {
+        // Se já existe → substitui os dados da venda no mesmo índice
+        listaVendasManuais[indiceExistente] = novaVenda;
+        console.log(`Venda ${codigo} atualizada com sucesso!`);
+    } else {
+        // Se não existe → adiciona uma nova venda
+        listaVendasManuais.push(novaVenda);
+        console.log(`Nova venda ${codigo} adicionada com sucesso!`);
+    }
+
     // Atualiza tabela na tela
     atualizarTabelaVendas();
 
     // Congela os campos depois de salvar
     congelarVendaManual();
-}
+
+    // (Opcional) salva no localStorage se você quiser persistir
+    // salvarListasNoNavegador();
+
+    console.log(listaVendasManuais)
 }
 
 function adicionarVendaManual(){
