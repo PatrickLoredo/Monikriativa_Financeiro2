@@ -252,9 +252,11 @@ function atualizarTabelaVendas() {
     listaVendasManuais.forEach((venda, index) => {
         const linha = document.createElement("tr");
 
+        alert(`bg-${venda.plataforma}`);
+
         linha.innerHTML = `
             <th scope="row">${index + 1}</th>
-            <td class="bg-shopee rounded-pill d-flex align-items-center justify-content-center mt-1">
+            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
                 ${venda.plataforma}
             </td>
             <td>${venda.cliente}</td>
@@ -290,6 +292,7 @@ function atualizarTabelaVendas() {
         tabela.appendChild(linha);
     });
 }
+
 
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {

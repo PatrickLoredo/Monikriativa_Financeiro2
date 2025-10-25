@@ -94,18 +94,21 @@
 #bodyTabelaVendas .bg-shopee,
 #bodyTabelaVendasFiltro .bg-elo,
 #bodyTabelaVendas .bg-elo
-.color-white{
+.color-white,
+#bodyTabelaVendas .bg-elo7 {
     color: white;
 }
 #bodyTabelaVendasFiltro .bg-shopee,
 #bodyTabelaVendas .bg-shopee,
 #bodyTabelaVendasFiltro .bg-elo,
-#bodyTabelaVendas .bg-elo{
+#bodyTabelaVendas .bg-elo,
+#bodyTabelaVendas .bg-elo7{
     font-size: 0.8rem;
     font-weight: 600;
 }
 #bodyTabelaVendasFiltro .bg-elo,
-#bodyTabelaVendas .bg-elo{
+#bodyTabelaVendas .bg-elo,
+#bodyTabelaVendas .bg-elo7 {
     background: rgb(214, 150, 214);
 }
 .modal-backdrop.show {
