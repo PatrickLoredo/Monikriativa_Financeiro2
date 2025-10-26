@@ -178,10 +178,11 @@ function verificaDataEntrega15dias() {
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, dataVenda, dataEntrega,statusProducao, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
         this.codigo = codigo;
         this.dataVenda = dataVenda;
         this.dataEntrega = dataEntrega;
+        this.statusProducao = statusProducao;
         this.plataforma = plataforma;
         this.cliente = cliente;
         this.produto = produto;
@@ -194,6 +195,70 @@ class VendaManual {
         this.nomePersonalizado = NomePersonalizado;
         this.observacao = observacao;
     }
+}
+
+//Salva Objeto de Venda Manual no Array e congela campos [OK]
+function salvarVendaManual() {
+    var codigo = document.getElementById("codigoVendaManual").value;
+    var dataVenda = document.getElementById("dataVendaManual").value;
+    var dataEntrega = document.getElementById("dataEntregaManual").value;
+    var statusProducao = document.getElementById("statusProducaoVendaManual").value;
+    var plataforma = document.getElementById("plataformaVendaManual").value;
+    var cliente = document.getElementById("clienteVendaManual").value;
+    var produto = document.getElementById("produtoVendaManual").value;
+    var preco = parseFloat(document.getElementById("precoUnitarioVendaManual").value) || 0;
+    var qtd = parseInt(document.getElementById("qtdVendaManual").value) || 0;
+    var desconto = parseFloat(document.getElementById("descontoAcrescimoVendaManual").value) || 0;
+    var total = parseFloat(document.getElementById("totalVendaManual").value) || 0;
+    var sexo = document.getElementById("sexoVendaManual").value;
+    var modeloCapa = document.getElementById("modeloCapaVendaManual").value;
+    var nomePersonalizado = document.getElementById("nomePersonalizadoVendaManual").value;
+    var observacao = document.getElementById("observacoesVendaManual").value;
+
+    console.log(listaVendasManuais)
+
+    // Validação básica
+    if (
+        cliente === '' ||
+        produto === '' ||
+        qtd <= 0 ||
+        sexo === 'escolha' ||
+        modeloCapa === '' ||
+        nomePersonalizado === ''
+    ) {
+        alert("Verifique se os campos abaixo foram preenchidos:\n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
+        return;
+    }
+
+    // Cria o objeto da venda
+    const novaVenda = new VendaManual(
+        codigo, dataVenda, dataEntrega, statusProducao, plataforma, cliente, produto, preco, qtd, desconto, total,
+        sexo, modeloCapa, nomePersonalizado, observacao
+    );
+
+    // Verifica se já existe venda com o mesmo código
+    const indiceExistente = listaVendasManuais.findIndex(venda => venda.codigo === codigo);
+
+    if (indiceExistente !== -1) {
+        // Se já existe → substitui os dados da venda no mesmo índice
+        listaVendasManuais[indiceExistente] = novaVenda;
+        console.log(`Venda ${codigo} atualizada com sucesso!`);
+    } else {
+        // Se não existe → adiciona uma nova venda
+        listaVendasManuais.push(novaVenda);
+        console.log(`Nova venda ${codigo} adicionada com sucesso!`);
+    }
+
+    // Atualiza tabela na tela
+    atualizarTabelaVendas();
+
+    // Congela os campos depois de salvar
+    congelarVendaManual();
+
+    // (Opcional) salva no localStorage se você quiser persistir
+    // salvarListasNoNavegador();
+
+    console.log(listaVendasManuais)
 }
 
 //Limpar campos de Venda Manual [OK]
@@ -219,6 +284,7 @@ function limparVendaManual() {
 function editarVendaManual(){
     document.getElementById("dataVendaManual").disabled = false;
     document.getElementById("plataformaVendaManual").disabled = false;
+    document.getElementById("statusProducaoVendaManual").disabled = false;
     document.getElementById("clienteVendaManual").disabled = false;
     document.getElementById("produtoVendaManual").disabled = false;
     document.getElementById("qtdVendaManual").disabled = false;
@@ -234,6 +300,7 @@ function congelarVendaManual(){
     document.getElementById("codigoVendaManual").disabled = true;
     document.getElementById("dataVendaManual").disabled = true;
     document.getElementById("plataformaVendaManual").disabled = true;
+    document.getElementById("statusProducaoVendaManual").disabled = true;
     document.getElementById("clienteVendaManual").disabled = true;
     document.getElementById("produtoVendaManual").disabled = true;
     document.getElementById("qtdVendaManual").disabled = true;
@@ -272,9 +339,7 @@ function atualizarTabelaVendas() {
             <td>R$ ${venda.totalm.toFixed(2).replace('.', ',')}</td>
             <td>
                 <select class="form-select text-center">
-                    <option selected>Produção</option>
-                    <option>Enviado</option>
-                    <option>Entregue</option>
+                    <option selected disabled>${venda.statusProducao}</option>
                 </select>
             </td>
             <td class="btn-container">
@@ -323,69 +388,6 @@ function visualizarVendaManualPorId(idVenda) {
     // 4️⃣ Abre o modal do Bootstrap
     const modal = new bootstrap.Modal(document.getElementById('modalCadastroVenda'));
     modal.show();
-}
-
-//Salva Objeto de Venda Manual no Array e congela campos [OK]
-function salvarVendaManual() {
-    var codigo = document.getElementById("codigoVendaManual").value;
-    var dataVenda = document.getElementById("dataVendaManual").value;
-    var dataEntrega = document.getElementById("dataEntregaManual").value;
-    var plataforma = document.getElementById("plataformaVendaManual").value;
-    var cliente = document.getElementById("clienteVendaManual").value;
-    var produto = document.getElementById("produtoVendaManual").value;
-    var preco = parseFloat(document.getElementById("precoUnitarioVendaManual").value) || 0;
-    var qtd = parseInt(document.getElementById("qtdVendaManual").value) || 0;
-    var desconto = parseFloat(document.getElementById("descontoAcrescimoVendaManual").value) || 0;
-    var total = parseFloat(document.getElementById("totalVendaManual").value) || 0;
-    var sexo = document.getElementById("sexoVendaManual").value;
-    var modeloCapa = document.getElementById("modeloCapaVendaManual").value;
-    var nomePersonalizado = document.getElementById("nomePersonalizadoVendaManual").value;
-    var observacao = document.getElementById("observacoesVendaManual").value;
-
-    console.log(listaVendasManuais)
-    
-    // Validação básica
-    if (
-        cliente === '' ||
-        produto === '' ||
-        qtd <= 0 ||
-        sexo === 'escolha' ||
-        modeloCapa === '' ||
-        nomePersonalizado === ''
-    ) {
-        alert("Verifique se os campos abaixo foram preenchidos:\n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
-        return;
-    }
-
-    // Cria o objeto da venda
-    const novaVenda = new VendaManual(
-        codigo, dataVenda, dataEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
-        sexo, modeloCapa, nomePersonalizado, observacao
-    );
-
-    // Verifica se já existe venda com o mesmo código
-    const indiceExistente = listaVendasManuais.findIndex(venda => venda.codigo === codigo);
-
-    if (indiceExistente !== -1) {
-        // Se já existe → substitui os dados da venda no mesmo índice
-        listaVendasManuais[indiceExistente] = novaVenda;
-        console.log(`Venda ${codigo} atualizada com sucesso!`);
-    } else {
-        // Se não existe → adiciona uma nova venda
-        listaVendasManuais.push(novaVenda);
-        console.log(`Nova venda ${codigo} adicionada com sucesso!`);
-    }
-
-    // Atualiza tabela na tela
-    atualizarTabelaVendas();
-
-    // Congela os campos depois de salvar
-    congelarVendaManual();
-
-    // (Opcional) salva no localStorage se você quiser persistir
-    // salvarListasNoNavegador();
-
-    console.log(listaVendasManuais)
 }
 
 function adicionarVendaManual(){
