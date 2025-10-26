@@ -1,23 +1,24 @@
 window.onload = function() {
     // Seleciona o modal pelo ID
     var modalElement = document.getElementById('modalCadastroVenda');
-    
     var modal = new bootstrap.Modal(modalElement);
-    
-    // Mostra o modal automaticamente
     modal.show();
 
-    // Atualiza badge e código da venda
+    // 1️⃣ Carrega vendas salvas e atualiza tabela
+    carregarListasDoNavegador();
+
+    // 2️⃣ Agora sim, os dados já estão disponíveis
+    console.log(listaVendasManuais);
+    console.log('Tamanho do Array: ' + (listaVendasManuais.length + 1));
+
+    // 3️⃣ Atualiza badge e código da venda
     muda_badge();
     atualizarCodigoVenda();
 
-    // Quando o modal abrir, calcula a data de entrega
+    // 4️⃣ Quando o modal abrir, calcula a data de entrega
     modalElement.addEventListener('shown.bs.modal', function () {
-        verificaDataEntrega();  // Calcula automaticamente a data de entrega
+        verificaDataEntrega();
     });
-
-    // Carrega vendas salvas e atualiza tabela
-    carregarListasDoNavegador();
 };
 /*---------------------------------------------------*/ 
 //VARIAVEIS / CONSTANTES / ARRAYS
@@ -52,7 +53,7 @@ function muda_badge(){
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
   const inputCodigo = document.getElementById("codigoVendaManual");
-  const proximoCodigo = 'VM ' + (listaVendasManuais.length + 1); // <-- aqui
+  const proximoCodigo = 'VM ' + (listaVendasManuais.length+1); // <-- aqui
 
   inputCodigo.value = proximoCodigo;
 
