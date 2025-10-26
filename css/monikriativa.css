@@ -80,7 +80,6 @@
     height: 28vh;
 }
 #cardVendasRealizadas{
-    height: 42vh;
 }
 #cardVendasRealizadas{
 }
@@ -147,5 +146,7 @@
 }
 
 #bodyTabelaVendas tr{
-    font-size: 0.8rem;
+    font-size: 0.9rem;
+    margin: auto;
+    margin-top: auto;
 }

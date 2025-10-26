@@ -52,23 +52,25 @@ function muda_badge(){
 
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
-  const inputCodigo = document.getElementById("codigoVendaManual");
-  const proximoCodigo = 'VM ' + (listaVendasManuais.length+1); // <-- aqui
+    editarVendaManual()
+    limparVendaManual()
+    const inputCodigo = document.getElementById("codigoVendaManual");
+    const proximoCodigo = 'VM ' + (listaVendasManuais.length+1); // <-- aqui
 
-  inputCodigo.value = proximoCodigo;
+    inputCodigo.value = proximoCodigo;
 
-  const inputDataVenda = document.getElementById("dataVendaManual");
-  const inputPesquisaDataVenda = document.getElementById("pesquisaDataVenda");
-  const hoje = new Date();
+    const inputDataVenda = document.getElementById("dataVendaManual");
+    const inputPesquisaDataVenda = document.getElementById("pesquisaDataVenda");
+    const hoje = new Date();
 
-  const dia = String(hoje.getDate()).padStart(2, '0');
-  const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-  const ano = hoje.getFullYear();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
 
-  const dataFormatada = `${ano}-${mes}-${dia}`;
+    const dataFormatada = `${ano}-${mes}-${dia}`;
 
-  inputDataVenda.value = dataFormatada;
-  inputPesquisaDataVenda.value = dataFormatada;
+    inputDataVenda.value = dataFormatada;
+    inputPesquisaDataVenda.value = dataFormatada;
 }
 
 function localizaProduto() {
@@ -331,33 +333,20 @@ function atualizarTabelaVendas() {
 
         linha.innerHTML = `
             <th scope="row">${venda.codigo}</th>
-            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
-                ${venda.plataforma}
-            </td>
+            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">${venda.plataforma}</td>
+            <td>${venda.dataEntrega}</td>
             <td>${venda.cliente}</td>
-            <td>
-                <select name="produtoVenda" class="form-select text-center" disabled>
-                    <option selected>${venda.produto}</option>
-                </select>
-            </td>
-            <td>
-                <select class="form-select text-center" disabled>
-                    <option selected>${venda.sexo}</option>
-                </select>
-            </td>
+            <td>${venda.produto}</td>
+            <td>${venda.sexo}</td>
             <td>${venda.qtd}</td>
             <td>R$ ${venda.totalm.toFixed(2).replace('.', ',')}</td>
-            <td>
-                <select class="form-select text-center">
-                    <option selected disabled>${venda.statusProducao}</option>
-                </select>
-            </td>
+            <td>${venda.statusProducao}</td>
             <td class="btn-container">
                 <button class="btn btn-primary" onclick="visualizarVendaManualPorId('${venda.codigo}')">
                     <i class="fa-solid fa-eye"></i>
                 </button>
                 <button class="btn btn-danger" onclick="excluirVenda(${index})">
-                    <i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-circle-xmark"></i>
                 </button>
             </td>
         `;
@@ -413,8 +402,6 @@ function adicionarVendaManual(){
     }
 
 }
-
-
 
 //Controle de Collapse de Pesquisa Vendas [OK]
 document.addEventListener("DOMContentLoaded", function () {
