@@ -146,5 +146,6 @@
     cursor: pointer;
 }
 
-/*-----------------------------PRODUTOS--------------------------------------*/
-
+#bodyTabelaVendas tr{
+    font-size: 0.8rem;
+}

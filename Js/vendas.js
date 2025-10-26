@@ -330,7 +330,7 @@ function atualizarTabelaVendas() {
         const linha = document.createElement("tr");
 
         linha.innerHTML = `
-            <th scope="row">${index + 1}</th>
+            <th scope="row">${venda.codigo}</th>
             <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
                 ${venda.plataforma}
             </td>
