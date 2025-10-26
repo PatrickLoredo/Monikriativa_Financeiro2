@@ -15,6 +15,9 @@ window.onload = function() {
     modalElement.addEventListener('shown.bs.modal', function () {
         verificaDataEntrega();  // Calcula automaticamente a data de entrega
     });
+
+    // Carrega vendas salvas e atualiza tabela
+    carregarListasDoNavegador();
 };
 /*---------------------------------------------------*/ 
 //VARIAVEIS / CONSTANTES / ARRAYS
@@ -43,6 +46,9 @@ function muda_badge(){
 }
 
 /*---------------------------------------------------*/ 
+
+
+
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
   const inputCodigo = document.getElementById("codigoVendaManual");
@@ -255,8 +261,11 @@ function salvarVendaManual() {
     // Congela os campos depois de salvar
     congelarVendaManual();
 
-    // (Opcional) salva no localStorage se você quiser persistir
-    // salvarListasNoNavegador();
+    // Salva no navegador
+    salvarListasNoNavegador();
+
+    // Atualiza tabela
+    atualizarTabelaVendas();
 
     console.log(listaVendasManuais)
 }
@@ -390,6 +399,7 @@ function visualizarVendaManualPorId(idVenda) {
     modal.show();
 }
 
+//Funcoes ao abrir o Modal VendaManual
 function adicionarVendaManual(){
     console.log(tamanhoListaVendasManuais);
     if(document.getElementById("clienteVendaManual").disabled == false){
@@ -402,6 +412,8 @@ function adicionarVendaManual(){
     }
 
 }
+
+
 
 //Controle de Collapse de Pesquisa Vendas [OK]
 document.addEventListener("DOMContentLoaded", function () {
@@ -498,3 +510,21 @@ function alternarModoEdicao(botao) {
     }
 }
 
+// Salva os arrays no localStorage
+function salvarListasNoNavegador() {
+    localStorage.setItem("listaVendasManuais", JSON.stringify(listaVendasManuais));
+    console.log("✅ Vendas manuais salvas no navegador.");
+}
+
+// Carrega os arrays do localStorage
+function carregarListasDoNavegador() {
+    const vendasSalvas = localStorage.getItem("listaVendasManuais");
+
+    if (vendasSalvas) {
+        listaVendasManuais = JSON.parse(vendasSalvas);
+        console.log("📦 Vendas manuais carregadas do navegador:", listaVendasManuais);
+        atualizarTabelaVendas(); // Atualiza a tabela automaticamente
+    } else {
+        console.log("Nenhuma venda manual encontrada no navegador.");
+    }
+}
