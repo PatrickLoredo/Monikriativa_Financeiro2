@@ -257,7 +257,7 @@ function verificaDataEntrega15dias() {
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, dataVenda, dataEntrega,statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
         this.codigo = codigo;
         this.dataVenda = dataVenda;
         this.dataEntrega = dataEntrega;
@@ -283,6 +283,7 @@ function salvarVendaManual() {
     var dataVenda = document.getElementById("dataVendaManual").value;
     var dataEntrega = document.getElementById("dataEntregaManual").value;
     var statusProducao = document.getElementById("statusProducaoVendaManual").value;
+    var statusEntrega = document.getElementById("statusEntrega").value;
     var plataforma = document.getElementById("plataformaVendaManual").value;
     var cliente = document.getElementById("clienteVendaManual").value;
     var produto = document.getElementById("produtoVendaManual").value;
@@ -312,7 +313,7 @@ function salvarVendaManual() {
 
     // Cria o objeto da venda
     const novaVenda = new VendaManual(
-        codigo, dataVenda, dataEntrega, statusProducao, plataforma, cliente, produto, preco, qtd, desconto, total,
+        codigo, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
         sexo, modeloCapa, nomePersonalizado, observacao
     );
 
@@ -411,6 +412,14 @@ function atualizarTabelaVendas() {
             dataEntregaFormatada = venda.dataEntrega || ""; // caso venha vazia
         }
 
+        // ✅ Adiciona classe de destaque se o statusEntrega for "Envio Atrasado"
+        if (venda.statusEntrega === "Envio Atrasado" || venda.statusEntrega === "Atrasado") {
+            linha.classList.add("linha-atrasada"); // classe CSS personalizada
+        }
+        if (venda.statusEntrega === "Enviado" || venda.statusEntrega === "Enviado") {
+            linha.classList.add("linha-enviado"); // classe CSS personalizada
+        }
+
         linha.innerHTML = `
             <th scope="row">${venda.codigo}</th>
             <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
@@ -436,6 +445,7 @@ function atualizarTabelaVendas() {
         tabela.appendChild(linha);
     });
 }
+
 
 //Visualizar a venda manual no modal
 function visualizarVendaManualPorId(idVenda) {

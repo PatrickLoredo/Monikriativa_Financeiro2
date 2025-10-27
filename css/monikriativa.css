@@ -150,3 +150,16 @@
     margin: auto;
     margin-top: auto;
 }
+/* Cor de fundo vermelho suave para vendas atrasadas */
+#bodyTabelaVendas .linha-atrasada td:not([class*="bg-"]) {
+    background-color: #fcacb2; /* vermelho suave */
+}
+#bodyTabelaVendas .linha-enviado td:not([class*="bg-"]) {
+    background-color: #c0ffb4; /* vermelho suave */
+}
+
+#bodyTabelaVendas td,
+#bodyTabelaVendas th {
+    text-align: center;       /* centraliza horizontalmente */
+    vertical-align: middle;   /* centraliza verticalmente */
+}
