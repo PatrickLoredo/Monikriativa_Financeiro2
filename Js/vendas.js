@@ -73,6 +73,7 @@ function atualizarCodigoVenda() {
     inputPesquisaDataVenda.value = dataFormatada;
 }
 
+//Filtra a categoria de produto selecionada
 function localizaProduto() {
     const produtoVendaManual = document.getElementById('produtoVendaManual').value;
     let resultadoEscolhaProduto = '';  // Use "let" em vez de "const" aqui para permitir a reatribuição.
@@ -98,6 +99,51 @@ function localizaProduto() {
     return resultadoEscolhaProduto; // Retorna o valor para uso posterior
 }
 
+//Exibe Status Atual da Data de Entrega
+function verificaStatusEntrega() {
+    var hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // Zera horas para comparar só datas
+
+    var statusEntrega = document.getElementById("statusEntrega");
+    var dataEntregaManual = document.getElementById("dataEntregaManual").value;
+
+    if (!dataEntregaManual) {
+        console.log("Sem data de entrega preenchida");
+        return;
+    }
+
+    // Converte a string do input para um objeto Date
+    var dataEntrega = new Date(dataEntregaManual);
+    dataEntrega.setHours(0, 0, 0, 0);
+
+    // 🔹 Formata a data de hoje no formato dd/mm/aaaa
+    var diaHoje = String(hoje.getDate()).padStart(2, '0');
+    var mesHoje = String(hoje.getMonth() + 1).padStart(2, '0');
+    var anoHoje = hoje.getFullYear();
+    var dataHojeFormatada = `${diaHoje}/${mesHoje}/${anoHoje}`;
+
+    console.log("Data de hoje:", dataHojeFormatada);
+
+    // 🔹 Formata também a data de entrega (opcional, pra mostrar no console)
+    var diaEntrega = String(dataEntrega.getDate()).padStart(2, '0');
+    var mesEntrega = String(dataEntrega.getMonth() + 1).padStart(2, '0');
+    var anoEntrega = dataEntrega.getFullYear();
+    var dataEntregaFormatada = `${diaEntrega}/${mesEntrega}/${anoEntrega}`;
+
+    console.log("Data de entrega:", dataEntregaFormatada);
+
+    // 🔹 Verifica se está atrasado ou em tempo
+    if (dataEntrega < hoje) {
+        statusEntrega.value = "Atrasado";
+        statusEntrega.classList.add("bg-danger", "text-white");
+    } else {
+        statusEntrega.value = "Em tempo";
+        statusEntrega.classList.remove("bg-danger", "text-white");
+        statusEntrega.classList.add("bg-success", "text-white");
+    }
+}
+
+//Verifica tipo de Produto que vai ser enviado para definir prazo para produção
 function verificaDataEntrega() {
     const tipoProduto = localizaProduto(); // Armazena o valor retornado de localizaProduto
     const dataVendaManual = document.getElementById("dataVendaManual");
@@ -121,11 +167,11 @@ function verificaDataEntrega() {
                 console.log("Produto não identificado");
             }
         }
-
-    }
-    
+    verificaStatusEntrega()
+    } 
 }
 
+//Define data de Entrega de 7 Dias (data venda + 7 dias)
 function verificaDataEntrega7dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -156,6 +202,7 @@ function verificaDataEntrega7dias() {
     console.log("Data de entrega:", dataEntregaFormatada);
 }
 
+//Define data de Entrega de 15 Dias (data venda + 15 dias)
 function verificaDataEntrega15dias() {
     // Pega o valor do input de data da venda
     const dataVenda = document.getElementById("dataVendaManual").value;
@@ -187,11 +234,12 @@ function verificaDataEntrega15dias() {
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, dataVenda, dataEntrega,statusProducao, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, dataVenda, dataEntrega,statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
         this.codigo = codigo;
         this.dataVenda = dataVenda;
         this.dataEntrega = dataEntrega;
         this.statusProducao = statusProducao;
+        this.statusEntrega = statusEntrega;
         this.plataforma = plataforma;
         this.cliente = cliente;
         this.produto = produto;
@@ -331,10 +379,21 @@ function atualizarTabelaVendas() {
     listaVendasManuais.forEach((venda, index) => {
         const linha = document.createElement("tr");
 
+        // ✅ Formata a data de entrega (de yyyy-mm-dd → dd/mm/aaaa)
+        let dataEntregaFormatada = "";
+        if (venda.dataEntrega && venda.dataEntrega.includes("-")) {
+            const [ano, mes, dia] = venda.dataEntrega.split("-");
+            dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+        } else {
+            dataEntregaFormatada = venda.dataEntrega || ""; // caso venha vazia
+        }
+
         linha.innerHTML = `
             <th scope="row">${venda.codigo}</th>
-            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">${venda.plataforma}</td>
-            <td>${venda.dataEntrega}</td>
+            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
+                ${venda.plataforma}
+            </td>
+            <td>${dataEntregaFormatada}</td>
             <td>${venda.cliente}</td>
             <td>${venda.produto}</td>
             <td>${venda.sexo}</td>
