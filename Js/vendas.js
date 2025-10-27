@@ -254,8 +254,9 @@ function verificaDataEntrega15dias() {
 
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
         this.codigo = codigo;
+        this.codigoPlataforma = codigoPlataforma;
         this.dataVenda = dataVenda;
         this.dataEntrega = dataEntrega;
         this.statusProducao = statusProducao;
@@ -277,6 +278,7 @@ class VendaManual {
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
+    var codigoPlataforma = document.getElementById("codigoPlataformaVendaManual").value;
     var dataVenda = document.getElementById("dataVendaManual").value;
     var dataEntrega = document.getElementById("dataEntregaManual").value;
     var statusProducao = document.getElementById("statusProducaoVendaManual").value;
@@ -297,6 +299,7 @@ function salvarVendaManual() {
 
     // Validação básica
     if (
+        codigoPlataforma == '' ||
         cliente === '' ||
         produto === '' ||
         qtd <= 0 ||
@@ -304,13 +307,13 @@ function salvarVendaManual() {
         modeloCapa === '' ||
         nomePersonalizado === ''
     ) {
-        alert("Verifique se os campos abaixo foram preenchidos:\n\n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
+        alert("Verifique se os campos abaixo foram preenchidos:\n\nCÓDIGO PLATAFORMA \n* NOME CLIENTE\n* PRODUTO\n* QUANTIDADE\n* SEXO\n* MODELO DA CAPA\n* NOME PERSONALIZADO\n");
         return;
     }
 
     // Cria o objeto da venda
     const novaVenda = new VendaManual(
-        codigo, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
+        codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
         sexo, modeloCapa, nomePersonalizado, observacao
     );
 
@@ -379,6 +382,7 @@ function editarVendaManual(){
 //Desativa campos de Venda Manual [OK]
 function congelarVendaManual(){
     document.getElementById("codigoVendaManual").disabled = true;
+    document.getElementById("codigoPlataformaVendaManual").disabled = true;
     document.getElementById("dataVendaManual").disabled = true;
     document.getElementById("plataformaVendaManual").disabled = true;
     document.getElementById("statusProducaoVendaManual").disabled = true;
@@ -404,6 +408,7 @@ function visualizarVendaManualPorId(idVenda) {
 
     // 2️⃣ Preenche todos os campos do modal
     document.getElementById("codigoVendaManual").value = venda.codigo || "";
+    document.getElementById("codigoPlataformaVendaManual").value = venda.codigoPlataforma || "";
     document.getElementById("dataVendaManual").value = venda.dataVenda || "";
     document.getElementById("plataformaVendaManual").value = venda.plataforma || "escolha";
     document.getElementById("clienteVendaManual").value = venda.cliente || "";
@@ -441,6 +446,7 @@ function adicionarVendaManual(){
 }
 
 //Adiciona o objeto cadastrado na listaVendasManuais [OK]
+// Adiciona o objeto cadastrado na listaVendasManuais [OK]
 function atualizarTabelaVendas() {
     const tabela = document.getElementById("bodyTabelaVendas");
     tabela.innerHTML = "";
@@ -462,6 +468,11 @@ function atualizarTabelaVendas() {
             dataEntregaFormatada = venda.dataEntrega || "";
         }
 
+        // ✅ Pega apenas os 3 últimos caracteres do código da plataforma
+        const codigoPlataformaFinal = venda.codigoPlataforma
+            ? venda.codigoPlataforma.slice(-3)
+            : "—"; // mostra um traço se estiver vazio
+
         // ✅ Estilos por status
         if (venda.statusEntrega === "Envio Atrasado" || venda.statusEntrega === "Atrasado") {
             linha.classList.add("linha-atrasada");
@@ -472,6 +483,7 @@ function atualizarTabelaVendas() {
 
         linha.innerHTML = `
             <th scope="row">${venda.codigo}</th>
+            <th scope="row">${codigoPlataformaFinal}</th>
             <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
                 ${venda.plataforma}
             </td>
@@ -496,7 +508,14 @@ function atualizarTabelaVendas() {
     });
 
     renderizarPaginacao(totalPaginas);
+
+    // ✅ Faz o scroll focar no final da página quando troca de página
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
 }
+
 
 const itensPorPagina = 5;
 let paginaAtual = 1;
