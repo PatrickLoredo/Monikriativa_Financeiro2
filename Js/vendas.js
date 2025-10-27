@@ -133,13 +133,35 @@ function verificaStatusEntrega() {
     console.log("Data de entrega:", dataEntregaFormatada);
 
     // 🔹 Verifica se está atrasado ou em tempo
-    if (dataEntrega < hoje) {
-        statusEntrega.value = "Atrasado";
-        statusEntrega.classList.add("bg-danger", "text-white");
-    } else {
-        statusEntrega.value = "Em tempo";
-        statusEntrega.classList.remove("bg-danger", "text-white");
-        statusEntrega.classList.add("bg-success", "text-white");
+
+    //Data de Envio a frente
+    var statusEntrega = document.getElementById('statusEntrega');
+    var statusProducao = document.getElementById('statusProducaoVendaManual').value;
+
+    // Remove classes antigas
+    statusEntrega.classList.remove('bg-success','bg-warning','bg-danger','text-white');
+
+    if (dataEntrega <= hoje) { // Data já passou
+        if (statusProducao === 'Em Produção') {
+            statusEntrega.value = 'Envio Atrasado';
+            statusEntrega.classList.add('bg-danger','text-white');
+        } else if (statusProducao === 'Enviado') {
+            statusEntrega.value = 'Enviado';
+            statusEntrega.classList.add('bg-warning');
+        } else {
+            statusEntrega.value = '-';
+        }
+    } else { // Data ainda não passou
+        if (statusProducao === 'Em Produção') {
+            statusEntrega.value = 'Em tempo';
+            statusEntrega.classList.add('bg-success','text-white');
+        } else if (statusProducao === 'Enviado') {
+            statusEntrega.value = 'Enviado';
+            statusEntrega.classList.add('bg-warning');
+        } else {
+            statusEntrega.value = 'Em tempo';
+            statusEntrega.classList.add('bg-success','text-white');
+        }
     }
 }
 
@@ -165,6 +187,7 @@ function verificaDataEntrega() {
             }
             else {
                 console.log("Produto não identificado");
+                document.getElementById(dataEntregaManual).value = ''
             }
         }
     verificaStatusEntrega()
