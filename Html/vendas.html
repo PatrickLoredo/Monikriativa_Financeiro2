@@ -405,27 +405,6 @@
 
                                     <div class="modal-body" id="modalBodyCadastroManualVenda">
                                         <div class="card">
-                                            <div class="card-header">
-                                                <div class="modal-footer d-flex justify-content-center">
-                                                    <button type="button" class="btn btn-success"
-                                                    onclick="salvarVendaManual()">
-                                                        <i class="fa-solid fa-save"></i>&nbsp; Salvar
-                                                    </button>
-                                                    <button type="button" class="btn btn-primary"
-                                                    onclick="editarVendaManual()">
-                                                        <i class="fa-solid fa-edit"></i>&nbsp; Editar
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger"
-                                                    onclick="limparVendaManual()">
-                                                        <i class="fa-solid fa-broom"></i>&nbsp; Limpar
-                                                    </button>
-                                                    <button type="button" class="btn btn-dark"
-                                                    onclick="adicionarVendaManual()">
-                                                        <i class="fa-solid fas fa-plus-circle"></i>
-                                                        &nbsp; Adicionar Venda
-                                                    </button>
-                                                </div>
-                                            </div>
                                             <!--CABEÇALHO DO CARD-->
                                             <div class="card-header">
                                                 <div class="row d-flex justify-content-center">
@@ -674,11 +653,32 @@
                                                             </span>
                                                             <textarea name="" 
                                                             id="observacoesVendaManual" 
-                                                            cols="30" rows="1" 
+                                                            cols="30" rows="3" 
                                                             class="form-control" 
                                                             placeholder="Observações sobre a venda ou o produto..."></textarea>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="modal-footer d-flex justify-content-center">
+                                                    <button type="button" class="btn btn-success"
+                                                    onclick="salvarVendaManual()">
+                                                        <i class="fa-solid fa-save"></i>&nbsp; Salvar
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary"
+                                                    onclick="editarVendaManual()">
+                                                        <i class="fa-solid fa-edit"></i>&nbsp; Editar
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger"
+                                                    onclick="limparVendaManual()">
+                                                        <i class="fa-solid fa-broom"></i>&nbsp; Limpar
+                                                    </button>
+                                                    <button type="button" class="btn btn-dark"
+                                                    onclick="adicionarVendaManual()">
+                                                        <i class="fa-solid fas fa-plus-circle"></i>
+                                                        &nbsp; Adicionar Venda
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -695,10 +695,31 @@
                 <div class="card card-principal">
                     <div class="card-body" id="cardVendasRealizadas">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-3">
                                 <div class="m-1 mb-0 title-main">
                                     Vendas Realizadas
                                 </div>
+                            </div>
+                            <div class="col"></div>
+                            <div class="col-4">
+                                <div class="input-group">
+                                    <div class="input-group-text bg-secondary text-white">
+                                        <i class="fa fa-filter"></i>
+                                    </div>
+                                    <select name="" id="" class="form-select text-center">
+                                        <option value="">Escolha o filtro de Exibição</option>
+                                        <option value="">Data Venda - Mais recentes Primeiro</option>
+                                        <option value="">Data Venda - Mais antigas Primeiro</option>
+                                        <option value="">Data Entrega - Mais recentes Primeiro</option>
+                                        <option value="">Data Entrega - Mais antigas Primeiro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col text-end">
+                                <!-- Paginação -->
+                                <nav aria-label="...">
+                                    <ul class="pagination" id="paginationVendasRealizadas"></ul>
+                                </nav>
                             </div>
                         </div>
                         <div class="row">

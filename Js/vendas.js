@@ -1,8 +1,8 @@
 window.onload = function() {
     // Seleciona o modal pelo ID
-    var modalElement = document.getElementById('modalCadastroVenda');
+    /*var modalElement = document.getElementById('modalCadastroVenda');
     var modal = new bootstrap.Modal(modalElement);
-    modal.show();
+    modal.show();*/
 
     // 1️⃣ Carrega vendas salvas e atualiza tabela
     carregarListasDoNavegador();
@@ -45,10 +45,7 @@ function muda_badge(){
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
 }
-
 /*---------------------------------------------------*/ 
-
-
 
 //Atualiza Código da Venda Manual [OK]
 function atualizarCodigoVenda() {
@@ -395,59 +392,7 @@ function congelarVendaManual(){
     document.getElementById("observacoesVendaManual").disabled = true;
 }
 
-//Adiciona o objeto cadastrado na listaVendasManuais
-function atualizarTabelaVendas() {
-    const tabela = document.getElementById("bodyTabelaVendas");
-    tabela.innerHTML = ""; // limpa o conteúdo atual
-
-    listaVendasManuais.forEach((venda, index) => {
-        const linha = document.createElement("tr");
-
-        // ✅ Formata a data de entrega (de yyyy-mm-dd → dd/mm/aaaa)
-        let dataEntregaFormatada = "";
-        if (venda.dataEntrega && venda.dataEntrega.includes("-")) {
-            const [ano, mes, dia] = venda.dataEntrega.split("-");
-            dataEntregaFormatada = `${dia}/${mes}/${ano}`;
-        } else {
-            dataEntregaFormatada = venda.dataEntrega || ""; // caso venha vazia
-        }
-
-        // ✅ Adiciona classe de destaque se o statusEntrega for "Envio Atrasado"
-        if (venda.statusEntrega === "Envio Atrasado" || venda.statusEntrega === "Atrasado") {
-            linha.classList.add("linha-atrasada"); // classe CSS personalizada
-        }
-        if (venda.statusEntrega === "Enviado" || venda.statusEntrega === "Enviado") {
-            linha.classList.add("linha-enviado"); // classe CSS personalizada
-        }
-
-        linha.innerHTML = `
-            <th scope="row">${venda.codigo}</th>
-            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
-                ${venda.plataforma}
-            </td>
-            <td>${dataEntregaFormatada}</td>
-            <td>${venda.cliente}</td>
-            <td>${venda.produto}</td>
-            <td>${venda.sexo}</td>
-            <td>${venda.qtd}</td>
-            <td>R$ ${venda.totalm.toFixed(2).replace('.', ',')}</td>
-            <td>${venda.statusProducao}</td>
-            <td class="btn-container">
-                <button class="btn btn-primary" onclick="visualizarVendaManualPorId('${venda.codigo}')">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
-                <button class="btn btn-danger" onclick="excluirVenda(${index})">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </button>
-            </td>
-        `;
-
-        tabela.appendChild(linha);
-    });
-}
-
-
-//Visualizar a venda manual no modal
+//Visualizar a venda manual no modal [OK]
 function visualizarVendaManualPorId(idVenda) {
     // 1️⃣ Busca a venda no array
     const venda = listaVendasManuais.find(v => v.codigo == idVenda);
@@ -481,7 +426,7 @@ function visualizarVendaManualPorId(idVenda) {
     modal.show();
 }
 
-//Funcoes ao abrir o Modal VendaManual
+//Funcoes ao abrir o Modal VendaManual [OK]
 function adicionarVendaManual(){
     console.log(tamanhoListaVendasManuais);
     if(document.getElementById("clienteVendaManual").disabled == false){
@@ -494,6 +439,152 @@ function adicionarVendaManual(){
     }
 
 }
+
+//Adiciona o objeto cadastrado na listaVendasManuais [OK]
+function atualizarTabelaVendas() {
+    const tabela = document.getElementById("bodyTabelaVendas");
+    tabela.innerHTML = "";
+
+    const totalPaginas = Math.ceil(listaVendasManuais.length / itensPorPagina);
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const vendasPaginadas = listaVendasManuais.slice(inicio, fim);
+
+    vendasPaginadas.forEach((venda, index) => {
+        const linha = document.createElement("tr");
+
+        // ✅ Formata a data
+        let dataEntregaFormatada = "";
+        if (venda.dataEntrega && venda.dataEntrega.includes("-")) {
+            const [ano, mes, dia] = venda.dataEntrega.split("-");
+            dataEntregaFormatada = `${dia}/${mes}/${ano}`;
+        } else {
+            dataEntregaFormatada = venda.dataEntrega || "";
+        }
+
+        // ✅ Estilos por status
+        if (venda.statusEntrega === "Envio Atrasado" || venda.statusEntrega === "Atrasado") {
+            linha.classList.add("linha-atrasada");
+        }
+        if (venda.statusEntrega === "Enviado") {
+            linha.classList.add("linha-enviado");
+        }
+
+        linha.innerHTML = `
+            <th scope="row">${venda.codigo}</th>
+            <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
+                ${venda.plataforma}
+            </td>
+            <td>${dataEntregaFormatada}</td>
+            <td>${venda.cliente}</td>
+            <td>${venda.produto}</td>
+            <td>${venda.sexo}</td>
+            <td>${venda.qtd}</td>
+            <td>R$ ${venda.totalm.toFixed(2).replace('.', ',')}</td>
+            <td>${venda.statusProducao}</td>
+            <td class="btn-container">
+                <button class="btn btn-primary" onclick="visualizarVendaManualPorId('${venda.codigo}')">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="btn btn-danger" onclick="excluirVenda(${inicio + index})">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+            </td>
+        `;
+
+        tabela.appendChild(linha);
+    });
+
+    renderizarPaginacao(totalPaginas);
+}
+
+const itensPorPagina = 5;
+let paginaAtual = 1;
+
+// Renderiza a paginação na lista de Vendas Manuais
+function renderizarPaginacao(totalPaginas) {
+    const paginacao = document.getElementById("paginationVendasRealizadas");
+    paginacao.innerHTML = "";
+
+    const maxPaginasVisiveis = 3;
+    let inicioPagina = Math.max(paginaAtual - 1, 1);
+    let fimPagina = inicioPagina + maxPaginasVisiveis - 1;
+
+    if (fimPagina > totalPaginas) {
+        fimPagina = totalPaginas;
+        inicioPagina = Math.max(fimPagina - maxPaginasVisiveis + 1, 1);
+    }
+
+    // Função para criar botões de navegação
+    function criarBotao(classe, conteudo, disabled, onClick, cor = "bg-dark") {
+        const li = document.createElement("li");
+        li.classList.add("page-item");
+        if (disabled) li.classList.add("disabled");
+
+        const botao = document.createElement("button");
+        botao.classList.add("page-link", cor, "text-white", "border-0");
+        botao.type = "button";
+        botao.innerHTML = conteudo;
+
+        botao.addEventListener("click", () => {
+            if (!disabled) {
+                onClick();
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }
+        });
+
+        li.appendChild(botao);
+        paginacao.appendChild(li);
+    }
+
+    // Botão Início
+    criarBotao("inicio", '<i class="fa-solid fa-angles-left"></i>', paginaAtual === 1, () => {
+        paginaAtual = 1;
+        atualizarTabelaVendas();
+    }, "bg-danger");
+
+    // Botão Anterior
+    criarBotao("anterior", '<i class="fa-solid fa-arrow-left"></i>', paginaAtual === 1, () => {
+        paginaAtual--;
+        atualizarTabelaVendas();
+    }, "bg-dark");
+
+    // Números de página (3 visíveis)
+    for (let i = inicioPagina; i <= fimPagina; i++) {
+        const li = document.createElement("li");
+        li.classList.add("page-item");
+        if (i === paginaAtual) li.classList.add("active");
+
+        const botao = document.createElement("button");
+        botao.classList.add("page-link", "border-0");
+        botao.type = "button";
+        botao.innerText = i;
+
+        botao.addEventListener("click", () => {
+            paginaAtual = i;
+            atualizarTabelaVendas();
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        });
+
+        li.appendChild(botao);
+        paginacao.appendChild(li);
+    }
+
+    // Botão Próximo
+    criarBotao("proximo", '<i class="fa-solid fa-arrow-right"></i>', paginaAtual === totalPaginas, () => {
+        paginaAtual++;
+        atualizarTabelaVendas();
+    }, "bg-dark");
+
+    // Botão Final
+    criarBotao("fim", '<i class="fa-solid fa-angles-right"></i>', paginaAtual === totalPaginas, () => {
+        paginaAtual = totalPaginas;
+        atualizarTabelaVendas();
+    }, "bg-danger");
+}
+
+
+
 
 //Controle de Collapse de Pesquisa Vendas [OK]
 document.addEventListener("DOMContentLoaded", function () {
@@ -590,13 +681,13 @@ function alternarModoEdicao(botao) {
     }
 }
 
-// Salva os arrays no localStorage
+// Salva os arrays no localStorage [OK]
 function salvarListasNoNavegador() {
     localStorage.setItem("listaVendasManuais", JSON.stringify(listaVendasManuais));
     console.log("✅ Vendas manuais salvas no navegador.");
 }
 
-// Carrega os arrays do localStorage
+// Carrega os arrays do localStorage [OK]
 function carregarListasDoNavegador() {
     const vendasSalvas = localStorage.getItem("listaVendasManuais");
 
