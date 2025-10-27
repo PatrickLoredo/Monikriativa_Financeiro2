@@ -541,7 +541,7 @@ function renderizarPaginacao(totalPaginas) {
     criarBotao("inicio", '<i class="fa-solid fa-angles-left"></i>', paginaAtual === 1, () => {
         paginaAtual = 1;
         atualizarTabelaVendas();
-    }, "bg-danger");
+    }, "bg-dark");
 
     // Botão Anterior
     criarBotao("anterior", '<i class="fa-solid fa-arrow-left"></i>', paginaAtual === 1, () => {
@@ -580,11 +580,8 @@ function renderizarPaginacao(totalPaginas) {
     criarBotao("fim", '<i class="fa-solid fa-angles-right"></i>', paginaAtual === totalPaginas, () => {
         paginaAtual = totalPaginas;
         atualizarTabelaVendas();
-    }, "bg-danger");
+    }, "bg-dark");
 }
-
-
-
 
 //Controle de Collapse de Pesquisa Vendas [OK]
 document.addEventListener("DOMContentLoaded", function () {
