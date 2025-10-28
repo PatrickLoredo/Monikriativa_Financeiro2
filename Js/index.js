@@ -1,3 +1,22 @@
+window.onload = function() {
+    balancarSino()
+};
+
+function balancarSino(){
+    const badgeNotificacao = document.getElementById('badge-notificacao');
+    const sinoNotificacao = document.getElementById('sinoNotificacao');
+    const valor = badgeNotificacao.textContent.trim();
+
+    if (valor === '' || Number(valor) === 0) {
+        // Remove animação caso não haja notificações
+        sinoNotificacao.classList.remove('fa-shake');
+    } else {
+        // Adiciona animação ao sino
+        sinoNotificacao.classList.add('fa-shake');
+    }
+}
+
+
 /*---------------------------------------------------------------------*/
 function calculaPrecoVenda() {
     // Pega os valores do modal
@@ -43,21 +62,9 @@ if (isNaN(margemFinal)) {
 
    
 /*---------------------------------------------------------------------*/
-let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 0;
+let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 var badgeNotificacao = document.getElementById("badge-notificacao");
 
-/*window.onload = function() {
-    // Seleciona o modal pelo ID
-    var modalElement = document.getElementById('modalCalculoProduto');
-    
-    // Cria a instância do modal
-    var modal = new bootstrap.Modal(modalElement);
-    
-    // Mostra o modal automaticamente
-    modal.show();
-
-    muda_badge();
-};*/
 
 function muda_badge(){
     badgeNotificacao.textContent = notificacoes;
