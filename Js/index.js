@@ -2,21 +2,6 @@ window.onload = function() {
     balancarSino()
 };
 
-function balancarSino(){
-    const badgeNotificacao = document.getElementById('badge-notificacao');
-    const sinoNotificacao = document.getElementById('sinoNotificacao');
-    const valor = badgeNotificacao.textContent.trim();
-
-    if (valor === '' || Number(valor) === 0) {
-        // Remove animação caso não haja notificações
-        sinoNotificacao.classList.remove('fa-shake');
-    } else {
-        // Adiciona animação ao sino
-        sinoNotificacao.classList.add('fa-shake');
-    }
-}
-
-
 /*---------------------------------------------------------------------*/
 function calculaPrecoVenda() {
     // Pega os valores do modal
@@ -69,4 +54,18 @@ var badgeNotificacao = document.getElementById("badge-notificacao");
 function muda_badge(){
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
+}
+
+function balancarSino(){
+    const badgeNotificacao = document.getElementById('badge-notificacao');
+    const sinoNotificacao = document.getElementById('sinoNotificacao');
+    const valor = badgeNotificacao.textContent.trim();
+
+    if (valor === '' || Number(valor) === 0) {
+        // Remove animação caso não haja notificações
+        sinoNotificacao.classList.remove('fa-shake');
+    } else {
+        // Adiciona animação ao sino
+        sinoNotificacao.classList.add('fa-shake');
+    }
 }

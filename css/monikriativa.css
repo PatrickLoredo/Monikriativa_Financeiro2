@@ -22,7 +22,7 @@
 #button-alert-main{
     float: right;
     position: fixed;
-    top: 20px;
+    top: 10px;
     right: 10px;
     z-index: 9999;
     border-radius: 360px;
@@ -71,14 +71,15 @@
 }
 
 #button-shopee{
-    bottom: 100px;
+    bottom: 90px;
 }
 #button-Elo7{
-    bottom: 190px;
+    bottom: 0px;
 }
 
 #button-whatsapp{
-    bottom: 20px;
+    top: 10px;
+    right: 70px;
 }
 #cards-inicial-index .card-principal,
 #cards-inicial-insumos .card-principal,
@@ -213,4 +214,8 @@
 #btnsCodigoDev .btn-purple{
     background-color: #5a23c7;
     color: white;
+}
+
+.accordion-header > div {
+  padding-right: 1rem; /* distancia da borda direita */
 }

@@ -1,21 +1,12 @@
 window.onload = function() {
-    // Seleciona o modal pelo ID
-    /*var modalElement = document.getElementById('modalCadastroVenda');
-    var modal = new bootstrap.Modal(modalElement);
-    modal.show();*/
-
-    // 1️⃣ Carrega vendas salvas e atualiza tabela
     carregarListasDoNavegador();
 
     // 2️⃣ Agora sim, os dados já estão disponíveis
     console.log(listaVendasManuais);
     console.log('Tamanho do Array: ' + (listaVendasManuais.length + 1));
 
-    // 3️⃣ Atualiza badge e código da venda
-    muda_badge();
     atualizarCodigoVenda();
 
-    // 4️⃣ Quando o modal abrir, calcula a data de entrega
     modalElement.addEventListener('shown.bs.modal', function () {
         verificaDataEntrega();
     });
@@ -37,13 +28,27 @@ const btnEditarProdutoCadastrado = document.getElementById("btnEditarProdutoCada
 
 console.log(tamanhoListaVendasManuais)
 /*-------------------------BADGE---------------------------------*/
-let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 0;
+let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 var badgeNotificacao = document.getElementById("badge-notificacao");
 
-//Teste de Badge [OK]
+
 function muda_badge(){
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
+}
+
+function balancarSino(){
+    const badgeNotificacao = document.getElementById('badge-notificacao');
+    const sinoNotificacao = document.getElementById('sinoNotificacao');
+    const valor = badgeNotificacao.textContent.trim();
+
+    if (valor === '' || Number(valor) === 0) {
+        // Remove animação caso não haja notificações
+        sinoNotificacao.classList.remove('fa-shake');
+    } else {
+        // Adiciona animação ao sino
+        sinoNotificacao.classList.add('fa-shake');
+    }
 }
 /*---------------------------------------------------*/ 
 
