@@ -1,5 +1,5 @@
-/*window.onload = function() {
-    var x = document.getElementById('modalCadastroInsumo');
-    var modal = new bootstrap.Modal(x);
+window.onload = function() {
+var modalElement = document.getElementById('modalCadastroInsumoVariavel');
+    var modal = new bootstrap.Modal(modalElement);
     modal.show();
-};*/
+};

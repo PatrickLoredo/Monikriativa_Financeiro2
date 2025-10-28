@@ -251,7 +251,7 @@ function verificaDataEntrega15dias() {
 
     console.log("Data de entrega:", dataEntregaFormatada);
 }
-
+    
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
     constructor(codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
@@ -276,6 +276,7 @@ class VendaManual {
 }
 
 //Salva Objeto de Venda Manual no Array e congela campos [OK]
+// Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
     var codigoPlataforma = document.getElementById("codigoPlataformaVendaManual").value;
@@ -295,9 +296,9 @@ function salvarVendaManual() {
     var nomePersonalizado = document.getElementById("nomePersonalizadoVendaManual").value;
     var observacao = document.getElementById("observacoesVendaManual").value;
 
-    console.log(listaVendasManuais)
+    console.log(listaVendasManuais);
 
-    // Validação básica
+    // 🧩 Validação básica
     if (
         codigoPlataforma == '' ||
         cliente === '' ||
@@ -311,13 +312,22 @@ function salvarVendaManual() {
         return;
     }
 
-    // Cria o objeto da venda
+    // 🚨 Verifica se já existe venda com o mesmo código de plataforma
+    const indicePlataforma = listaVendasManuais.findIndex(venda => venda.codigoPlataforma === codigoPlataforma);
+    
+    if (indicePlataforma !== -1) {
+        alert("⚠️ Já existe uma venda cadastrada com este CÓDIGO DE VENDA DA PLATAFORMA!");
+        return; // ❌ Interrompe o processo de salvamento
+    }
+
+    // ✅ Cria o objeto da venda
     const novaVenda = new VendaManual(
-        codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, total,
+        codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega,
+        plataforma, cliente, produto, preco, qtd, desconto, total,
         sexo, modeloCapa, nomePersonalizado, observacao
     );
 
-    // Verifica se já existe venda com o mesmo código
+    // ✅ Verifica se já existe venda com o mesmo código interno
     const indiceExistente = listaVendasManuais.findIndex(venda => venda.codigo === codigo);
 
     if (indiceExistente !== -1) {
@@ -330,20 +340,21 @@ function salvarVendaManual() {
         console.log(`Nova venda ${codigo} adicionada com sucesso!`);
     }
 
-    // Atualiza tabela na tela
+    // 🧱 Atualiza tabela na tela
     atualizarTabelaVendas();
 
-    // Congela os campos depois de salvar
+    // 🔒 Congela os campos depois de salvar
     congelarVendaManual();
 
-    // Salva no navegador
+    // 💾 Salva no navegador
     salvarListasNoNavegador();
 
-    // Atualiza tabela
+    // 🔄 Atualiza tabela novamente (reforço)
     atualizarTabelaVendas();
 
-    console.log(listaVendasManuais)
+    console.log(listaVendasManuais);
 }
+
 
 //Limpar campos de Venda Manual [OK]
 function limparVendaManual() {
@@ -446,7 +457,6 @@ function adicionarVendaManual(){
 }
 
 //Adiciona o objeto cadastrado na listaVendasManuais [OK]
-// Adiciona o objeto cadastrado na listaVendasManuais [OK]
 function atualizarTabelaVendas() {
     const tabela = document.getElementById("bodyTabelaVendas");
     tabela.innerHTML = "";
@@ -459,13 +469,22 @@ function atualizarTabelaVendas() {
     vendasPaginadas.forEach((venda, index) => {
         const linha = document.createElement("tr");
 
-        // ✅ Formata a data
+        // ✅ Formata a data de entrega
         let dataEntregaFormatada = "";
         if (venda.dataEntrega && venda.dataEntrega.includes("-")) {
             const [ano, mes, dia] = venda.dataEntrega.split("-");
             dataEntregaFormatada = `${dia}/${mes}/${ano}`;
         } else {
             dataEntregaFormatada = venda.dataEntrega || "";
+        }
+
+        // ✅ Formata a data da venda (corrigido!)
+        let dataVendaFormatada = "";
+        if (venda.dataVenda && venda.dataVenda.includes("-")) {
+            const [ano, mes, dia] = venda.dataVenda.split("-");
+            dataVendaFormatada = `${dia}/${mes}/${ano}`;
+        } else {
+            dataVendaFormatada = venda.dataVenda || "";
         }
 
         // ✅ Pega apenas os 3 últimos caracteres do código da plataforma
@@ -487,6 +506,7 @@ function atualizarTabelaVendas() {
             <td class="bg-${venda.plataforma.toLowerCase()} rounded-pill d-flex align-items-center justify-content-center mt-1">
                 ${venda.plataforma}
             </td>
+            <td>${dataVendaFormatada}</td> <!-- ✅ Corrigido -->
             <td>${dataEntregaFormatada}</td>
             <td>${venda.cliente}</td>
             <td>${venda.produto}</td>
@@ -515,7 +535,6 @@ function atualizarTabelaVendas() {
         behavior: "smooth"
     });
 }
-
 
 const itensPorPagina = 5;
 let paginaAtual = 1;

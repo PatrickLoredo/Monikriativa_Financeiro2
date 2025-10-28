@@ -97,18 +97,31 @@
                         <span>Configurações</span>
                     </a>
                 </li>
-                <li class="mt-5 d-flex justify-content-center">
-                    <button class="btn btn-danger" onclick="muda_badge()">Teste de Badge</button>
+                <li>
+                    <hr>
+                </li>
+                <li>
+                    <a href="codigodev.html" class="nav-link text-white">
+                        <button class="btn btn-primary w-100">
+                            <i class="fa-solid fa-code">&nbsp;</i>
+                            <span class="code-dev">códigos Dev</span>
+                        </button>
+                    </a>
+                </li>
+                <li>
+                    <hr>
+                </li>
+                <li class="d-flex justify-content-center">
+                    <button class="btn btn-danger w-100" onclick="muda_badge()">Teste de Badge</button>
                 </li>
             </ul>
         </div>
-        <!--Final do Menu Lateral-->
 
         <!--BADGE-->
         <!--Botão Alerta de Notificações-->
         <div>
             <button class="btn btn-warning text-white" id="button-alert-main">
-                <i class="fa-solid fa-bell"></i>
+                <i class="fa-solid fa-bell fa-shake"></i>
                 <span class="badge rounded-pill bg-danger" id="badge-notificacao">
                     <span class="visually-hidden">unread messages</span>
                 </span>
@@ -119,7 +132,7 @@
         <!--Botão Whatsapp-->
         <div>
             <button class="btn btn-success" id="button-whatsapp">
-                <i class="fa fa-solid fa-whatsapp"></i>
+                <i class="fa fa-solid fa-whatsapp fa-bounce"></i>
             </button>
         </div>
         <!--Final Botão Whatsapp-->
@@ -130,21 +143,21 @@
                 <div class="row" id="cards-inicial-resumo">
                     <div class="col-11">
 
-                        <!--INSUMOS CADASTRADOS-->
+                        <!--INSUMOS VARIÁVEIS CADASTRADOS-->
                         <div class="row my-3" id="resumo_insumos">
                             <div class="col">
-                                <div class="card card-principal" id="cardResumoInsumos">
+                                <div class="card card-principal" id="cardResumoInsumosVariaveis">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col">
-                                                <div class="m-1 mb-0 title-main">Cadastro de Insumos</div>
+                                            <div class="col-6">
+                                                <div class="m-1 mb-0 title-main">Cadastro de Insumos Variáveis</div>
                                             </div>
-                                            <div class="col"></div>
                                             <div class="col">
                                                 <button class="btn btn-dark" 
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#modalCadastroInsumo">
-                                                    <i class="fa fa-solid fa-plus-circle"></i>&nbsp;&nbsp;Adicionar Insumo
+                                                data-bs-target="#modalCadastroInsumoVariavel"
+                                                onclick="criaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
+                                                    <i class="fa fa-solid fa-plus-circle"></i>&nbsp;&nbsp;Adicionar Insumo Variável
                                                 </button>
                                             </div>
                                         </div>
@@ -153,24 +166,58 @@
                                                 <hr>
                                             </div>
                                         </div>
+
+                                        <!--LABELS DE INSUMOS -->
                                         <div class="row text-center">
                                             <div class="col-1">
-                                                <label for="">Código</label>
+                                                <label class="label-format mb-1" for="">Código</label>
                                             </div>
                                             <div class="col-2">
-                                                <label for="">Data</label>
+                                                <label class="label-format mb-1" for="">Data</label>
                                             </div>
                                             <div class="col-4">
-                                                <label for="">Nome</label>
+                                                <label class="label-format mb-1" for="">Nome</label>
                                             </div>
                                             <div class="col-2">
-                                                <label for="">Fornecedor</label>
+                                                <label class="label-format mb-1" for="">Fornecedor</label>
                                             </div>
                                             <div class="col-1">
-                                                <label for="">C.Unit</label>
+                                                <label class="label-format mb-1" for="">C.Unit</label>
                                             </div>
                                             <div class="col">
-                                                <label for=""></label>
+                                                <label class="label-format mb-1" for=""></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <!--CODIGO DO INSUMO VARIAVEL-->
+                                            <div class="col-1">
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                            <!--DATA DA COMPRA DO INSUMO VARIAVEL-->
+                                            <div class="col-2">
+                                                <input type="date" class="form-control text-center" disabled>
+                                            </div>
+                                            <!--NOME DO INSUMO VARIAVEL-->
+                                            <div class="col-4">
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                            <!--FORNECEDOR DO INSUMO VARIAVEL-->
+                                            <div class="col-2">
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                            <!--CUSTO UNITÁRIO DO INSUMO VARIAVEL-->
+                                            <div class="col-1">
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                            <!--CAMPO PARA BOTÕES-->
+                                            <div class="col">
+                                                <button class="btn btn-primary">
+                                                    <i class="fa fa-eye btn-secondary"></i>
+                                                </button>
+                                                <button class="btn btn-danger">
+                                                    <i class="fa-solid fa-circle-xmark btn-danger"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -178,152 +225,51 @@
                             </div>
                         </div>
                         
-                        <div class="row my-3" id="resumo_insumos">
-                            <div class="col">
-                                <div class="card card-principal" id="cardResumoInsumos">
-                                    <div class="card-body">
-                                        <div class="row mb-2">
-                                            <div class="col-1">
-                                                <label for="">
-                                                    <input type="text" class="form-control" disabled>
-                                                </label>
-                                            </div>
-                                            <div class="col-2 text">
-                                                <input type="date" class="form-control" disabled>
-                                            </div>
-                                            <div class="col-4">
-                                                <input type="" class="form-control" disabled>
-                                            </div>
-                                            <div class="col-2">
-                                                <select name="" id="" class="form-select" disabled></select>
-                                            </div>
-                                            <div class="col-1">
-                                                <input type="text" class="form-control" disabled>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-dark">
-                                                    <i class="fa fa-eye"></i>
-                                                </button>
-                                                <button class="btn btn-primary">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-danger">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                        <!--MODAL CADASTRO INSUMO -->
-                        <div class="modal fade" id="modalCadastroInsumo" 
+                        <!--MODAL CADASTRO INSUMO VARIAVEL-->
+                        <div class="modal fade" id="modalCadastroInsumoVariavel" 
                         tabindex="-1" 
                         aria-labelledby="modalCadastroInsumoLabel" 
                         aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title title-main m-auto" id="modalCadastroInsumoLabel">Cadastro de Novo Insumo</h1>
-                                        <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                        <h1 class="modal-title title-main m-auto" 
+                                        id="modalCadastroInsumoLabel">Cadastro de Novo Insumo variável</h1>
+                                        <button type="button" class="btn-danger btn" 
+                                        data-bs-dismiss="modal" aria-label="Close">
                                             <i class="fa fa-x"></i>
                                         </button>
                                     </div>
-                                    <div class="modal-body" id="modalBodyCadastroInsumo">
-                                        <div class="row mb-3">
-                                            <div class="col-2">
-                                                <label for="">Código</label>
+                                    <div class="modal-body" id="modalBodyCadastroInsumoVariavel">
+                                        <div class="row mb-3 d-flex justify-content-center">
+                                            <div class="col">
+                                                <label for="" class="label-format mb-2">XXXX</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-hashtag"></i>
-                                                    </span>
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="">Nome</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-tag"></i>
-                                                    </span>
-                                                    <input type="text" name="" id="" class="form-control">
+                                                    <span class="input-group-text"></span>
+                                                    <input type="text" class="form-control" disabled="disabled">
                                                 </div>
                                             </div>
                                             <div class="col">
-                                                <label for="">Fornecedor</label>
+                                                <label for="" class="label-format mb-2">XXXX</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-truck"></i>
-                                                    </span>
-                                                    <select name="" id="" class="form-select text-center">
-                                                        <option value="">-</option>
-                                                        <option value="">Fornecedor 01</option>
-                                                        <option value="">Fornecedor 02</option>
-                                                        <option value="">Fornecedor 03</option>
-                                                        <option value="">Fornecedor 04</option>
-                                                        <option value="">Fornecedor 05</option>
-                                                    </select>
+                                                    <span class="input-group-text"></span>
+                                                    <input type="text" class="form-control" disabled="disabled">
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-3">
-                                                <label for="">Quantidade</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-scale-unbalanced"></i>
-                                                    </span>
-                                                    <input type="number" name="" id="" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <label for="">Preço Total</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                    </span>
-                                                    <input type="text" name="" id="" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <label for="">Frete</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-truck-fast"></i>
-                                                    </span>
-                                                    <input type="text" name="" id="" class="form-control">
-                                                </div>
-                                            </div>
-                                            <div class="col-3">
-                                                <label for="">Preço Unitário</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                    </span>
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="hr"></div>
-                                        </div>
-
-                                        <div class="row mt-5">
-                                            <div class="col"></div>
                                             <div class="col">
-                                                <button class="btn btn-success">
-                                                    <i class="fa fa-save"></i>
-                                                    &nbsp; Salvar
-                                                </button>
-                                                <button class="btn btn-primary">
-                                                    <i class="fa fa-eraser"></i>
-                                                    &nbsp; Limpar
-                                                </button>
+                                                <label for="" class="label-format mb-2">XXXX</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text"></span>
+                                                    <input type="text" class="form-control" disabled="disabled">
+                                                </div>
                                             </div>
-                                            <div class="col"></div>
+                                        </div>
+                                        <div class="row mb-3 d-flex justify-content-center">
+                                            
+                                        </div>
+                                        <div class="row mb-3 d-flex justify-content-center">
+                                            
                                         </div>
                                     </div>
                                 </div>

@@ -1,3 +1,10 @@
+.code-dev{
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
 #menu-lateral .nav-link{
     margin: 1px 0;
 }
@@ -163,4 +170,8 @@
 #bodyTabelaVendas th {
     text-align: center;       /* centraliza horizontalmente */
     vertical-align: middle;   /* centraliza verticalmente */
+}
+#btnsCodigoDev .btn-purple{
+    background-color: #5a23c7;
+    color: white;
 }
