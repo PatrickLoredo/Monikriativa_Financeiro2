@@ -1,67 +1,53 @@
-var listaCategoriasProdutos = [];
+// =====================================================
+// PRODUTOS.JS
+// =====================================================
 
-/*---------------------------------------------------------------------*/
+// Carrega categorias do localStorage (ou inicia vazio)
+const listaCategoriasProdutos = JSON.parse(localStorage.getItem("listaCategoriasProdutos")) || [];
+
+// Notificações
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
-var badgeNotificacao = document.getElementById("badge-notificacao");
+const badgeNotificacao = document.getElementById("badge-notificacao");
 
-
-function muda_badge(){
+// =====================================================
+// FUNÇÕES DE NOTIFICAÇÃO
+// =====================================================
+function muda_badge() {
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
+    localStorage.setItem("notificacoes", notificacoes);
 }
 
-function balancarSino(){
-    const badgeNotificacao = document.getElementById('badge-notificacao');
-    const sinoNotificacao = document.getElementById('sinoNotificacao');
+function balancarSino() {
     const valor = badgeNotificacao.textContent.trim();
-
-    if (valor === '' || Number(valor) === 0) {
-        // Remove animação caso não haja notificações
-        sinoNotificacao.classList.remove('fa-shake');
+    const sino = document.getElementById('sinoNotificacao');
+    if (!valor || Number(valor) === 0) {
+        sino.classList.remove('fa-shake');
     } else {
-        // Adiciona animação ao sino
-        sinoNotificacao.classList.add('fa-shake');
+        sino.classList.add('fa-shake');
     }
 }
 
-/*-----------------------PRODUTOS-----------------------*/
+// =====================================================
+// FUNÇÕES DE PRODUTOS
+// =====================================================
 function alternarModoEdicao(botao) {
     const icone = botao.querySelector('i');
-
-    // Se o botão estiver no modo "editar"
     if (botao.classList.contains('btn-primary')) {
-
-        // muda para modo "salvar"
-        botao.classList.remove('btn-primary');
-        botao.classList.add('btn-success');
-
-        icone.classList.remove('fa-edit');
-        icone.classList.add('fa-save');
-
-        console.log('Entrou no modo de edição');
-
-    } 
-    else {
-        // volta para modo "editar"
-        botao.classList.remove('btn-success');
-        botao.classList.add('btn-primary');
-
-        icone.classList.remove('fa-save');
-        icone.classList.add('fa-edit');
-
-        console.log('Saiu do modo de edição');
-        
+        botao.classList.replace('btn-primary', 'btn-success');
+        icone.classList.replace('fa-edit', 'fa-save');
+    } else {
+        botao.classList.replace('btn-success', 'btn-primary');
+        icone.classList.replace('fa-save', 'fa-edit');
     }
 }
 
 function calculaPrecificacaoCorreta() {
-    // Pega os valores do modal
     const custoProduto = parseFloat(document.getElementById("custoProduto").value.replace(',', '.')) || 0;
     const taxaPercentual = parseFloat(document.getElementById("taxaPlataforma").value) / 100 || 0;
     const taxaFixa = parseFloat(document.getElementById("taxaFixaPlataforma").value) || 0;
-    const PrecoVenda = parseFloat(document.getElementById("precoVenda").value.replace(',', '.')) || 0;
+    const precoVenda = parseFloat(document.getElementById("precoVenda").value.replace(',', '.')) || 0;
 
-    // Pega os campos de saída
     const LucroLiquido = document.getElementById("LucroLiquido");
     const LucroReal = document.getElementById("LucroReal");
     const shopeeCustos = document.getElementById("custoRealShopee");
@@ -70,82 +56,194 @@ function calculaPrecificacaoCorreta() {
     const obsprecificacaoideal = document.getElementById("obsprecificacaoideal");
     const obsprecificacaoabaixo = document.getElementById("obsprecificacaoabaixo");
 
-    // Calcula valores
-    const valorTaxaShopee = PrecoVenda * taxaPercentual;
+    const valorTaxaShopee = precoVenda * taxaPercentual;
     const totalCustos = custoProduto + valorTaxaShopee + taxaFixa;
-    const lucroLiquido = PrecoVenda - totalCustos;
+    const lucroLiquido = precoVenda - totalCustos;
     const margemFinal = (lucroLiquido * 100) / totalCustos;
+
     shopeeCustos.value = (totalCustos - custoProduto).toFixed(2);
-    custosTotais.value = (totalCustos-custoProduto).toFixed(2);
+    custosTotais.value = totalCustos.toFixed(2);
 
-    // Atualiza os campos do modal
-    LucroLiquido.value = lucroLiquido.toFixed(2);  // Lucro em reais
-    LucroReal.value = margemFinal.toFixed(1);      // Lucro em %
+    LucroLiquido.value = lucroLiquido.toFixed(2);
+    LucroReal.value = margemFinal.toFixed(1);
 
-if (isNaN(margemFinal)) {
-    // Campo vazio ou inválido
-    obsprecificacaoideal.classList.add('d-none');
-    obsprecificacaoabaixo.classList.add('d-none');
-} else if (margemFinal >= 40) {
-    // Preço Ideal
-    obsprecificacaoideal.classList.remove('d-none');
-    obsprecificacaoabaixo.classList.add('d-none');
-} else {
-    // Preço Abaixo (inclui 0 <= margem < 40 e margem < 0)
-    obsprecificacaoideal.classList.add('d-none');
-    obsprecificacaoabaixo.classList.remove('d-none');
-}}
+    if (isNaN(margemFinal)) {
+        obsprecificacaoideal.classList.add('d-none');
+        obsprecificacaoabaixo.classList.add('d-none');
+    } else if (margemFinal >= 40) {
+        obsprecificacaoideal.classList.remove('d-none');
+        obsprecificacaoabaixo.classList.add('d-none');
+    } else {
+        obsprecificacaoideal.classList.add('d-none');
+        obsprecificacaoabaixo.classList.remove('d-none');
+    }
+}
 
-/*function salvarNovaCategoriaProduto(){
-
-}*/
+// =====================================================
+// CATEGORIAS DE PRODUTOS
+// =====================================================
 function adicionarNovaCategoriaProduto() {
     const input = document.getElementById("inputNovaCategoriaProduto");
     const btnAdicionar = document.getElementById('btnAdicionarNovaCategoriaProduto');
     const btnSalvar = document.getElementById('btnSalvarNovaCategoriaProduto');
 
     input.disabled = false;
+    input.value = '';
     btnAdicionar.classList.add('d-none');
     btnSalvar.classList.remove('d-none');
-
-    input.value = '';
 }
 
 class CategoriaProduto {
-    constructor(categoria){
-        this.categoria = categoria
+    constructor(categoria) {
+        this.categoria = categoria;
+        this.dataCadastro = new Date().toLocaleDateString();
     }
 }
 
 function salvarNovaCategoriaProduto() {
     const input = document.getElementById("inputNovaCategoriaProduto");
-    const btnAdicionar = document.getElementById('btnAdicionarNovaCategoriaProduto');
-    const btnSalvar = document.getElementById('btnSalvarNovaCategoriaProduto');
-    const amostradeCategorias = document.getElementById('amostradeCategorias');
+    const valor = input.value.trim();
+
+    if (!valor) {
+        alert("Informe o nome da categoria!");
+        return;
+    }
+
+    const novaCategoria = new CategoriaProduto(valor);
+
+    listaCategoriasProdutos.push(novaCategoria);
+    localStorage.setItem("listaCategoriasProdutos", JSON.stringify(listaCategoriasProdutos));
+
+    renderizarCategorias();
+    atualizarSelectCategorias();
+    redenrizarListaCompletaCategorias();
 
     input.disabled = true;
-    btnAdicionar.classList.remove('d-none');
-    btnSalvar.classList.add('d-none');
+    input.value = '';
+    document.getElementById('btnAdicionarNovaCategoriaProduto').classList.remove('d-none');
+    document.getElementById('btnSalvarNovaCategoriaProduto').classList.add('d-none');
 
-    const novaCategoria = new CategoriaProduto(input.value);
-
-    if(input.value == ''){
-        alert('Informe o nome da Categoria do Produto')
-    }
-    else{
-        listaCategoriasProdutos.push(novaCategoria);
-        alert(`Categoria adicionada: \n\n${novaCategoria.categoria}`);
-        console.log(listaCategoriasProdutos);
-    }
-
+    alert(`Categoria "${valor}" adicionada com sucesso!`);
 }
-function mostraCategoriaCadastradaProduto(categoria) {
-    // Find the index of the category in the list
-    const indice = listaCategoriasProdutos.findIndex(cat => cat.categoria === categoria.categoria);
-    
-    if (indice !== -1) {
-        alert('Indice da Categoria: ' + indice);
-    } else {
-        alert('Categoria não encontrada.');
+
+function renderizarCategorias() {
+    const container = document.getElementById('amostradeCategorias');
+    container.innerHTML = '';
+
+    if (!listaCategoriasProdutos.length) {
+        container.innerHTML = '<p class="text-muted">Nenhuma categoria cadastrada.</p>';
+        return;
+    }
+
+    const row = document.createElement('div');
+    row.classList.add('row', 'g-2');
+
+    listaCategoriasProdutos.forEach((categoria, index) => {
+        const col = document.createElement('div');
+        col.classList.add('col-auto');
+
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline-primary rounded-pill d-flex align-items-center justify-content-center px-3 py-1';
+        btn.textContent = categoria.categoria;
+        btn.onclick = () => mostraCategoriaCadastradaProduto(index);
+
+        col.appendChild(btn);
+        row.appendChild(col);
+    });
+
+    container.appendChild(row);
+}
+
+function mostraCategoriaCadastradaProduto(indice) {
+    const categoria = listaCategoriasProdutos[indice];
+    if (categoria) alert(`Índice: ${indice}\nCategoria: ${categoria.categoria}`);
+    else alert('Categoria não encontrada.');
+}
+
+function atualizarSelectCategorias() {
+    const select = document.getElementById("selectCategoriaProduto");
+    if (!select) return;
+
+    select.innerHTML = '<option value="">-</option>';
+    listaCategoriasProdutos.forEach(c => {
+        const option = document.createElement("option");
+        option.value = c.categoria;
+        option.textContent = c.categoria;
+        select.appendChild(option);
+    });
+}
+
+// =====================================================
+// LISTA COMPLETA DE CATEGORIAS
+// =====================================================
+function redenrizarListaCompletaCategorias() {
+    const campo = document.getElementById('campoListaCompletaCategorias');
+    campo.innerHTML = '';
+
+    if (!listaCategoriasProdutos.length) {
+        campo.innerHTML = '<p class="text-muted">Nenhuma categoria cadastrada.</p>';
+        return;
+    }
+
+    // Cabeçalho
+    const cabecalho = document.createElement('div');
+    cabecalho.classList.add('row', 'fw-bold', 'mb-2');
+    cabecalho.innerHTML = `
+        <div class="col-4 label-format">DATA CADASTRO</div>
+        <div class="col-4 label-format">CATEGORIA</div>
+        <div class="col-4 label-format">AÇÕES</div>
+    `;
+    campo.appendChild(cabecalho);
+
+    // Linhas de categorias
+    listaCategoriasProdutos.forEach((c, index) => {
+        const linha = document.createElement('div');
+        linha.classList.add('row', 'mb-1', 'align-items-center');
+
+        linha.innerHTML = `
+            <div class="col-4 text-center">${c.dataCadastro}</div>
+            <div class="col-4 text-center">${c.categoria}</div>
+            <div class="col-4 text-center">
+                <button class="btn btn-sm btn-primary me-2" onclick="editarCategoria(${index})"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger" onclick="excluirCategoria(${index})"><i class="fa fa-trash"></i></button>
+            </div>
+        `;
+        campo.appendChild(linha);
+    });
+}
+
+// =====================================================
+// FUNÇÕES EDITAR / EXCLUIR
+// =====================================================
+function editarCategoria(indice) {
+    const novaCategoria = prompt("Edite o nome da categoria:", listaCategoriasProdutos[indice].categoria);
+    if (novaCategoria && novaCategoria.trim() !== '') {
+        listaCategoriasProdutos[indice].categoria = novaCategoria.trim();
+        localStorage.setItem("listaCategoriasProdutos", JSON.stringify(listaCategoriasProdutos));
+        renderizarCategorias();
+        atualizarSelectCategorias();
+        redenrizarListaCompletaCategorias();
     }
 }
+
+function excluirCategoria(indice) {
+    if (!confirm("Deseja realmente excluir esta categoria?")) return;
+
+    listaCategoriasProdutos.splice(indice, 1);
+    localStorage.setItem("listaCategoriasProdutos", JSON.stringify(listaCategoriasProdutos));
+
+    renderizarCategorias();
+    atualizarSelectCategorias();
+    redenrizarListaCompletaCategorias();
+}
+
+// =====================================================
+// INICIALIZAÇÃO
+// =====================================================
+window.addEventListener('load', () => {
+    renderizarCategorias();
+    atualizarSelectCategorias();
+    redenrizarListaCompletaCategorias();
+    muda_badge();
+    balancarSino();
+});

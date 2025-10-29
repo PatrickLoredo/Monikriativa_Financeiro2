@@ -194,15 +194,17 @@
                                                 <i class="fa fa-plus-circle"></i>
                                             </button>
                                         </div>
-                                        <div class="col">
-                                            <div class="row" id="">
-
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div class="row" id="amostradeCategorias">
-
+                                    <div class="col-4">
+                                        <button class="btn btn-primary w-100"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalListaCategorias">
+                                            <i class="fa fa-eye">&nbsp;&nbsp;</i>
+                                            <span>Lista de Categorias - Produtos</span>
+                                        </button>
                                     </div>
+                                    </div>
+                                    <div class="row" id="amostradeCategorias"></div>
                                 </div>
                             </div>
                         </div>
@@ -329,6 +331,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!--MODAL LISTA DE CATEGORIAS-->
+                        <div class="modal fade" id="modalListaCategorias" 
+                            tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title title-main m-auto">Lista de Categorias</h5>
+                                    <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                        <i class="fa fa-x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row" id="campoListaCompletaCategorias"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                         <!--Modal Calculadora de Precificação-->
                         <div class="modal fade" id="calculadoraPrecificacao" 
