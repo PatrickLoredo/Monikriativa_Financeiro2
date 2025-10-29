@@ -164,7 +164,7 @@ function renderizarListaCategoriasInsumos() {
     container.innerHTML = '';
 
     if (!listaCategoriasInsumos.length) {
-        container.innerHTML = '<p class="text-muted">Nenhuma categoria cadastrada.</p>';
+        container.innerHTML = '<p class="text-muted MT-2">Nenhuma categoria cadastrada.</p>';
         return;
     }
 

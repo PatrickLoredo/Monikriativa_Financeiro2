@@ -163,6 +163,8 @@
             <div class="container" style="margin-left: 280px; min-width: 50%; max-width: 78.8%;">
                 <div class="row" id="cards-inicial-produtos">
                     <div class="col">
+                        
+                        <!--CADASTRO CATEGORIAS DE PRODUTOS-->
                         <div class="card card-principal my-3">
                             <div class="card-header">
                                 <div class="row">
@@ -220,13 +222,21 @@
                                             <div class="col-4">
                                                 <div class="m-1 mb-0 title-main">Produtos Cadastrados</div>
                                             </div>
-                                            <div class="col"></div>
-                                            <div class="col-3">
-                                                <button class="btn btn-info"
+                                            <div class="col">
+                                                <button class="btn btn-dark"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#calculadoraPrecificacao">
-                                                    <i class="fa fa-calculator"></i>
-                                                    <span class="">&nbsp;Calculadora de Lucro</span>
+                                                data-bs-target="#modalCadastroProduto"
+                                                onclick="atualizaDataCadastroProduto()">
+                                                    <i class="fa-regular fa-square-plus"></i>
+                                                    <span>&nbsp;&nbsp;Cadastrar Produto</span>
+                                                </button>
+
+                                                <button class="btn btn-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalCadastroCapasProduto"
+                                                onclick="atualizaDataCadastroProduto()">
+                                                    <i class="fa-regular fa-square-plus"></i>
+                                                    <span>&nbsp;&nbsp;Cadastrar Capas</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -241,24 +251,32 @@
                                             <div class="row">
                                                 <div class="col titulo">
                                                     <div class="row text-center titulo_col">
-                                                        <div class="col-1">
-                                                            <span>Código</span>
-                                                        </div>
+                                                        <!--NOME PRODUTO-->
                                                         <div class="col-3">
                                                             <span>Nome Produto</span>
                                                         </div>
-                                                        <div class="col-2">
-                                                            <span>Categoria</span>
-                                                        </div>
+
+                                                        <!--CUSTO PRODUTO-->
                                                         <div class="col-2">
                                                             <span>Custo</span>
                                                         </div>
-                                                        <div class="col-1">
-                                                            <span>Preço</span>
+
+                                                        <!--VENDA PRODUTO-->
+                                                        <div class="col-2">
+                                                            <span>venda</span>
                                                         </div>
+
+                                                        <!--LUCRO PRODUTO-->
+                                                        <div class="col-2">
+                                                            <span>Lucro</span>
+                                                        </div>
+
+                                                        <!--ESTOQUE PRODUTO-->
                                                         <div class="col-1">
                                                             <span>Estoque</span>
                                                         </div>
+
+                                                        <!--BOTOES PRODUTO-->
                                                         <div class="col-2">
                                                             <span>&nbsp;</span>
                                                         </div>
@@ -268,380 +286,679 @@
 
                                             <!--LINHA DE INPUTS DE NOVO CADASTRO DE PRODUTO-->
                                             <div class="row text-center mb-2">
-                                                <div class="col-1">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
 
+                                                <!--NOME PRODUTO-->
                                                 <div class="col-3">
                                                     <input type="text" name="" id="" class="form-control" disabled>
                                                 </div>
 
+                                                <!--CUSTO PRODUTO-->
                                                 <div class="col-2">
-                                                    <select name="" id="" class="form-select text-center" disabled>
-                                                        <option value="">-</option>
-                                                        <option value="">Categoria 01</option>
-                                                        <option value="">Categoria 02</option>
-                                                        <option value="">Categoria 03</option>
-                                                    </select>
+                                                    <input type="text" name="" id="" class="form-control" disabled>
                                                 </div>
 
+                                                <!--VENDA PRODUTO-->
                                                 <div class="col-2">
                                                     <div class="input-group">
+                                                        <span class="input-group-text bg-dark text-white">
+                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                        </span>
                                                         <input type="text" name="" id="" class="form-control" disabled>
-                                                        <button class="btn btn-dark input-group-text"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalCalculoProduto">
-                                                            <i class="fa-solid fa-calculator"></i>
-                                                        </button>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-1">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-                                                
-                                                <div class="col-1">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-
+                                                <!--LUCRO PRODUTO-->
                                                 <div class="col-2">
-                                                    <div class="row">
-                                                        <div class="col-3">
-                                                        <button class="btn btn-primary"
-                                                            id="btnEditarProdutoCadastrado"
-                                                            onclick="alternarModoEdicao(this)">
-                                                            <i class="fa-solid fa-edit"></i>
-                                                        </button>
-                                                        </div>
-                                                        <div class="col-3">
-                                                        <button class="btn btn-danger">
-                                                            <i class="fa-solid fa-trash"></i>
-                                                        </button>
-                                                        </div>
-                                                        <div class="col-3">
-                                                        <button class="btn btn-dark">
-                                                            <i class="fa-solid fa-plus-circle"></i>
-                                                        </button>
-                                                        </div>
+                                                     <div class="input-group">
+                                                        <span class="input-group-text bg-dark text-white">
+                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                        </span>
+                                                        <input type="text" name="" id="" class="form-control" disabled>
                                                     </div>
+                                                </div>
+
+                                                <!--ESTOQUE PRODUTO-->
+                                                <div class="col-1">
+                                                    <input type="text" name="" id="" class="form-control" disabled>
+                                                </div>
+
+                                                <!--BOTOES PRODUTO-->
+                                                <div class="col-2">
+                                                    <button class="btn btn-primary"
+                                                        id="btnEditarProdutoCadastrado"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalCadastroProduto">
+                                                        <i class="fa-solid fa-eye"></i>
+                                                    </button>
+                                                    <button class="btn btn-danger">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!--MODAL LISTA DE CATEGORIAS-->
-                        <div class="modal fade" id="modalListaCategorias" 
-                            tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title title-main m-auto">Lista de Categorias de Produtos</h5>
-                                    <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="fa fa-x"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row" id="campoListaCompletaCategorias"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                        <!--Modal Calculadora de Precificação-->
-                        <div class="modal fade" id="calculadoraPrecificacao" 
-                            tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
+                    <!--MODAL CADASTRO PRODUTOS-->
+                    <div class="modal fade" id="modalCadastroProduto" tabindex="-1" 
+                    role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+
+                                <!--CABEÇALHO MODAL CADASTRO DE PRODUTO-->
                                 <div class="modal-header">
-                                    <h5 class="modal-title title-main m-auto">Precificação de Produto</h5>
-                                    <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="fa fa-x"></i>
-                                    </button>
+                                    <div class="col-6">
+                                        <h5 class="modal-title title-main m-auto text-center">cadastro de novo produto</h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="" class="label-format mb-2">data do cadastro</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input type="date" class="form-control text-center" id="dataCadastroProduto">
+                                        </div>
+                                    </div>
+                                    <div class="col-">
+                                        <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                            <i class="fa fa-x"></i>
+                                        </button>
+                                    </div>
                                 </div>
+                                <!--FINAL CABEÇALHO MODAL CADASTRO PRODUTO-->
+
                                 <div class="modal-body">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Custo Produto</label>
+                                    <!--PRIMEIRA LINHA DO CADASTRO DE PRODUTOS-->
+                                    <div class="row" id="">
+                                        <!--CODIGO DO PRODUTO-->
+                                        <div class="col-2">
+                                            <label for="" class="label-format mb-1">código</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa fa-barcode"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center"
+                                                id="codigoCadastroProduto" disabled>
+                                            </div>
+                                        </div>
+
+                                        <!--NOME DO PRODUTO-->
+                                        <div class="col-5">
+                                            <label for="" class="label-format mb-1">nome do produto</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa fa-tag"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--SEGUNDA LINHA DE CADASTRO DE PRODUTOS-->
+                                    <div class="row mt-3">
+                                        <!--PLATAFORMAS DE VENDA-->
+                                        <div class="col-3">
+                                            <label for="" class="label-format mb-1">PLATAFORMAS DE VENDA</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa-solid fa-shop"></i>
+                                                </span>
+                                                <select name="" id="" class="form-select text-center">
+                                                    <option value="-">-</option>
+                                                    <option value="Shopee">Shopee</option>
+                                                    <option value="Elo7">Elo7</option>
+                                                    <option value="Todas Plataformas" selected>Todas Plataformas</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--CATEGORIA DO PRODUTO-->
+                                        <div class="col-3">
+                                            <label for="" class="label-format mb-1">categoria do produto</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa fa-tag"></i>
+                                                </span>
+                                                <select name="" id="" class="form-select text-center">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!--CUSTO DO PRODUTO-->
+                                        <div class="col-2">
+                                            <label for="" class="label-format mb-1">CUSTO DE INSUMOS</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-center">
+                                                <button class="btn btn-dark input-group-text"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalCalculoProduto">
+                                                    <i class="fa-solid fa-calculator"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="modal-body">
+                                    <div class="row m-auto" id="linhaCadastroProdutoShopee">
+                                        <!--PREÇO DE VENDA SHOPEE-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">Preço de Venda Shopee</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Shopee text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" name="" id="custoProduto" 
-                                                class="form-control text-center" 
-                                                placeholder="00,00"
-                                                onkeyup="calculaPrecificacaoCorreta()">
+                                                <input type="text" class="form-control text-center w-75">
+                                            </div>
+                                        </div>
+
+                                        <!--CUSTO SHOPEE-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">Custo Shopee</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Shopee text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" DISABLED>
+                                            </div>
+                                        </div>
+                                        
+                                        <!--LUCRO LÍQUIDO SHOPEE-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">LUCRO LÍQUIDO shopee</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Shopee text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                        </div>
+
+                                        <!--PERCENTUAL DE LUCRO-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">% LUCRO SHOPEE</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Shopee text-white">
+                                                    <i class="fa-solid fa-percent"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                        </div>
+                                        <!--OBSERVAÇÃO DE VENDA-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">&nbsp;</label>
+                                            <button class="btn btn-success text-white d-none">
+                                                <i class="fa-solid fa-check"></i>
+                                                <span>&nbsp;&nbsp; Preço Ideal</span>
+                                            </button>
+                                            <button class="btn bg-danger text-white d-none">
+                                                <i class="fa-solid fa-down-long"></i>
+                                                <span>&nbsp;&nbsp; Preço Baixo</span>
+                                            </button>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row my-2" id="linhaCadastroProdutoElo7">
+                                        <!--PREÇO DE VENDA SHOPEE-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">Preço de Venda Elo7</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Elo7 text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center">
+                                            </div>
+                                        </div>
+
+                                        <!--CUSTO ELO7-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">Custo Elo7</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Elo7 text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" DISABLED>
+                                            </div>
+                                        </div>
+
+                                        <!--LUCRO LÍQUIDO ELO7-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">LUCRO LÍQUIDO Elo7</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Elo7 text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                        </div>
+                                        
+                                        <!--LUCRO LÍQUIDO-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">% LUCRO ELO7</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-Elo7 text-white">
+                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                </span>
+                                                <input type="text" class="form-control text-center" disabled>
+                                            </div>
+                                        </div>
+
+                                        <!--OBSERVAÇÃO DE VENDA-->
+                                        <div class="col">
+                                            <label for="" class="label-format mb-1">&nbsp;</label>
+                                            <button class="btn btn-success text-white d-none">
+                                                <i class="fa-solid fa-check"></i>
+                                                <span>&nbsp;&nbsp; Preço Ideal</span>
+                                            </button>
+                                            <button class="btn bg-danger text-white d-none">
+                                                <i class="fa-solid fa-down-long"></i>
+                                                <span>&nbsp;&nbsp; Preço Baixo</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                    
+                                <div class="modal-footer">
+                                    <div class="row m-auto">
+                                        <div class="col">
+                                            <button class="btn btn-success">
+                                                <i class="fa fa-save"></i>
+                                                <span>&nbsp;Salvar</span>
+                                            </button>
+                                            <button class="btn btn-primary">
+                                                <i class="fa fa-edit"></i>
+                                                <span>&nbsp;Editar</span>
+                                            </button>
+                                            <button class="btn btn-danger">
+                                                <i class="fa fa-broom"></i>
+                                                <span>&nbsp;Limpar</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--MODAL CADASTRO CAPAS PRODUTOS-->
+                    <div class="modal fade" id="modalCadastroCapasProduto" tabindex="-1" 
+                    role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-xl" role="document">
+                            <div class="modal-content">
+
+                                <!--CABEÇALHO MODAL CADASTRO DE PRODUTO-->
+                                <div class="modal-header">
+                                    <div class="col-6">
+                                        <h5 class="modal-title title-main m-auto text-center">Cadastrar Capas de Produtos</h5>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="" class="label-format mb-2">data do cadastro</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-primary text-white">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input type="date" class="form-control text-center" id="dataCadastroCapas">
+                                        </div>
+                                    </div>
+                                    <div class="col-">
+                                        <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                            <i class="fa fa-x"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="" class="label-format mb-2">Nome do Produto</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa fa-tag"></i>
+                                                </span>
+                                                <select name="" id="" class="form-select"></select>
                                             </div>
                                         </div>
                                         <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Preço Venda</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-danger text-white">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
+                                            <label for="" class="label-format mb-2 w-75">Variação da Capa</label>
+                                            <div class="input-group w-75">
+                                                <span class="input-group-text bg-primary text-white">
+                                                    <i class="fa-solid fa-venus-mars"></i>
                                                 </span>
-                                                <input type="text" name="" id="precoVenda" 
-                                                class="form-control text-center" placeholder="00,00"
-                                                onkeyup="calculaPrecificacaoCorreta()">
+                                                <select name="" id="" class="form-select text-center">
+                                                    <option value="-">-</option>
+                                                    <option value="Feminino">Feminino</option>
+                                                    <option value="Masculino">Masculino</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <div class="row">
-                                                <div class="col">
-                                                    <label for="" class="mt-4">&nbsp;</label>
-                                                    <span class="btn btn-success mt-3 d-none" id="obsprecificacaoideal">
-                                                        <i class="fa fa-check"></i>
-                                                        &nbsp; Preço Ideal
-                                                    </span>
+                                            <label for="" class="label-format mb-2">&nbsp;</label>
+                                            <button class="btn btn-success"
+                                            onclick="adicionarCadastroCapasProduto()">
+                                                <i class="fa fa-save"></i>
+                                                <span>&nbsp;Salvar Capas</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                                    <label for="" class="mt-4">&nbsp;</label>
-                                                    <span class="btn btn-danger mt-3 d-none" id="obsprecificacaoabaixo">
-                                                        <i class="fa fa-arrow-down"></i>
-                                                        &nbsp; Preço Baixo
-                                                    </span>
+                                <hr>
+
+                                <div class="modal-body" id="campoExibicaoCadastroCapas">
+                                    <div class="row">
+                                        <!-- CAPA 1 -->
+                                        <div class="col-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <button class="btn btn-sm btn-color text-white w-100">
+                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                                <span >&nbsp;Trocar Imagem</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-secondary text-white">
+                                                                    <i class="fa-solid fa-hashtag"></i>
+                                                                </span>
+                                                                <input type="number" name="" id="" 
+                                                                class="form-control text-center"
+                                                                disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 d-flex justify-content-center align-items-center">
+                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="file" 
+                                                        class="form-control" 
+                                                        id="imagemProduto1" 
+                                                        accept="image/*">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <img id="previewImagemProduto1" 
+                                                        src="" 
+                                                        alt="Pré-visualização" 
+                                                        class="img-fluid rounded-bottom"
+                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- CAPA 2 -->
+                                        <div class="col-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <button class="btn btn-sm btn-color text-white w-100">
+                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                                <span >&nbsp;Trocar Imagem</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-secondary text-white">
+                                                                    <i class="fa-solid fa-hashtag"></i>
+                                                                </span>
+                                                                <input type="number" name="" id="" 
+                                                                class="form-control text-center"
+                                                                disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 d-flex justify-content-center align-items-center">
+                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="file" 
+                                                        class="form-control" 
+                                                        id="imagemProduto2" 
+                                                        accept="image/*">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <img id="previewImagemProduto2" 
+                                                        src="" 
+                                                        alt="Pré-visualização" 
+                                                        class="img-fluid rounded-bottom"
+                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- CAPA 3 -->
+                                        <div class="col-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <button class="btn btn-sm btn-color text-white w-100">
+                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                                <span >&nbsp;Trocar Imagem</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="input-group">
+                                                                <span class="input-group-text bg-secondary text-white">
+                                                                    <i class="fa-solid fa-hashtag"></i>
+                                                                </span>
+                                                                <input type="number" name="" id="" 
+                                                                class="form-control text-center"
+                                                                disabled>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-6 d-flex justify-content-center align-items-center">
+                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <div class="card-body">
+                                                    <input type="file" 
+                                                        class="form-control" 
+                                                        id="imagemProduto3" 
+                                                        accept="image/*">
+                                                </div>
+                                                <div class="card-footer">
+                                                    <img id="previewImagemProduto3" 
+                                                        src="" 
+                                                        alt="Pré-visualização" 
+                                                        class="img-fluid rounded-bottom"
+                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="row">
-                                        <hr class="my-3">
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Custo Total</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                </span>
-                                                <input type="text" name="" id="custosTotais" 
-                                                class="form-control text-center" placeholder="00,00" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Custos Shopee (R$)</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fa-solid fa-percent"></i>
-                                                </span>
-                                                <input type="number" name="" 
-                                                id="custoRealShopee"
-                                                class="form-control text-center" disabled>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row my-3">
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Taxa Shopee</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fa-solid fa-percent"></i>
-                                                </span>
-                                                <input type="number" name="" id="taxaPlataforma" 
-                                                class="form-control text-center" value="24" disabled>
-                                                <button class="btn input-group-text bg-dark">
-                                                    <i class="fa fa-edit text-white"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="" class="text-center mb-2 label-format">Taxa fixa Produto</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-primary text-white">
-                                                    <i class="fa-solid fa-percent"></i>
-                                                </span>
-                                                <input type="number" name="" id="taxaFixaPlataforma" 
-                                                class="form-control text-center" value="4" disabled>
-                                                <button class="btn input-group-text bg-dark">
-                                                    <i class="fa fa-edit text-white"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row my-3">
-                                        <hr>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col">
-                                            <label for="" class="text-center mb-2 label-format">Lucro Liquido</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-danger text-white">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                </span>
-                                                <input type="number" name="" id="LucroLiquido" 
-                                                class="form-control text-center" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col">
-                                            <label for="" class="text-center mb-2 label-format">Lucro Real</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text bg-danger text-white">
-                                                    <i class="fa-solid fa-percent"></i>
-                                                </span>
-                                                <input type="number" name="" id="LucroReal" 
-                                                class="form-control text-center" disabled>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-1"></div>
-                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!--MODAL LISTA DE CATEGORIAS-->
+                    <div class="modal fade" id="modalListaCategorias" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true"> 
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title title-main m-auto">Lista de Categorias de Produtos</h5>
+                                <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                    <i class="fa fa-x"></i>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" id="campoListaCompletaCategorias"></div>
                             </div>
                         </div>
                     </div>
 
                     <!--MODAL CALCULO CUSTO PRODUTO-->
-                        <div class="modal fade" id="modalCalculoProduto" 
-                        tabindex="-1" aria-labelledby="modalCalculoProdutoLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="title-main m-auto" 
-                                        id="modalCalculoProdutoLabel">Cálculo de Custo do Produto</h5>
-                                        <button type="button" class="btn btn-danger tex-white" 
-                                        data-bs-dismiss="modal" aria-label="Fechar">
-                                            <i class="fa fa-x"></i>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body" id="modalBodyCalculoProduto">
-                                        <div class="card">
+                    <div class="modal fade" id="modalCalculoProduto" tabindex="-1" aria-labelledby="modalCalculoProdutoLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="title-main m-auto" 
+                                    id="modalCalculoProdutoLabel">Cálculo de Custo do Produto</h5>
+                                    <button type="button" class="btn btn-danger tex-white" 
+                                    data-bs-dismiss="modal" aria-label="Fechar">
+                                        <i class="fa fa-x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body" id="modalBodyCalculoProduto">
+                                    <div class="card">
 
-                                            <!--CABEÇALHO DO CARD-->
-                                            <div class="card-header">
-                                                <div class="row mb-3 text-center">
-                                                    <div class="col-5">
-                                                        <label for="">Nome do Produto</label>
-                                                        <div class="input-group mt-2">
-                                                            <span class="input-group-text bg-primary text-white">
-                                                                <i class="fa-solid fa-box-open"></i>
-                                                            </span>
-                                                            <input type="text" class="form-control" disabled>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3">
-                                                        <label for="">Custo Total</label>
-                                                        <div class="input-group mt-2">
-                                                            <span class="input-group-text bg-dark text-white">
-                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                            </span>
-                                                            <input type="text" class="form-control text-center" 
-                                                            placeholder="R$ 0,00" disabled>
-                                                        </div>
+                                        <!--CABEÇALHO DO CARD-->
+                                        <div class="card-header">
+                                            <div class="row mb-3 text-center">
+                                                <div class="col-5">
+                                                    <label for="">Nome do Produto</label>
+                                                    <div class="input-group mt-2">
+                                                        <span class="input-group-text bg-primary text-white">
+                                                            <i class="fa-solid fa-box-open"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control w-75" disabled>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            
-                                            <!--CORPO DO CARD-->
-                                            <div class="card-body">
-                                                <div class="row text-center">
-                                                    <div class="col-6">
-                                                        <label for="">Insumo</label>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <label for="">Custo</label>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="">Qtd</label>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="">Total</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row d-flex justify-content-center mt-2">
-                                                    <div class="col-6">
-                                                        <input type="text" class="form-control" 
-                                                        placeholder="Nome do Insumo" disabled>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="number" class="form-control text-center" 
-                                                        placeholder="Quantidade" value="1">
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row d-flex justify-content-center mt-2">
-                                                    <div class="col-6">
-                                                        <input type="text" class="form-control" 
-                                                        placeholder="Nome do Insumo" disabled>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="number" class="form-control text-center" 
-                                                        placeholder="Quantidade" value="1">
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row d-flex justify-content-center mt-2">
-                                                    <div class="col-6">
-                                                        <input type="text" class="form-control" 
-                                                        placeholder="Nome do Insumo" disabled>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="number" class="form-control text-center" 
-                                                        placeholder="Quantidade" value="1">
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="row d-flex justify-content-center mt-2">
-                                                    <div class="col-6">
-                                                        <input type="text" class="form-control" 
-                                                        placeholder="Nome do Insumo" disabled>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                    <div class="col">
-                                                        <input type="number" class="form-control text-center" 
-                                                        placeholder="Quantidade" value="1">
-                                                    </div>
-                                                    <div class="col">
+                                                <div class="col-3">
+                                                    <label for="">Custo Total</label>
+                                                    <div class="input-group mt-2">
+                                                        <span class="input-group-text bg-dark text-white">
+                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                        </span>
                                                         <input type="text" class="form-control text-center" 
                                                         placeholder="R$ 0,00" disabled>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        
+                                        <!--CORPO DO CARD-->
+                                        <div class="card-body">
+                                            <div class="row text-center">
+                                                <div class="col-6">
+                                                    <label for="">Insumo</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="">Custo</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">Qtd</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="">Total</label>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-center mt-2">
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control" 
+                                                    placeholder="Nome do Insumo" disabled>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" class="form-control text-center" 
+                                                    placeholder="Quantidade" value="1">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-center mt-2">
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control" 
+                                                    placeholder="Nome do Insumo" disabled>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" class="form-control text-center" 
+                                                    placeholder="Quantidade" value="1">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-center mt-2">
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control" 
+                                                    placeholder="Nome do Insumo" disabled>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" class="form-control text-center" 
+                                                    placeholder="Quantidade" value="1">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-center mt-2">
+                                                <div class="col-6">
+                                                    <input type="text" class="form-control" 
+                                                    placeholder="Nome do Insumo" disabled>
+                                                </div>
+                                                <div class="col-2">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="number" class="form-control text-center" 
+                                                    placeholder="Quantidade" value="1">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control text-center" 
+                                                    placeholder="R$ 0,00" disabled>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn btn-success">
-                                            <i class="fa-solid fa-save"></i>&nbsp; Salvar Cálculo
-                                        </button>
-                                        <button type="button" class="btn btn-danger">
-                                            <i class="fa-solid fa-trash"></i>&nbsp; Excluir Cálculo
-                                        </button>
-                                    </div>
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button type="button" class="btn btn-success">
+                                        <i class="fa-solid fa-save"></i>&nbsp; Salvar Cálculo
+                                    </button>
+                                    <button type="button" class="btn btn-danger">
+                                        <i class="fa-solid fa-trash"></i>&nbsp; Excluir Cálculo
+                                    </button>
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

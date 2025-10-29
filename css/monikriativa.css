@@ -38,13 +38,18 @@
     font-size: 10px;
 }
 
-#btnShopee #button-shopee{
+#btnShopee #button-shopee,
+#linhaCadastroProdutoShopee .bg-Shopee{
     background-color: #ee4d2d;
 }
-#btnElo7 #button-Elo7{
+#btnElo7 #button-Elo7,
+#linhaCadastroProdutoElo7 .bg-Elo7{
     background-color: #a16ef3;
 }
 
+#campoExibicaoCadastroCapas .btn-color{
+        background-color: #926ef3;
+}
 #button-shopee,
 #button-whatsapp,
 #button-Elo7{

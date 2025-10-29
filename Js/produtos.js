@@ -5,6 +5,9 @@
 // Carrega categorias do localStorage (ou inicia vazio)
 const listaCategoriasProdutos = JSON.parse(localStorage.getItem("listaCategoriasProdutos")) || [];
 
+// Carrega cadastro Produtos do localStorage (ou inicia vazio)
+const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+
 // Notificações
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 const badgeNotificacao = document.getElementById("badge-notificacao");
@@ -33,51 +36,31 @@ function balancarSino() {
 // =====================================================
 function alternarModoEdicao(botao) {
     const icone = botao.querySelector('i');
-    if (botao.classList.contains('btn-primary')) {
-        botao.classList.replace('btn-primary', 'btn-success');
-        icone.classList.replace('fa-edit', 'fa-save');
-    } else {
+
+    // Sobe até a linha completa (que contém inputs e selects)
+    const linhaProduto = botao.closest('.row.text-center');
+
+    if (!linhaProduto) return;
+
+    // Seleciona os inputs e selects da linha
+    const campos = linhaProduto.querySelectorAll('input, select');
+
+    // Verifica se está em modo de edição
+    const estaEditando = botao.classList.contains('btn-success');
+
+    if (estaEditando) {
+        // 🔒 DESATIVA
+        campos.forEach(campo => campo.disabled = true);
         botao.classList.replace('btn-success', 'btn-primary');
         icone.classList.replace('fa-save', 'fa-edit');
-    }
-}
-
-function calculaPrecificacaoCorreta() {
-    const custoProduto = parseFloat(document.getElementById("custoProduto").value.replace(',', '.')) || 0;
-    const taxaPercentual = parseFloat(document.getElementById("taxaPlataforma").value) / 100 || 0;
-    const taxaFixa = parseFloat(document.getElementById("taxaFixaPlataforma").value) || 0;
-    const precoVenda = parseFloat(document.getElementById("precoVenda").value.replace(',', '.')) || 0;
-
-    const LucroLiquido = document.getElementById("LucroLiquido");
-    const LucroReal = document.getElementById("LucroReal");
-    const shopeeCustos = document.getElementById("custoRealShopee");
-    const custosTotais = document.getElementById("custosTotais");
-
-    const obsprecificacaoideal = document.getElementById("obsprecificacaoideal");
-    const obsprecificacaoabaixo = document.getElementById("obsprecificacaoabaixo");
-
-    const valorTaxaShopee = precoVenda * taxaPercentual;
-    const totalCustos = custoProduto + valorTaxaShopee + taxaFixa;
-    const lucroLiquido = precoVenda - totalCustos;
-    const margemFinal = (lucroLiquido * 100) / totalCustos;
-
-    shopeeCustos.value = (totalCustos - custoProduto).toFixed(2);
-    custosTotais.value = totalCustos.toFixed(2);
-
-    LucroLiquido.value = lucroLiquido.toFixed(2);
-    LucroReal.value = margemFinal.toFixed(1);
-
-    if (isNaN(margemFinal)) {
-        obsprecificacaoideal.classList.add('d-none');
-        obsprecificacaoabaixo.classList.add('d-none');
-    } else if (margemFinal >= 40) {
-        obsprecificacaoideal.classList.remove('d-none');
-        obsprecificacaoabaixo.classList.add('d-none');
     } else {
-        obsprecificacaoideal.classList.add('d-none');
-        obsprecificacaoabaixo.classList.remove('d-none');
+        // ✏️ ATIVA
+        campos.forEach(campo => campo.disabled = false);
+        botao.classList.replace('btn-primary', 'btn-success');
+        icone.classList.replace('fa-edit', 'fa-save');
     }
 }
+
 
 // =====================================================
 // CATEGORIAS DE PRODUTOS
@@ -213,6 +196,23 @@ function redenrizarListaCompletaCategorias() {
 }
 
 // =====================================================
+// LISTA COMPLETA DE CATEGORIAS
+// =====================================================
+
+class CadastroProduto {
+    constructor(codigoProduto, dataCadastroProduto, nomeProduto, categoriaProduto, variacaoProduto, precoCusto, precoVenda, estoque) {
+        this.codigoProduto = codigoProduto;
+        this.dataCadastroProduto = dataCadastroProduto;
+        this.nomeProduto = nomeProduto;
+        this.categoriaProduto = categoriaProduto;
+        this.variacaoProduto = variacaoProduto;
+        this.precoCusto = precoCusto;
+        this.precoVenda = precoVenda;
+        this.estoque = estoque;
+    }
+}
+
+// =====================================================
 // FUNÇÕES EDITAR / EXCLUIR
 // =====================================================
 function editarCategoria(indice) {
@@ -246,4 +246,62 @@ window.addEventListener('load', () => {
     redenrizarListaCompletaCategorias();
     muda_badge();
     balancarSino();
+    atualizaDataCadastroProduto();
+
+    const ModalReal = document.getElementById('modalCadastroCapasProduto');
+    const modal = new bootstrap.Modal(ModalReal);
+    modal.show();
+});
+
+function atualizaDataCadastroProduto(){
+    const hoje = new Date();
+    const dia = String(hoje.getDate()).padStart(2, '0');
+    const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+    const ano = hoje.getFullYear();
+
+    const dataFormatada = `${ano}-${mes}-${dia}`;
+    document.getElementById('dataCadastroProduto').value = dataFormatada;
+    document.getElementById('dataCadastroCapas').value = dataFormatada;
+    atualizarCodigoCadastroProduto();
+}
+function atualizarCodigoCadastroProduto() {
+    const proximoCodigo = (listaCadastroProdutos.length + 1).toString().padStart(2, '0');
+    const codigoCadastroProduto = document.getElementById('codigoCadastroProduto');
+    codigoCadastroProduto.value = 'PRD ' + proximoCodigo;
+}
+
+function CadastrarCapaProduto(){
+    const campoExibicaoCadastroCapas = document.getElementById('campoExibicaoCadastroCapas');
+    const novaLinha = document.createElement('row');
+    const novaColuna = document.createElement('col');
+}
+
+// Função genérica para preview de imagem
+function configurarPreviewImagem(inputId, previewId) {
+    const input = document.getElementById(inputId);
+    const preview = document.getElementById(previewId);
+
+    if (!input || !preview) return;
+
+    input.addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
+    });
+}
+
+// Ativa o preview para todas as três imagens
+window.addEventListener('DOMContentLoaded', () => {
+    configurarPreviewImagem('imagemProduto1', 'previewImagemProduto1');
+    configurarPreviewImagem('imagemProduto2', 'previewImagemProduto2');
+    configurarPreviewImagem('imagemProduto3', 'previewImagemProduto3');
 });
