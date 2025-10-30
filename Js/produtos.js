@@ -1,5 +1,5 @@
 // =====================================================
-// PRODUTOS.JS - ATUALIZADO
+// PRODUTOS.JS - ATUALIZADO E CORRIGIDO
 // =====================================================
 
 // ================================
@@ -201,6 +201,9 @@ function excluirCategoria(indice) {
     renderizarListaCompletaCategorias();
 }
 
+// =====================================================
+// CÁLCULO TAXA SHOPEE
+// =====================================================
 function calculaTaxaShopee() {
     const precoInput = document.getElementById('precoVendaShopeeCadastroProduto');
     const custoShopeeInput = document.getElementById('custoShopeeCadastroProduto');
@@ -212,7 +215,7 @@ function calculaTaxaShopee() {
     let custoInsumos = custoInsumosInput.value.replace(',', '.').trim();
 
     preco = parseFloat(preco);
-    custoInsumos = parseFloat(custoInsumos) || 0; // se vazio = 0
+    custoInsumos = parseFloat(custoInsumos) || 0;
 
     if (isNaN(preco)) {
         custoShopeeInput.value = '';
@@ -233,11 +236,8 @@ function calculaTaxaShopee() {
     percentualInput.value = percentualLucro.toFixed(2) + ' %';
 }
 
-
-
-
 // =====================================================
-// DATAS E CÓDIGOS DE PRODUTOS
+// CLASSE PRODUTO
 // =====================================================
 class NovoProduto {
     constructor(
@@ -275,11 +275,10 @@ class NovoProduto {
     }
 }
 
-// ======================================
-//  FUNÇÃO PARA SALVAR PRODUTO
-// ======================================
+// =====================================================
+// FUNÇÃO PARA SALVAR PRODUTO (CORRIGIDA)
+// =====================================================
 function salvarCadastroProduto() {
-   
     const dataCadastroProduto = document.getElementById('dataCadastroProduto').value;
     const codigoCadastroProduto = document.getElementById('codigoCadastroProduto').value.trim();
     const nomeCadastroProduto = document.getElementById('nomeCadastroProduto').value.trim();
@@ -296,21 +295,19 @@ function salvarCadastroProduto() {
     const lucroLiquidoElo7CadastroInsumo = document.getElementById('lucroLiquidoElo7CadastroInsumo').value.trim();
     const percentualLucroElo7CadastroInsumo = document.getElementById('percentualLucroElo7CadastroInsumo').value.trim();
 
-    // Campos obrigatórios
     if (!dataCadastroProduto || !codigoCadastroProduto || !nomeCadastroProduto || !plataformaCadastroProduto || !categoriaCadastroProduto || !custoInsumosCadastroProdutos || !precoVendaShopeeCadastroProduto || !precoVendaElo7CadastroProduto) {
         alert("Preencha todos os campos obrigatórios!");
         return;
     }
 
-    // Formatando a data
-    const datacadastroProdutoObj = new Date(dataCadastroProduto);
-    const dia = String(datacadastroProdutoObj.getDate()).padStart(2,'0');
-    const mes = String(datacadastroProdutoObj.getMonth() + 1).padStart(2,'0');
-    const ano = datacadastroProdutoObj.getFullYear();
-    const dataCadastroProdutoFormatada = `${dia}/${mes}/${ano}`;
+    // 🔧 Correção: formatar data sem timezone
+    const partes = dataCadastroProduto.split('-');
+    const dataCadastroProdutoFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
 
-    // Verifica se já existe pelo código ou nome
-    const indexExistente = listaCadastroProdutos.findIndex(p => p.codigoCadastroProduto === codigoCadastroProduto || p.nomeCadastroProduto.toLowerCase() === nomeCadastroProduto.toLowerCase());
+    const indexExistente = listaCadastroProdutos.findIndex(p =>
+        p.codigoCadastroProduto === codigoCadastroProduto ||
+        p.nomeCadastroProduto.toLowerCase() === nomeCadastroProduto.toLowerCase()
+    );
 
     const novoProduto = new NovoProduto(
         dataCadastroProdutoFormatada,
@@ -331,39 +328,37 @@ function salvarCadastroProduto() {
     );
 
     if (indexExistente > -1) {
-        // Sobrescreve
         listaCadastroProdutos[indexExistente] = novoProduto;
         localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
         alert(`Produto "${nomeCadastroProduto}" atualizado com sucesso!`);
     } else {
-        // Novo produto
         listaCadastroProdutos.push(novoProduto);
         localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
         alert(`Produto "${nomeCadastroProduto}" cadastrado com sucesso!`);
     }
 
+    congelarInputs();
     renderizarProdutos();
-    console.log(listaCadastroProdutos)
+    console.log(listaCadastroProdutos);
 }
 
-
-// ======================================
-//  FUNÇÃO PARA RENDERIZAR PRODUTOS
-// ======================================
+// =====================================================
+// RENDERIZAR PRODUTOS
+// =====================================================
 function renderizarProdutos() {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
     exibicaoProdutosCadastrados.innerHTML = '';
     listaCadastroProdutos.forEach(produto => exibirProdutoCadastrado(produto));
 }
 
-// ======================================
-//  FUNÇÃO PARA EXIBIR UM PRODUTO
-// ======================================
+// =====================================================
+// EXIBIR PRODUTO
+// =====================================================
 function exibirProdutoCadastrado(produto) {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
 
     const row = document.createElement('div');
-    row.classList.add('row','bg-light');
+    row.classList.add('row', 'bg-light');
 
     const col = document.createElement('div');
     col.classList.add('col');
@@ -372,47 +367,31 @@ function exibirProdutoCadastrado(produto) {
     row2.classList.add('row', 'text-center', 'titulo_col');
 
     row2.innerHTML = `
-        <!--NOME DO PRODUTO-->
         <div class="col-5">
             <div class="input-group mt-1">
-                <span class="input-group-text bg-primary text-white">
-                    <i class="fa fa-tag"></i>
-                </span>
+                <span class="input-group-text bg-primary text-white"><i class="fa fa-tag"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.nomeCadastroProduto}" disabled>
             </div>
         </div>
-
-        <!-- CUSTO DE INSUMOS -->
         <div class="col-2">
             <div class="input-group mt-1">
-                <span class="input-group-text bg-primary text-white">
-                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                </span>
+                <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.custoInsumosCadastroProdutos}" disabled>
             </div>
         </div>
-
-        <!--PREÇO DE VENDA-->
         <div class="col-2">
             <div class="input-group mt-1">
-                <span class="input-group-text bg-primary text-white">
-                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                </span>
+                <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.precoVendaShopeeCadastroProduto}" disabled>
             </div>
         </div>
-
-        <!--LUCRO DE VENDA-->
         <div class="col-1">
             <input type="text" class="form-control text-center mt-1" value="${produto.percentualLucroShopeeCadastroInsumo}" disabled>
         </div>
-
-        <!--AÇÕES E BUTTONS-->
         <div class="col">
             <button class="btn btn-primary mt-1" onclick="abrirModalProduto('${produto.codigoCadastroProduto}')">
                 <i class="fa fa-eye"></i>
             </button>
-
             <button class="btn btn-danger mt-1" onclick="deletarProduto('${produto.codigoCadastroProduto}')">
                 <i class="fa fa-trash"></i>
             </button>
@@ -424,32 +403,27 @@ function exibirProdutoCadastrado(produto) {
     exibicaoProdutosCadastrados.appendChild(row);
 }
 
-// ======================================
-//  FUNÇÃO PARA DELETAR PRODUTO
-// ======================================
+// =====================================================
+// DELETAR PRODUTO
+// =====================================================
 function deletarProduto(codigoProduto) {
     const index = listaCadastroProdutos.findIndex(p => p.codigoCadastroProduto === codigoProduto);
-    if(index > -1) {
+    if (index > -1) {
         listaCadastroProdutos.splice(index, 1);
         localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
         renderizarProdutos();
     }
 }
 
-// ======================================
-//  FUNÇÃO PARA ABRIR MODAL PRODUTO
-// ======================================
+// =====================================================
+// ABRIR MODAL PRODUTO
+// =====================================================
 function abrirModalProduto(codigoProduto) {
-    console.log(listaCadastroProdutos)
-
     const produto = listaCadastroProdutos.find(p => p.codigoCadastroProduto === codigoProduto);
-    if(!produto) return alert('Produto não encontrado.');
+    if (!produto) return alert('Produto não encontrado.');
 
-    // Converte dd/mm/yyyy → yyyy-mm-dd
     const partesData = produto.dataCadastroProduto.split('/');
-    const dataInput = partesData.length === 3 
-        ? `${partesData[2]}-${partesData[1]}-${partesData[0]}` 
-        : produto.dataCadastroProduto;
+    const dataInput = partesData.length === 3 ? `${partesData[2]}-${partesData[1]}-${partesData[0]}` : produto.dataCadastroProduto;
 
     document.getElementById('dataCadastroProduto').value = dataInput;
     document.getElementById('codigoCadastroProduto').value = produto.codigoCadastroProduto;
@@ -475,9 +449,9 @@ function abrirModalProduto(codigoProduto) {
     calculaTaxaShopee();
 }
 
-// ======================================
-//  FUNÇÕES AUXILIARES (DATA E CÓDIGO)
-// ======================================
+// =====================================================
+// FUNÇÕES AUXILIARES
+// =====================================================
 function atualizaDataCadastroProduto() {
     const hoje = new Date();
     const dia = String(hoje.getDate()).padStart(2, '0');
@@ -492,11 +466,10 @@ function atualizaDataCadastroProduto() {
 
 function atualizarCodigoCadastroProduto() {
     const proximoCodigo = (listaCadastroProdutos.length + 1).toString().padStart(2, '0');
-    const codigoCadastroProduto = document.getElementById('codigoCadastroProduto');
-    codigoCadastroProduto.value = 'PRD ' + proximoCodigo;
+    document.getElementById('codigoCadastroProduto').value = 'PRD ' + proximoCodigo;
 }
 
-function limparCadastroProduto(){
+function limparCadastroProduto() {
     document.getElementById('nomeCadastroProduto').value = '';
     document.getElementById('plataformaCadastroProduto').value = 'Todas Plataformas';
     document.getElementById('categoriaCadastroProduto').value = '';
@@ -511,37 +484,30 @@ function limparCadastroProduto(){
     document.getElementById('percentualLucroElo7CadastroInsumo').value = '';
 }
 
-function congelarInputs(){
-    document.getElementById('dataCadastroProduto').disabled = true;
-    document.getElementById('codigoCadastroProduto').disabled = true;
-    document.getElementById('nomeCadastroProduto').disabled = true;
-    document.getElementById('plataformaCadastroProduto').disabled = true;
-    document.getElementById('categoriaCadastroProduto').disabled = true;
-    document.getElementById('custoInsumosCadastroProdutos').disabled = true;
-    document.getElementById('estoqueCadastroProdutos').disabled = true;
-    document.getElementById('precoVendaShopeeCadastroProduto').disabled = true;
-    document.getElementById('custoShopeeCadastroProduto').disabled = true;
-    document.getElementById('lucroLiquidoShopeeCadastroInsumo').disabled = true;
-    document.getElementById('percentualLucroShopeeCadastroInsumo').disabled = true;
-    document.getElementById('precoVendaElo7CadastroProduto').disabled = true;
-    document.getElementById('custoElo7CadastroProduto').disabled = true;
-    document.getElementById('lucroLiquidoElo7CadastroInsumo').disabled = true;
-    document.getElementById('percentualLucroElo7CadastroInsumo').disabled = true;
+function congelarInputs() {
+    const ids = [
+        'dataCadastroProduto', 'codigoCadastroProduto', 'nomeCadastroProduto',
+        'plataformaCadastroProduto', 'categoriaCadastroProduto', 'custoInsumosCadastroProdutos',
+        'estoqueCadastroProdutos', 'precoVendaShopeeCadastroProduto', 'custoShopeeCadastroProduto',
+        'lucroLiquidoShopeeCadastroInsumo', 'percentualLucroShopeeCadastroInsumo',
+        'precoVendaElo7CadastroProduto', 'custoElo7CadastroProduto', 'lucroLiquidoElo7CadastroInsumo',
+        'percentualLucroElo7CadastroInsumo'
+    ];
+    ids.forEach(id => document.getElementById(id).disabled = true);
 }
 
-function descongelarInputs(){
-    document.getElementById('dataCadastroProduto').disabled = false;
-    document.getElementById('nomeCadastroProduto').disabled = false;
-    document.getElementById('plataformaCadastroProduto').disabled = false;
-    document.getElementById('categoriaCadastroProduto').disabled = false;
-    document.getElementById('custoInsumosCadastroProdutos').disabled = false;
-    document.getElementById('estoqueCadastroProdutos').disabled = false;
-    document.getElementById('precoVendaShopeeCadastroProduto').disabled = false;
-    document.getElementById('precoVendaElo7CadastroProduto').disabled = false;
+function descongelarInputs() {
+    const ids = [
+        'dataCadastroProduto', 'nomeCadastroProduto', 'plataformaCadastroProduto',
+        'categoriaCadastroProduto', 'custoInsumosCadastroProdutos',
+        'estoqueCadastroProdutos', 'precoVendaShopeeCadastroProduto',
+        'precoVendaElo7CadastroProduto'
+    ];
+    ids.forEach(id => document.getElementById(id).disabled = false);
 }
 
 // =====================================================
-// INICIALIZAÇÃO AO CARREGAR A PÁGINA
+// INICIALIZAÇÃO
 // =====================================================
 window.addEventListener('load', () => {
     renderizarCategorias();
