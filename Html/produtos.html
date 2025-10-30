@@ -223,20 +223,28 @@
                                                 <div class="m-1 mb-0 title-main">Produtos Cadastrados</div>
                                             </div>
                                             <div class="col">
-                                                <button class="btn btn-dark"
+                                                <button class="btn btn-success"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroProduto"
-                                                onclick="atualizaDataCadastroProduto()">
+                                                onclick="atualizaDataCadastroProduto(), limparCadastroProduto()">
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Produto</span>
                                                 </button>
 
-                                                <button class="btn btn-danger"
+                                                <button class="btn btn-success"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalCadastroCapasProduto"
+                                                    onclick="atualizaDataCadastroProduto(), atualizarSelectProdutos(), atualizarNumerosCapas();">
+                                                    <i class="fa-regular fa-square-plus"></i>
+                                                    <span>&nbsp;&nbsp;Cadastrar Capas</span>
+                                                </button>
+
+                                                <button class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroCapasProduto"
                                                 onclick="atualizaDataCadastroProduto()">
-                                                    <i class="fa-regular fa-square-plus"></i>
-                                                    <span>&nbsp;&nbsp;Cadastrar Capas</span>
+                                                    <i class="fa-regular fa-images"></i>
+                                                    <span>&nbsp;&nbsp;Catálogos de Capas</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -251,89 +259,16 @@
                                             <div class="row">
                                                 <div class="col titulo">
                                                     <div class="row text-center titulo_col">
-                                                        <!--NOME PRODUTO-->
-                                                        <div class="col-3">
-                                                            <span>Nome Produto</span>
-                                                        </div>
-
-                                                        <!--CUSTO PRODUTO-->
-                                                        <div class="col-2">
-                                                            <span>Custo</span>
-                                                        </div>
-
-                                                        <!--VENDA PRODUTO-->
-                                                        <div class="col-2">
-                                                            <span>venda</span>
-                                                        </div>
-
-                                                        <!--LUCRO PRODUTO-->
-                                                        <div class="col-2">
-                                                            <span>Lucro</span>
-                                                        </div>
-
-                                                        <!--ESTOQUE PRODUTO-->
-                                                        <div class="col-1">
-                                                            <span>Estoque</span>
-                                                        </div>
-
-                                                        <!--BOTOES PRODUTO-->
-                                                        <div class="col-2">
-                                                            <span>&nbsp;</span>
-                                                        </div>
+                                                        <div class="col-5"><label class="label-format">Nome</label></div>
+                                                        <div class="col-2"><label class="label-format">Custo</label></div>
+                                                        <div class="col-2"><label class="label-format">Venda</label></div>
+                                                        <div class="col-1"><label class="label-format">Lucro</label></div>
+                                                        <div class="col"><label class="label-format">&nbsp;</label></div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row" id="exibicaoProdutosCadastrados">
 
-                                            <!--LINHA DE INPUTS DE NOVO CADASTRO DE PRODUTO-->
-                                            <div class="row text-center mb-2">
-
-                                                <!--NOME PRODUTO-->
-                                                <div class="col-3">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-
-                                                <!--CUSTO PRODUTO-->
-                                                <div class="col-2">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-
-                                                <!--VENDA PRODUTO-->
-                                                <div class="col-2">
-                                                    <div class="input-group">
-                                                        <span class="input-group-text bg-dark text-white">
-                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                        </span>
-                                                        <input type="text" name="" id="" class="form-control" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <!--LUCRO PRODUTO-->
-                                                <div class="col-2">
-                                                     <div class="input-group">
-                                                        <span class="input-group-text bg-dark text-white">
-                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                        </span>
-                                                        <input type="text" name="" id="" class="form-control" disabled>
-                                                    </div>
-                                                </div>
-
-                                                <!--ESTOQUE PRODUTO-->
-                                                <div class="col-1">
-                                                    <input type="text" name="" id="" class="form-control" disabled>
-                                                </div>
-
-                                                <!--BOTOES PRODUTO-->
-                                                <div class="col-2">
-                                                    <button class="btn btn-primary"
-                                                        id="btnEditarProdutoCadastrado"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#modalCadastroProduto">
-                                                        <i class="fa-solid fa-eye"></i>
-                                                    </button>
-                                                    <button class="btn btn-danger">
-                                                        <i class="fa-solid fa-trash"></i>
-                                                    </button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -392,7 +327,7 @@
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa fa-tag"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center">
+                                                <input type="text" id="nomeCadastroProduto" class="form-control text-center">
                                             </div>
                                         </div>
                                     </div>
@@ -406,7 +341,7 @@
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa-solid fa-shop"></i>
                                                 </span>
-                                                <select name="" id="" class="form-select text-center">
+                                                <select name="" id="plataformaCadastroProduto" class="form-select text-center">
                                                     <option value="-">-</option>
                                                     <option value="Shopee">Shopee</option>
                                                     <option value="Elo7">Elo7</option>
@@ -421,10 +356,8 @@
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa fa-tag"></i>
                                                 </span>
-                                                <select name="" id="" class="form-select text-center">
-                                                    <option value="1">1</option>
-                                                    <option value="2">2</option>
-                                                    <option value="3">3</option>
+                                                <select name="" id="categoriaCadastroProduto" class="form-select text-center">
+                                                    <!-- As categorias serão carregadas aqui dinamicamente -->
                                                 </select>
                                             </div>
                                         </div>
@@ -433,12 +366,22 @@
                                         <div class="col-2">
                                             <label for="" class="label-format mb-1">CUSTO DE INSUMOS</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control text-center">
+                                                <input type="text" class="form-control text-center"
+                                                id="custoInsumosCadastroProdutos"
+                                                oninput="calculaTaxaShopee()">
                                                 <button class="btn btn-dark input-group-text"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalCalculoProduto">
                                                     <i class="fa-solid fa-calculator"></i>
                                                 </button>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-2">
+                                            <label for="" class="label-format mb-1">Estoque de Produtos</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-center"
+                                                id="estoqueCadastroProdutos">
                                             </div>
                                         </div>
                                     </div>
@@ -455,7 +398,10 @@
                                                 <span class="input-group-text bg-Shopee text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center w-75">
+                                                <input type="text" 
+                                                class="form-control text-center w-75"
+                                                id="precoVendaShopeeCadastroProduto"
+                                                oninput="calculaTaxaShopee()">
                                             </div>
                                         </div>
 
@@ -466,7 +412,10 @@
                                                 <span class="input-group-text bg-Shopee text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" DISABLED>
+                                                <input type="text" 
+                                                class="form-control text-center"
+                                                id="custoShopeeCadastroProduto"
+                                                disabled>
                                             </div>
                                         </div>
                                         
@@ -477,7 +426,10 @@
                                                 <span class="input-group-text bg-Shopee text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" disabled>
+                                                <input type="text" 
+                                                class="form-control text-center"
+                                                id="lucroLiquidoShopeeCadastroInsumo" 
+                                                disabled>
                                             </div>
                                         </div>
 
@@ -488,7 +440,10 @@
                                                 <span class="input-group-text bg-Shopee text-white">
                                                     <i class="fa-solid fa-percent"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" disabled>
+                                                <input type="text" 
+                                                class="form-control text-center"
+                                                id="percentualLucroShopeeCadastroInsumo"
+                                                 disabled>
                                             </div>
                                         </div>
                                         <!--OBSERVAÇÃO DE VENDA-->
@@ -514,7 +469,9 @@
                                                 <span class="input-group-text bg-Elo7 text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center">
+                                                <input type="text" 
+                                                id="precoVendaElo7CadastroProduto"
+                                                class="form-control text-center">
                                             </div>
                                         </div>
 
@@ -525,7 +482,9 @@
                                                 <span class="input-group-text bg-Elo7 text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" DISABLED>
+                                                <input type="text" 
+                                                id="custoElo7CadastroProduto"
+                                                class="form-control text-center" DISABLED>
                                             </div>
                                         </div>
 
@@ -536,7 +495,9 @@
                                                 <span class="input-group-text bg-Elo7 text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" disabled>
+                                                <input type="text" class="form-control text-center"
+                                                id="lucroLiquidoElo7CadastroInsumo"
+                                                disabled>
                                             </div>
                                         </div>
                                         
@@ -547,7 +508,9 @@
                                                 <span class="input-group-text bg-Elo7 text-white">
                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
                                                 </span>
-                                                <input type="text" class="form-control text-center" disabled>
+                                                <input type="text" class="form-control text-center"
+                                                id="percentualLucroElo7CadastroInsumo"
+                                                disabled>
                                             </div>
                                         </div>
 
@@ -570,15 +533,18 @@
                                 <div class="modal-footer">
                                     <div class="row m-auto">
                                         <div class="col">
-                                            <button class="btn btn-success">
+                                            <button class="btn btn-success"
+                                            onclick="salvarCadastroProduto()">
                                                 <i class="fa fa-save"></i>
                                                 <span>&nbsp;Salvar</span>
                                             </button>
-                                            <button class="btn btn-primary">
+                                            <button class="btn btn-primary"
+                                            onclick="descongelarInputs(), calculaTaxaShopee()">
                                                 <i class="fa fa-edit"></i>
                                                 <span>&nbsp;Editar</span>
                                             </button>
-                                            <button class="btn btn-danger">
+                                            <button class="btn btn-danger"
+                                            onclick="limparCadastroProduto()">
                                                 <i class="fa fa-broom"></i>
                                                 <span>&nbsp;Limpar</span>
                                             </button>
@@ -589,19 +555,18 @@
                         </div>
                     </div>
 
-                    <!--MODAL CADASTRO CAPAS PRODUTOS-->
-                    <div class="modal fade" id="modalCadastroCapasProduto" tabindex="-1" 
-                    role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <!-- MODAL CADASTRO CAPAS PRODUTOS -->
+                    <div class="modal fade" id="modalCadastroCapasProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                         <div class="modal-dialog modal-xl" role="document">
                             <div class="modal-content">
 
-                                <!--CABEÇALHO MODAL CADASTRO DE PRODUTO-->
+                                <!-- CABEÇALHO MODAL CADASTRO DE PRODUTO -->
                                 <div class="modal-header">
                                     <div class="col-6">
                                         <h5 class="modal-title title-main m-auto text-center">Cadastrar Capas de Produtos</h5>
                                     </div>
                                     <div class="col-2">
-                                        <label for="" class="label-format mb-2">data do cadastro</label>
+                                        <label class="label-format mb-2">Data do Cadastro</label>
                                         <div class="input-group">
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fa fa-calendar"></i>
@@ -615,25 +580,28 @@
                                         </button>
                                     </div>
                                 </div>
-                                
+
+                                <!-- CORPO MODAL -->
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="col-6">
-                                            <label for="" class="label-format mb-2">Nome do Produto</label>
+                                            <label class="label-format mb-2">Nome do Produto</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa fa-tag"></i>
                                                 </span>
-                                                <select name="" id="" class="form-select"></select>
+                                                <select id="inputNomeProduto" class="form-select" onchange="atualizarNumerosCapas()">
+                                                    <!-- Opções populadas pelo JS -->
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-3">
-                                            <label for="" class="label-format mb-2 w-75">Variação da Capa</label>
+                                            <label class="label-format mb-2 w-75">Variação da Capa</label>
                                             <div class="input-group w-75">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa-solid fa-venus-mars"></i>
                                                 </span>
-                                                <select name="" id="" class="form-select text-center">
+                                                <select id="variacaoCapa" class="form-select text-center">
                                                     <option value="-">-</option>
                                                     <option value="Feminino">Feminino</option>
                                                     <option value="Masculino">Masculino</option>
@@ -641,9 +609,8 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <label for="" class="label-format mb-2">&nbsp;</label>
-                                            <button class="btn btn-success"
-                                            onclick="adicionarCadastroCapasProduto()">
+                                            <label class="label-format mb-2">&nbsp;</label>
+                                            <button class="btn btn-success" onclick="adicionarCadastroCapasProduto()">
                                                 <i class="fa fa-save"></i>
                                                 <span>&nbsp;Salvar Capas</span>
                                             </button>
@@ -653,20 +620,17 @@
 
                                 <hr>
 
+                                <!-- EXIBIÇÃO CAPAS -->
                                 <div class="modal-body" id="campoExibicaoCadastroCapas">
                                     <div class="row">
                                         <!-- CAPA 1 -->
                                         <div class="col-4">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-sm btn-color text-white w-100">
-                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
-                                                                <span >&nbsp;Trocar Imagem</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                        <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                        <span>&nbsp;Trocar Imagem</span>
+                                                    </button>
                                                 </div>
                                                 <div class="card-header">
                                                     <div class="row">
@@ -675,29 +639,21 @@
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" name="" id="" 
-                                                                class="form-control text-center"
-                                                                disabled>
+                                                                <input type="number" class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
-                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                            <label class="label-format fw-bold fs-6">Numº da Capa</label>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
                                                 <div class="card-body">
-                                                    <input type="file" 
-                                                        class="form-control" 
-                                                        id="imagemProduto1" 
-                                                        accept="image/*">
+                                                    <input type="file" class="form-control" id="imagemProduto1" accept="image/*">
                                                 </div>
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto1" 
-                                                        src="" 
-                                                        alt="Pré-visualização" 
-                                                        class="img-fluid rounded-bottom"
-                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
+                                                    <img id="previewImagemProduto1" src="" 
+                                                    alt="Pré-visualização" class="img-fluid rounded-bottom" 
+                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -706,14 +662,10 @@
                                         <div class="col-4">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-sm btn-color text-white w-100">
-                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
-                                                                <span >&nbsp;Trocar Imagem</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                        <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                        <span>&nbsp;Trocar Imagem</span>
+                                                    </button>
                                                 </div>
                                                 <div class="card-header">
                                                     <div class="row">
@@ -722,29 +674,21 @@
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" name="" id="" 
-                                                                class="form-control text-center"
-                                                                disabled>
+                                                                <input type="number" class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
-                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                            <label class="label-format fw-bold fs-6">Numº da Capa</label>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
                                                 <div class="card-body">
-                                                    <input type="file" 
-                                                        class="form-control" 
-                                                        id="imagemProduto2" 
-                                                        accept="image/*">
+                                                    <input type="file" class="form-control" id="imagemProduto2" accept="image/*">
                                                 </div>
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto2" 
-                                                        src="" 
-                                                        alt="Pré-visualização" 
-                                                        class="img-fluid rounded-bottom"
-                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
+                                                    <img id="previewImagemProduto2" src="" 
+                                                    alt="Pré-visualização" class="img-fluid rounded-bottom" 
+                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -753,14 +697,10 @@
                                         <div class="col-4">
                                             <div class="card">
                                                 <div class="card-header">
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <button class="btn btn-sm btn-color text-white w-100">
-                                                                <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
-                                                                <span >&nbsp;Trocar Imagem</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
+                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                        <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
+                                                        <span>&nbsp;Trocar Imagem</span>
+                                                    </button>
                                                 </div>
                                                 <div class="card-header">
                                                     <div class="row">
@@ -769,37 +709,32 @@
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" name="" id="" 
-                                                                class="form-control text-center"
-                                                                disabled>
+                                                                <input type="number" class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
-                                                            <label for="" class="label-format fw-bold fs-6">Numº da Capa</label>
+                                                            <label class="label-format fw-bold fs-6">Numº da Capa</label>
                                                         </div>
                                                     </div>
-                                                    
                                                 </div>
                                                 <div class="card-body">
-                                                    <input type="file" 
-                                                        class="form-control" 
-                                                        id="imagemProduto3" 
-                                                        accept="image/*">
+                                                    <input type="file" class="form-control" id="imagemProduto3" accept="image/*">
                                                 </div>
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto3" 
-                                                        src="" 
-                                                        alt="Pré-visualização" 
-                                                        class="img-fluid rounded-bottom"
-                                                        style="width: 100%; height: auto; display: none; object-fit: cover; border-radius: 30px;">
+                                                    <img id="previewImagemProduto3" src="" alt="Pré-visualização" 
+                                                    class="img-fluid rounded-bottom" 
+                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
                     
                     <!--MODAL LISTA DE CATEGORIAS-->
                     <div class="modal fade" id="modalListaCategorias" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true"> 
