@@ -102,7 +102,7 @@
                     <hr>
                 </li>
                 <li>
-                    <a href="codigodev.html" class="nav-link text-white">
+                    <a href="codigodev.html" target="_blank" class="nav-link text-white">
                         <button class="btn btn-primary w-100">
                             <i class="fa-solid fa-code">&nbsp;</i>
                             <span class="code-dev">códigos Dev</span>
@@ -117,9 +117,7 @@
                 </li>
             </ul>
         </div>
-        <!--Final do Menu Lateral-->
 
-        <!--BADGE-->
         <!--Botão Alerta de Notificações-->
         <div>
             <button class="btn btn-warning text-white" id="button-alert-main">
@@ -127,26 +125,6 @@
                 <span class="badge rounded-pill bg-danger" id="badge-notificacao"></span>
             </button>
         </div>
-        <!--FINAL BADGE-->
-
-        <!--
-        <div id="btnShopee">
-            <a href="https://seller.shopee.com.br/" target="_blank">
-                <button class="btn btn-orange text-white" id="button-shopee">
-                    <span class="label-format">Shopee</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>
-
-        <div id="btnElo7">
-            <a href="https://www.elo7.com.br/monikriativa" target="_blank">
-                <button class="btn btn-orange text-white" id="button-Elo7">
-                    <span class="label-format">Elo7</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>-->
 
         <!--Botão Whatsapp-->
         <div>
@@ -156,7 +134,6 @@
                 </button>
             </a>
         </div>
-        <!--Final Botão Whatsapp-->
 
         <!-- Início do Conteúdo Principal -->
         <div class="b-example-divider">
@@ -198,11 +175,11 @@
                                         </div>
                                     </div>
                                     <div class="col-4">
-                                        <button class="btn btn-primary w-100"
+                                        <button class="btn btn-primary"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalListaCategorias">
-                                            <i class="fa fa-eye">&nbsp;&nbsp;</i>
-                                            <span>Lista de Categorias - Produtos</span>
+                                            <i class="fa fa-list">&nbsp;&nbsp;</i>
+                                            <span>Lista de Categorias</span>
                                         </button>
                                     </div>
                                     </div>
@@ -211,8 +188,8 @@
                             </div>
                         </div>
 
-                        <!--PRODUTOS CADASTRADOS-->
-                        <div class="row my-3">
+                        <!--PRODUTOS / CAPAS-->
+                        <div class="row my-3" style="min-width: 102%;">
                             <div class="col">
                                 <div class="card card-principal">
                                     <div class="card-body" id="cardCadastroProdutos">
@@ -226,7 +203,9 @@
                                                 <button class="btn btn-success"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroProduto"
-                                                onclick="atualizaDataCadastroProduto(), limparCadastroProduto()">
+                                                onclick="atualizaDataCadastroProduto(),
+                                                limparCadastroProduto(),
+                                                descongelarInputs()">
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Produto</span>
                                                 </button>
@@ -234,18 +213,16 @@
                                                 <button class="btn btn-success"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalCadastroCapasProduto"
-                                                    onclick="atualizaDataCadastroProduto(), atualizarSelectProdutos(), atualizarNumerosCapas();">
+                                                    onclick="atualizaDataCadastroProduto(), atualizarNumerosCapas();"></i>
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Capas</span>
                                                 </button>
-
-                                                <button class="btn btn-primary"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalCadastroCapasProduto"
-                                                onclick="atualizaDataCadastroProduto()">
+                                                
+                                                <button class="btn btn-danger" onclick="irParaGaleriaCapas()" id="btngaleriaCapas">
                                                     <i class="fa-regular fa-images"></i>
-                                                    <span>&nbsp;&nbsp;Catálogos de Capas</span>
+                                                    <span>&nbsp;&nbsp;Galeria de Capas</span>
                                                 </button>
+
                                             </div>
                                         </div>
 
@@ -255,14 +232,15 @@
                                             </div>
                                         </div>
 
+                                        <!--LABELS Identificadores dos campos que serão exibidos-->
                                         <div class="container-fluid">
                                             <div class="row">
                                                 <div class="col titulo">
-                                                    <div class="row text-center titulo_col">
+                                                    <div class="row titulo_col text-center">
                                                         <div class="col-5"><label class="label-format">Nome</label></div>
-                                                        <div class="col-2"><label class="label-format">Custo</label></div>
-                                                        <div class="col-2"><label class="label-format">Venda</label></div>
-                                                        <div class="col-1"><label class="label-format">Lucro</label></div>
+                                                        <div class="col-2"><label class="label-format w-75">Custo</label></div>
+                                                        <div class="col-2"><label class="label-format w-75">Venda</label></div>
+                                                        <div class="col-2"><label class="label-format w-25">Lucro</label></div>
                                                         <div class="col"><label class="label-format">&nbsp;</label></div>
                                                     </div>
                                                 </div>
@@ -276,6 +254,7 @@
                             </div>
                         </div>
                     </div>
+
 
                     <!--MODAL CADASTRO PRODUTOS-->
                     <div class="modal fade" id="modalCadastroProduto" tabindex="-1" 
@@ -350,7 +329,7 @@
                                             </div>
                                         </div>
                                         <!--CATEGORIA DO PRODUTO-->
-                                        <div class="col-3">
+                                        <div class="col">
                                             <label for="" class="label-format mb-1">categoria do produto</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
@@ -368,7 +347,7 @@
                                             <div class="input-group">
                                                 <input type="text" class="form-control text-center"
                                                 id="custoInsumosCadastroProdutos"
-                                                oninput="calculaTaxaShopee()">
+                                                oninput="calculaTaxas()">
                                                 <button class="btn btn-dark input-group-text"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalCalculoProduto">
@@ -377,8 +356,9 @@
                                             </div>
                                         </div>
 
+                                        <!--ESTOQUE PRODUTO-->
                                         <div class="col-2">
-                                            <label for="" class="label-format mb-1">Estoque de Produtos</label>
+                                            <label for="" class="label-format mb-1">Estoque</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control text-center"
                                                 id="estoqueCadastroProdutos">
@@ -401,7 +381,7 @@
                                                 <input type="text" 
                                                 class="form-control text-center w-75"
                                                 id="precoVendaShopeeCadastroProduto"
-                                                oninput="calculaTaxaShopee()">
+                                                oninput="calculaTaxas()">
                                             </div>
                                         </div>
 
@@ -446,14 +426,15 @@
                                                  disabled>
                                             </div>
                                         </div>
+
                                         <!--OBSERVAÇÃO DE VENDA-->
                                         <div class="col">
                                             <label for="" class="label-format mb-1">&nbsp;</label>
-                                            <button class="btn btn-success text-white d-none">
+                                            <button class="btn btn-success text-white d-none" id="btnPrecoIdealShopee">
                                                 <i class="fa-solid fa-check"></i>
                                                 <span>&nbsp;&nbsp; Preço Ideal</span>
                                             </button>
-                                            <button class="btn bg-danger text-white d-none">
+                                            <button class="btn bg-danger text-white d-none" id="btnPrecoBaixoShopee">
                                                 <i class="fa-solid fa-down-long"></i>
                                                 <span>&nbsp;&nbsp; Preço Baixo</span>
                                             </button>
@@ -462,7 +443,7 @@
 
 
                                     <div class="row my-2" id="linhaCadastroProdutoElo7">
-                                        <!--PREÇO DE VENDA SHOPEE-->
+                                        <!--PREÇO DE VENDA ELO7-->
                                         <div class="col">
                                             <label for="" class="label-format mb-1">Preço de Venda Elo7</label>
                                             <div class="input-group">
@@ -471,7 +452,8 @@
                                                 </span>
                                                 <input type="text" 
                                                 id="precoVendaElo7CadastroProduto"
-                                                class="form-control text-center">
+                                                class="form-control text-center"
+                                                oninput="calculaTaxas()">
                                             </div>
                                         </div>
 
@@ -517,11 +499,11 @@
                                         <!--OBSERVAÇÃO DE VENDA-->
                                         <div class="col">
                                             <label for="" class="label-format mb-1">&nbsp;</label>
-                                            <button class="btn btn-success text-white d-none">
+                                            <button class="btn btn-success text-white d-none" id="btnPrecoIdealElo7">
                                                 <i class="fa-solid fa-check"></i>
                                                 <span>&nbsp;&nbsp; Preço Ideal</span>
                                             </button>
-                                            <button class="btn bg-danger text-white d-none">
+                                            <button class="btn bg-danger text-white d-none" id="btnPrecoBaixoElo7">
                                                 <i class="fa-solid fa-down-long"></i>
                                                 <span>&nbsp;&nbsp; Preço Baixo</span>
                                             </button>
@@ -539,7 +521,7 @@
                                                 <span>&nbsp;Salvar</span>
                                             </button>
                                             <button class="btn btn-primary"
-                                            onclick="descongelarInputs(), calculaTaxaShopee()">
+                                            onclick="descongelarInputs(), calculaTaxas()">
                                                 <i class="fa fa-edit"></i>
                                                 <span>&nbsp;Editar</span>
                                             </button>
@@ -556,7 +538,8 @@
                     </div>
 
                     <!-- MODAL CADASTRO CAPAS PRODUTOS -->
-                    <div class="modal fade" id="modalCadastroCapasProduto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal fade" id="modalCadastroCapasProduto" tabindex="-1" 
+                    role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                         <div class="modal-dialog modal-xl" role="document">
                             <div class="modal-content">
 
@@ -571,7 +554,7 @@
                                             <span class="input-group-text bg-primary text-white">
                                                 <i class="fa fa-calendar"></i>
                                             </span>
-                                            <input type="date" class="form-control text-center" id="dataCadastroCapas">
+                                            <input type="date" class="form-control text-center" id="dataCadastroCapas" disabled>
                                         </div>
                                     </div>
                                     <div class="col-">
@@ -581,33 +564,41 @@
                                     </div>
                                 </div>
 
-                                <!-- CORPO MODAL -->
+                                <!-- DADOS DO PRODUTO RELACIONADO A CAPA-->
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col-6">
+
+                                        <!--NOME DO PRODUTO-->
+                                        <div class="col d-none">
                                             <label class="label-format mb-2">Nome do Produto</label>
                                             <div class="input-group">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa fa-tag"></i>
                                                 </span>
-                                                <select id="inputNomeProduto" class="form-select" onchange="atualizarNumerosCapas()">
-                                                    <!-- Opções populadas pelo JS -->
+                                                <select id="inputNomeProdutoCapas" class="form-select text-center" 
+                                                onchange="atualizarNumerosCapas()">
+                                                    <option value="todos">Todos</option>
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!--VARIACAO DA CAPA-->
                                         <div class="col-3">
                                             <label class="label-format mb-2 w-75">Variação da Capa</label>
                                             <div class="input-group w-75">
                                                 <span class="input-group-text bg-primary text-white">
                                                     <i class="fa-solid fa-venus-mars"></i>
                                                 </span>
-                                                <select id="variacaoCapa" class="form-select text-center">
+                                                <select id="variacaoCapa" class="form-select text-center" 
+                                                onchange="atualizarNumerosCapas()">
                                                     <option value="-">-</option>
                                                     <option value="Feminino">Feminino</option>
                                                     <option value="Masculino">Masculino</option>
                                                 </select>
                                             </div>
                                         </div>
+
+                                        <!--BTN SALVAR CAPAS-->
                                         <div class="col">
                                             <label class="label-format mb-2">&nbsp;</label>
                                             <button class="btn btn-success" onclick="adicionarCadastroCapasProduto()">
@@ -626,20 +617,26 @@
                                         <!-- CAPA 1 -->
                                         <div class="col-4">
                                             <div class="card">
+                                                <!--BUTON DE LIMPAR EXIBICAO DA CAPA 01-->
                                                 <div class="card-header">
-                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                    <button class="btn btn-sm btn-color text-white w-100" 
+                                                    onclick="limparCamposCard(1)">
                                                         <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
                                                         <span>&nbsp;Trocar Imagem</span>
                                                     </button>
                                                 </div>
+
+                                                <!--ID DA CAPA 01-->
                                                 <div class="card-header">
                                                     <div class="row">
+                                                        
                                                         <div class="col">
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" class="form-control text-center" disabled>
+                                                                <input type="number" id="inputNumeroCapa1" 
+                                                                class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
@@ -647,13 +644,17 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!--INPUT PARA INSERIR CAPA 01-->
                                                 <div class="card-body">
                                                     <input type="file" class="form-control" id="imagemProduto1" accept="image/*">
                                                 </div>
+
+                                                <!--CAMPO DE EXIBICAO DA CAPA 01-->
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto1" src="" 
-                                                    alt="Pré-visualização" class="img-fluid rounded-bottom" 
-                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
+                                                    <img id="previewImagemProduto1" src="" alt="Pré-visualização" 
+                                                    class="img-fluid rounded-bottom" 
+                                                        style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -661,12 +662,16 @@
                                         <!-- CAPA 2 -->
                                         <div class="col-4">
                                             <div class="card">
+                                                <!--BUTON DE LIMPAR EXIBICAO DA CAPA 02-->
                                                 <div class="card-header">
-                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                    <button class="btn btn-sm btn-color text-white w-100" 
+                                                    onclick="limparCamposCard(2)">
                                                         <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
                                                         <span>&nbsp;Trocar Imagem</span>
                                                     </button>
                                                 </div>
+
+                                                <!--ID DA CAPA 02-->
                                                 <div class="card-header">
                                                     <div class="row">
                                                         <div class="col">
@@ -674,7 +679,7 @@
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" class="form-control text-center" disabled>
+                                                                <input type="number" id="inputNumeroCapa2" class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
@@ -682,13 +687,16 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!--INPUT PARA INSERIR CAPA 02-->
                                                 <div class="card-body">
                                                     <input type="file" class="form-control" id="imagemProduto2" accept="image/*">
                                                 </div>
+
+                                                <!--CAMPO DE EXIBICAO DA CAPA 02-->
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto2" src="" 
-                                                    alt="Pré-visualização" class="img-fluid rounded-bottom" 
-                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
+                                                    <img id="previewImagemProduto2" src="" alt="Pré-visualização" class="img-fluid rounded-bottom" 
+                                                        style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
@@ -696,12 +704,16 @@
                                         <!-- CAPA 3 -->
                                         <div class="col-4">
                                             <div class="card">
+                                                <!--BUTON DE LIMPAR EXIBICAO DA CAPA 03-->
                                                 <div class="card-header">
-                                                    <button class="btn btn-sm btn-color text-white w-100">
+                                                    <button class="btn btn-sm btn-color text-white w-100"
+                                                    onclick="limparCamposCard(3)">
                                                         <i class="fa-solid fa-rotate-left fa-spin fa-spin-reverse"></i>
                                                         <span>&nbsp;Trocar Imagem</span>
                                                     </button>
                                                 </div>
+
+                                                <!--ID DA CAPA 03-->
                                                 <div class="card-header">
                                                     <div class="row">
                                                         <div class="col">
@@ -709,7 +721,7 @@
                                                                 <span class="input-group-text bg-secondary text-white">
                                                                     <i class="fa-solid fa-hashtag"></i>
                                                                 </span>
-                                                                <input type="number" class="form-control text-center" disabled>
+                                                                <input type="number" id="inputNumeroCapa3" class="form-control text-center" disabled>
                                                             </div>
                                                         </div>
                                                         <div class="col-6 d-flex justify-content-center align-items-center">
@@ -717,25 +729,25 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+                                                <!--INPUT PARA INSERIR CAPA 03-->
                                                 <div class="card-body">
                                                     <input type="file" class="form-control" id="imagemProduto3" accept="image/*">
                                                 </div>
+
+                                                <!--CAMPO DE EXIBICAO DA CAPA 03-->
                                                 <div class="card-footer">
-                                                    <img id="previewImagemProduto3" src="" alt="Pré-visualização" 
-                                                    class="img-fluid rounded-bottom" 
-                                                    style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
+                                                    <img id="previewImagemProduto3" src="" alt="Pré-visualização" class="img-fluid rounded-bottom" 
+                                                        style="width:100%; height:auto; display:none; object-fit:cover; border-radius:30px;">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
-                    
                     <!--MODAL LISTA DE CATEGORIAS-->
                     <div class="modal fade" id="modalListaCategorias" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true"> 
                         <div class="modal-dialog modal-lg" role="document">

@@ -1,10 +1,5 @@
-// =====================================================
-// PRODUTOS.JS - ATUALIZADO E CORRIGIDO
-// =====================================================
-
 // ================================
 // LOCALSTORAGE E LISTAS INICIAIS
-// ================================
 const listaCategoriasProdutos = JSON.parse(localStorage.getItem("listaCategoriasProdutos")) || [];
 const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
@@ -15,7 +10,6 @@ const badgeNotificacao = document.getElementById("badge-notificacao");
 
 // =====================================================
 // FUNÇÕES DE NOTIFICAÇÃO
-// =====================================================
 function muda_badge() {
     badgeNotificacao.textContent = notificacoes;
     notificacoes++;
@@ -34,7 +28,6 @@ function balancarSino() {
 
 // =====================================================
 // FUNÇÕES DE PRODUTOS
-// =====================================================
 function alternarModoEdicao(botao) {
     const icone = botao.querySelector('i');
     const linhaProduto = botao.closest('.row.text-center');
@@ -56,7 +49,6 @@ function alternarModoEdicao(botao) {
 
 // =====================================================
 // CATEGORIAS DE PRODUTOS
-// =====================================================
 function adicionarNovaCategoriaProduto() {
     const input = document.getElementById("inputNovaCategoriaProduto");
     const btnAdicionar = document.getElementById('btnAdicionarNovaCategoriaProduto');
@@ -203,42 +195,107 @@ function excluirCategoria(indice) {
 
 // =====================================================
 // CÁLCULO TAXA SHOPEE
-// =====================================================
-function calculaTaxaShopee() {
-    const precoInput = document.getElementById('precoVendaShopeeCadastroProduto');
-    const custoShopeeInput = document.getElementById('custoShopeeCadastroProduto');
-    const lucroInput = document.getElementById('lucroLiquidoShopeeCadastroInsumo');
+function calculaTaxas() {
+    // ==========================
+    // CAMPOS
+    // ==========================
     const custoInsumosInput = document.getElementById('custoInsumosCadastroProdutos');
-    const percentualInput = document.getElementById('percentualLucroShopeeCadastroInsumo');
 
-    let preco = precoInput.value.replace(',', '.').trim();
-    let custoInsumos = custoInsumosInput.value.replace(',', '.').trim();
+    const precoShopeeInput = document.getElementById('precoVendaShopeeCadastroProduto');
+    const custoShopeeInput = document.getElementById('custoShopeeCadastroProduto');
+    const lucroShopeeInput = document.getElementById('lucroLiquidoShopeeCadastroInsumo');
+    const percentualShopeeInput = document.getElementById('percentualLucroShopeeCadastroInsumo');
+    const btnPrecoIdealShopee = document.getElementById('btnPrecoIdealShopee');
+    const btnPrecoBaixoShopee = document.getElementById('btnPrecoBaixoShopee');
 
-    preco = parseFloat(preco);
-    custoInsumos = parseFloat(custoInsumos) || 0;
+    const precoElo7Input = document.getElementById('precoVendaElo7CadastroProduto');
+    const custoElo7Input = document.getElementById('custoElo7CadastroProduto');
+    const lucroElo7Input = document.getElementById('lucroLiquidoElo7CadastroInsumo');
+    const percentualElo7Input = document.getElementById('percentualLucroElo7CadastroInsumo');
+    const btnPrecoIdealElo7 = document.getElementById('btnPrecoIdealElo7');
+    const btnPrecoBaixoElo7 = document.getElementById('btnPrecoBaixoElo7');
 
-    if (isNaN(preco)) {
+    // ==========================
+    // CAPTURA E TRATAMENTO DE VALORES
+    // ==========================
+    let custoInsumos = parseFloat(custoInsumosInput.value.replace(',', '.')) || 0;
+    let precoShopee = parseFloat(precoShopeeInput.value.replace(',', '.')) || 0;
+    let precoElo7 = parseFloat(precoElo7Input.value.replace(',', '.')) || 0;
+
+    // ==========================
+    // CÁLCULO SHOPEE
+    // ==========================
+    if (precoShopee > 0) {
+        const taxaPercentualShopee = 23.5;
+        const taxaFixaShopee = 4;
+
+        const custoShopee = (precoShopee * taxaPercentualShopee / 100) + taxaFixaShopee;
+        const lucroLiquidoShopee = precoShopee - custoShopee - custoInsumos;
+        const percentualLucroShopee = (lucroLiquidoShopee * 100 / precoShopee);
+
+        custoShopeeInput.value = custoShopee.toFixed(2);
+        lucroShopeeInput.value = lucroLiquidoShopee.toFixed(2);
+        percentualShopeeInput.value = percentualLucroShopee.toFixed(2) + ' %';
+
+        // Mostrar botões Shopee
+        if(percentualLucroShopee >= 40){
+            btnPrecoIdealShopee.classList.remove('d-none');
+            btnPrecoIdealShopee.classList.add('d-block');
+            btnPrecoBaixoShopee.classList.remove('d-block');
+            btnPrecoBaixoShopee.classList.add('d-none');
+        } else {
+            btnPrecoIdealShopee.classList.remove('d-block');
+            btnPrecoIdealShopee.classList.add('d-none');
+            btnPrecoBaixoShopee.classList.remove('d-none');
+            btnPrecoBaixoShopee.classList.add('d-block');
+        }
+
+    } else {
         custoShopeeInput.value = '';
-        lucroInput.value = '';
-        percentualInput.value = '';
-        return;
+        lucroShopeeInput.value = '';
+        percentualShopeeInput.value = '';
+        btnPrecoIdealShopee.classList.add('d-none');
+        btnPrecoBaixoShopee.classList.add('d-none');
     }
 
-    const taxaPercentual = 23.5;
-    const taxaFixa = 4;
+    // ==========================
+    // CÁLCULO ELO7
+    // ==========================
+    if (precoElo7 > 0) {
+        const taxaPercentualElo7 = 18;
+        const taxaFixaElo7 = 0;
 
-    const custoShopee = (preco * taxaPercentual / 100) + taxaFixa;
-    const lucroLiquido = preco - custoShopee - custoInsumos;
-    const percentualLucro = (lucroLiquido * 100 / preco);
+        const custoElo7 = (precoElo7 * taxaPercentualElo7 / 100) + taxaFixaElo7;
+        const lucroLiquidoElo7 = precoElo7 - custoElo7 - custoInsumos;
+        const percentualLucroElo7 = (lucroLiquidoElo7 * 100 / precoElo7);
 
-    custoShopeeInput.value = custoShopee.toFixed(2);
-    lucroInput.value = lucroLiquido.toFixed(2);
-    percentualInput.value = percentualLucro.toFixed(2) + ' %';
+        custoElo7Input.value = custoElo7.toFixed(2);
+        lucroElo7Input.value = lucroLiquidoElo7.toFixed(2);
+        percentualElo7Input.value = percentualLucroElo7.toFixed(2) + ' %';
+
+        // Mostrar botões Elo7
+        if(percentualLucroElo7 >= 40){
+            btnPrecoIdealElo7.classList.remove('d-none');
+            btnPrecoIdealElo7.classList.add('d-block');
+            btnPrecoBaixoElo7.classList.remove('d-block');
+            btnPrecoBaixoElo7.classList.add('d-none');
+        } else {
+            btnPrecoIdealElo7.classList.remove('d-block');
+            btnPrecoIdealElo7.classList.add('d-none');
+            btnPrecoBaixoElo7.classList.remove('d-none');
+            btnPrecoBaixoElo7.classList.add('d-block');
+        }
+
+    } else {
+        custoElo7Input.value = '';
+        lucroElo7Input.value = '';
+        percentualElo7Input.value = '';
+        btnPrecoIdealElo7.classList.add('d-none');
+        btnPrecoBaixoElo7.classList.add('d-none');
+    }
 }
 
-// =====================================================
 // CLASSE PRODUTO
-// =====================================================
 class NovoProduto {
     constructor(
         dataCadastroProduto, 
@@ -275,7 +332,6 @@ class NovoProduto {
     }
 }
 
-// =====================================================
 // FUNÇÃO PARA SALVAR PRODUTO (CORRIGIDA)
 // =====================================================
 function salvarCadastroProduto() {
@@ -340,20 +396,19 @@ function salvarCadastroProduto() {
     congelarInputs();
     renderizarProdutos();
     console.log(listaCadastroProdutos);
+
+    const modal = bootstrap.Modal.getInstance(document.getElementById('modalCadastroProduto'));
+    modal.hide();
 }
 
-// =====================================================
 // RENDERIZAR PRODUTOS
-// =====================================================
 function renderizarProdutos() {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
     exibicaoProdutosCadastrados.innerHTML = '';
     listaCadastroProdutos.forEach(produto => exibirProdutoCadastrado(produto));
 }
 
-// =====================================================
 // EXIBIR PRODUTO
-// =====================================================
 function exibirProdutoCadastrado(produto) {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
 
@@ -367,32 +422,41 @@ function exibirProdutoCadastrado(produto) {
     row2.classList.add('row', 'text-center', 'titulo_col');
 
     row2.innerHTML = `
+        <!--NOME DO PRODUTO-->
         <div class="col-5">
             <div class="input-group mt-1">
                 <span class="input-group-text bg-primary text-white"><i class="fa fa-tag"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.nomeCadastroProduto}" disabled>
             </div>
         </div>
+
+        <!--PRECO CUSTO DO PRODUTO-->
         <div class="col-2">
-            <div class="input-group mt-1">
+            <div class="input-group mt-1 w-75">
                 <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.custoInsumosCadastroProdutos}" disabled>
             </div>
         </div>
+
+        <!--PRECO VENDA DO PRODUTO-->
         <div class="col-2">
-            <div class="input-group mt-1">
+            <div class="input-group mt-1 w-75">
                 <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
                 <input type="text" class="form-control text-center" value="${produto.precoVendaShopeeCadastroProduto}" disabled>
             </div>
         </div>
-        <div class="col-1">
-            <input type="text" class="form-control text-center mt-1" value="${produto.percentualLucroShopeeCadastroInsumo}" disabled>
+
+        <!--PERCENTUAL DE LUCRO-->
+        <div class="col-2">
+            <input type="text" class="form-control mt-1 text-center w-50" value="${produto.percentualLucroShopeeCadastroInsumo}" disabled>
         </div>
-        <div class="col">
-            <button class="btn btn-primary mt-1" onclick="abrirModalProduto('${produto.codigoCadastroProduto}')">
+
+        <!--BOTÕES-->
+        <div class="col-1">
+            <button class="btn btn-sm btn-primary mt-1" onclick="abrirModalProduto('${produto.codigoCadastroProduto}')">
                 <i class="fa fa-eye"></i>
             </button>
-            <button class="btn btn-danger mt-1" onclick="deletarProduto('${produto.codigoCadastroProduto}')">
+            <button class="btn btn-sm  btn-danger mt-1" onclick="deletarProduto('${produto.codigoCadastroProduto}')">
                 <i class="fa fa-trash"></i>
             </button>
         </div>
@@ -403,9 +467,7 @@ function exibirProdutoCadastrado(produto) {
     exibicaoProdutosCadastrados.appendChild(row);
 }
 
-// =====================================================
 // DELETAR PRODUTO
-// =====================================================
 function deletarProduto(codigoProduto) {
     const index = listaCadastroProdutos.findIndex(p => p.codigoCadastroProduto === codigoProduto);
     if (index > -1) {
@@ -415,9 +477,7 @@ function deletarProduto(codigoProduto) {
     }
 }
 
-// =====================================================
 // ABRIR MODAL PRODUTO
-// =====================================================
 function abrirModalProduto(codigoProduto) {
     const produto = listaCadastroProdutos.find(p => p.codigoCadastroProduto === codigoProduto);
     if (!produto) return alert('Produto não encontrado.');
@@ -443,11 +503,14 @@ function abrirModalProduto(codigoProduto) {
 
     congelarInputs();
 
+    // Mostrar modal
     const modal = new bootstrap.Modal(document.getElementById('modalCadastroProduto'));
     modal.show();
 
-    calculaTaxaShopee();
+    // ⚡ Chamar cálculo imediatamente
+    calculaTaxas();
 }
+
 
 // =====================================================
 // FUNÇÕES AUXILIARES
@@ -507,6 +570,338 @@ function descongelarInputs() {
 }
 
 // =====================================================
+// CAPAS
+
+// Função para salvar as capas
+// Função para salvar as capas
+function adicionarCadastroCapasProduto() {
+    const nomeProduto = "Todos";
+    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
+
+    // Validação da variação da capa
+    if (!variacaoCapa || variacaoCapa === '-' || variacaoCapa === '') {
+        alert("Por favor, selecione uma variação da capa.");
+        return;
+    }
+
+    // Checar os inputs de imagem
+    const imagemProduto1 = document.getElementById("imagemProduto1").files[0];
+    const imagemProduto2 = document.getElementById("imagemProduto2").files[0];
+    const imagemProduto3 = document.getElementById("imagemProduto3").files[0];
+
+    // Array para armazenar os cards que possuem imagem
+    const imagensSelecionadas = [
+        { input: imagemProduto1, card: 1 },
+        { input: imagemProduto2, card: 2 },
+        { input: imagemProduto3, card: 3 }
+    ];
+
+    const imagensPreenchidas = imagensSelecionadas.filter(imagem => imagem.input);
+
+    // Validação: ao menos uma imagem deve ser selecionada
+    if (imagensPreenchidas.length === 0) {
+        alert("Por favor, selecione pelo menos uma imagem nos cards.");
+        return;
+    }
+
+    // Verifica se os cards foram preenchidos de forma sequencial
+    const primeirosCards = imagensPreenchidas.map(imagem => imagem.card);
+    const cardsSequenciais = [1, 2, 3];
+    const isSequencial = primeirosCards.every((value, index) => value === cardsSequenciais[index]);
+
+    if (!isSequencial) {
+        alert("Por favor, insira as imagens de forma sequencial nos cards (Card 1, 2, 3).");
+        return;
+    }
+
+    // Recupera as capas já cadastradas no localStorage
+    const listaCapasProduto = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+
+    // Filtra as capas existentes para a variação selecionada
+    const capasExistentes = listaCapasProduto.filter(capa => capa.variacaoCapa === variacaoCapa);
+
+    // Calcula o número de capas já cadastradas para a variação selecionada
+    const numCapas = capasExistentes.length;
+
+    // Salvar as capas que foram preenchidas
+    imagensPreenchidas.forEach(imagem => {
+        const cardNumber = imagem.card;
+        const file = imagem.input;
+
+        const capa = {
+            nomeProduto: nomeProduto,  // Agora sempre será "Todos"
+            variacaoCapa: variacaoCapa, // Agora também armazenando a variação da capa
+            numeroCapa: numCapas + cardNumber, // Sequencial: número já calculado + 1 para cada card
+            imagem: URL.createObjectURL(file) // Criando URL da imagem
+        };
+
+        listaCapasProduto.push(capa);
+        localStorage.setItem("ListaCapasProdutos", JSON.stringify(listaCapasProduto));
+    });
+
+    alert("Capas salvas com sucesso!");
+
+    // Fechar o modal após salvar
+    const modal = new bootstrap.Modal(document.getElementById('modalCadastroCapasProduto'));
+    modal.hide();
+
+    // Atualizar a galeria de capas
+    atualizarGaleriaCapas();
+
+    // Resetar os campos após salvar
+    resetarCamposCapas();
+}
+
+// Função para resetar os campos após salvar
+function resetarCamposCapas() {
+    document.getElementById('variacaoCapa').value = '';
+    document.getElementById("imagemProduto1").value = '';
+    document.getElementById("imagemProduto2").value = '';
+    document.getElementById("imagemProduto3").value = '';
+    document.getElementById("inputNumeroCapa1").value = '';
+    document.getElementById("inputNumeroCapa2").value = '';
+    document.getElementById("inputNumeroCapa3").value = '';
+    document.getElementById("previewImagemProduto1").style.display = 'none';
+    document.getElementById("previewImagemProduto2").style.display = 'none';
+    document.getElementById("previewImagemProduto3").style.display = 'none';
+}
+function irParaGaleriaCapas() {
+    window.location.href = "/MONIKRIATIVA/html/galeriaCapas.html";
+}
+
+// Função para carregar as capas ao abrir a página
+function carregarCapas() {
+    // Recupera as capas salvas do localStorage
+    const listaCapasProduto = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+
+    // Filtra as capas por variação e ordena por numeroCapa
+    const capasFeminino = listaCapasProduto.filter(capa => capa.variacaoCapa === "Feminino").sort((a, b) => a.numeroCapa - b.numeroCapa);
+    const capasMasculino = listaCapasProduto.filter(capa => capa.variacaoCapa === "Masculino").sort((a, b) => a.numeroCapa - b.numeroCapa);
+
+    // Função para gerar os cards
+    function gerarCards(capas, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ""; // Limpa o conteúdo existente
+
+        // Cria o card para cada capa
+        capas.forEach(capa => {
+            const divCard = document.createElement("div");
+            divCard.classList.add("col-4");
+
+            divCard.innerHTML = `
+                <div class="card mb-4">
+                    <img src="${capa.imagem}" class="card-img-top" alt="Imagem da capa">
+                    <div class="card-body">
+                        <h5 class="card-title">Numº da Capa: ${capa.numeroCapa}</h5>
+                        <p class="card-text">Variação: ${capa.variacaoCapa}</p>
+                        <p class="card-text">Produto: ${capa.nomeProduto}</p>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(divCard);
+        });
+    }
+
+    // Carregar as capas nos contêineres correspondentes
+    gerarCards(capasFeminino, "exibicaoCapasFeminino");
+    gerarCards(capasMasculino, "exibicaoCapasMasculino");
+}
+
+// Chama a função ao carregar a página
+window.onload = carregarCapas;
+
+// Função para pré-visualizar a imagem
+function previewImagemCard(cardNumber) {
+    const inputFile = document.getElementById(`imagemProduto${cardNumber}`);
+    const previewImage = document.getElementById(`previewImagemProduto${cardNumber}`);
+
+    const file = inputFile.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            previewImage.src = event.target.result;
+            previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        previewImage.style.display = 'none';
+    }
+}
+
+// Adicionando a chamada da função de pré-visualização de imagem
+document.getElementById("imagemProduto1").addEventListener('change', () => previewImagemCard(1));
+document.getElementById("imagemProduto2").addEventListener('change', () => previewImagemCard(2));
+document.getElementById("imagemProduto3").addEventListener('change', () => previewImagemCard(3));
+
+// Função para resetar os campos após salvar
+function resetarCamposCapas() {
+    document.getElementById('variacaoCapa').value = '';
+
+    document.getElementById("imagemProduto1").value = '';
+    document.getElementById("imagemProduto2").value = '';
+    document.getElementById("imagemProduto3").value = '';
+
+    document.getElementById("inputNumeroCapa1").value = '';
+    document.getElementById("inputNumeroCapa2").value = '';
+    document.getElementById("inputNumeroCapa3").value = '';
+
+    document.getElementById("previewImagemProduto1").style.display = 'none';
+    document.getElementById("previewImagemProduto2").style.display = 'none';
+    document.getElementById("previewImagemProduto3").style.display = 'none';
+}
+
+// Função para limpar os campos de cada card individualmente
+function limparCamposCard(cardNumber) {
+    const imagemInput = document.getElementById(`imagemProduto${cardNumber}`);
+    imagemInput.value = '';
+
+    const previewImagem = document.getElementById(`previewImagemProduto${cardNumber}`);
+    previewImagem.style.display = 'none';  
+    previewImagem.src = '';  
+}
+
+// Função para atualizar os números das capas com base na variação
+function atualizarNumerosCapas() {
+    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
+    console.log("Variação selecionada:", variacaoCapa); // Cheque aqui se a variação é capturada corretamente
+
+    if (!variacaoCapa || variacaoCapa === '-') {
+        console.log("Variação não selecionada.");
+        return;
+    }
+
+    // Recuperando a lista do LocalStorage
+    const listaCapasProduto = JSON.parse(localStorage.getItem("ListaCapasProdutos"));
+    if (!listaCapasProduto) {
+        console.log("LocalStorage está vazio ou não contém 'ListaCapasProdutos'.");
+    } else {
+        console.log("Lista de capas no LocalStorage:", listaCapasProduto);
+    }
+
+    const capasExistentes = listaCapasProduto ? listaCapasProduto.filter(capa => capa.variacaoCapa === variacaoCapa) : [];
+    console.log("Capas existentes para a variação:", capasExistentes);
+
+    const numCapas = capasExistentes.length;
+    console.log("Número de capas existentes para a variação:", numCapas);
+
+    // Atualizando os campos de números de capa
+    for (let i = 1; i <= 3; i++) {
+        const inputNumeroCapa = document.getElementById(`inputNumeroCapa${i}`);
+        if (inputNumeroCapa) {
+            inputNumeroCapa.value = numCapas + i;
+            console.log(`Capa ${i} Número atualizado para:`, numCapas + i);
+        } else {
+            console.log(`Elemento inputNumeroCapa${i} não encontrado.`);
+        }
+    }
+}
+
+function adicionarCadastroCapasProduto() {
+    // Definir "Todos" como o nome do produto
+    const nomeProduto = "Todos";
+    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
+
+    // Validação da variação da capa
+    if (!variacaoCapa || variacaoCapa === '-' || variacaoCapa === '') {
+        alert("Por favor, selecione uma variação da capa.");
+        return;
+    }
+
+    // Checar os inputs de imagem
+    const imagemProduto1 = document.getElementById("imagemProduto1").files[0];
+    const imagemProduto2 = document.getElementById("imagemProduto2").files[0];
+    const imagemProduto3 = document.getElementById("imagemProduto3").files[0];
+
+    // Array para armazenar os cards que possuem imagem
+    const imagensSelecionadas = [
+        { input: imagemProduto1, card: 1 },
+        { input: imagemProduto2, card: 2 },
+        { input: imagemProduto3, card: 3 }
+    ];
+
+    const imagensPreenchidas = imagensSelecionadas.filter(imagem => imagem.input);
+
+    // Validação: ao menos uma imagem deve ser selecionada
+    if (imagensPreenchidas.length === 0) {
+        alert("Por favor, selecione pelo menos uma imagem nos cards.");
+        return;
+    }
+
+    // Verifica se os cards foram preenchidos de forma sequencial
+    const primeirosCards = imagensPreenchidas.map(imagem => imagem.card);
+    const cardsSequenciais = [1, 2, 3];
+    const isSequencial = primeirosCards.every((value, index) => value === cardsSequenciais[index]);
+
+    if (!isSequencial) {
+        alert("Por favor, insira as imagens de forma sequencial nos cards (Card 1, 2, 3).");
+        return;
+    }
+
+    // Salvar as capas que foram preenchidas
+    imagensPreenchidas.forEach(imagem => {
+        const cardNumber = imagem.card;
+        const file = imagem.input;
+
+        const capa = {
+            nomeProduto: nomeProduto,  // Agora sempre será "Todos"
+            variacaoCapa: variacaoCapa, // Agora também armazenando a variação da capa
+            numeroCapa: document.getElementById(`inputNumeroCapa${cardNumber}`).value,
+            imagem: URL.createObjectURL(file) // Criando URL da imagem
+        };
+
+        // Adiciona a capa no array e no localStorage
+        const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+        listaCapasProdutos.push(capa);
+        localStorage.setItem("ListaCapasProdutos", JSON.stringify(listaCapasProdutos));
+    });
+
+    alert("Capas salvas com sucesso!");
+
+    // Fechar o modal após salvar
+    const modal = new bootstrap.Modal(document.getElementById('modalCadastroCapasProduto'));
+    modal.hide();
+
+    // Atualizar a galeria de capas
+    atualizarGaleriaCapas();
+
+    // Resetar os campos após salvar
+    resetarCamposCapas();
+
+    console.log(listaCapasProdutos)
+}
+
+// Carregar as capas ao carregar a página
+window.onload = carregarCapas;
+
+
+
+// Função para pré-visualizar a imagem
+function previewImagemCard(cardNumber) {
+    const inputFile = document.getElementById(`imagemProduto${cardNumber}`);
+    const previewImage = document.getElementById(`previewImagemProduto${cardNumber}`);
+
+    const file = inputFile.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            previewImage.src = event.target.result;
+            previewImage.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else {
+        previewImage.style.display = 'none';
+    }
+}
+
+// Adicionando a chamada da função de pré-visualização de imagem
+document.getElementById("imagemProduto1").addEventListener('change', () => previewImagemCard(1));
+document.getElementById("imagemProduto2").addEventListener('change', () => previewImagemCard(2));
+document.getElementById("imagemProduto3").addEventListener('change', () => previewImagemCard(3));
+
+
+
+// =====================================================
 // INICIALIZAÇÃO
 // =====================================================
 window.addEventListener('load', () => {
@@ -517,4 +912,9 @@ window.addEventListener('load', () => {
     muda_badge();
     balancarSino();
     atualizaDataCadastroProduto();
+    atualizarSelectProdutosCapas();
+
+    /*const ModalReal = document.getElementById('modalCadastroCapasProduto');
+    const Modal = new bootstrap.Modal(ModalReal);
+    Modal.show();*/
 });
