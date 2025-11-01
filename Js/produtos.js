@@ -571,195 +571,16 @@ function descongelarInputs() {
 
 // =====================================================
 // CAPAS
-
-// Função para salvar as capas
-// Função para salvar as capas
-function adicionarCadastroCapasProduto() {
-    const nomeProduto = "Todos";
-    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
-
-    // Validação da variação da capa
-    if (!variacaoCapa || variacaoCapa === '-' || variacaoCapa === '') {
-        alert("Por favor, selecione uma variação da capa.");
-        return;
-    }
-
-    // Checar os inputs de imagem
-    const imagemProduto1 = document.getElementById("imagemProduto1").files[0];
-    const imagemProduto2 = document.getElementById("imagemProduto2").files[0];
-    const imagemProduto3 = document.getElementById("imagemProduto3").files[0];
-
-    // Array para armazenar os cards que possuem imagem
-    const imagensSelecionadas = [
-        { input: imagemProduto1, card: 1 },
-        { input: imagemProduto2, card: 2 },
-        { input: imagemProduto3, card: 3 }
-    ];
-
-    const imagensPreenchidas = imagensSelecionadas.filter(imagem => imagem.input);
-
-    // Validação: ao menos uma imagem deve ser selecionada
-    if (imagensPreenchidas.length === 0) {
-        alert("Por favor, selecione pelo menos uma imagem nos cards.");
-        return;
-    }
-
-    // Verifica se os cards foram preenchidos de forma sequencial
-    const primeirosCards = imagensPreenchidas.map(imagem => imagem.card);
-    const cardsSequenciais = [1, 2, 3];
-    const isSequencial = primeirosCards.every((value, index) => value === cardsSequenciais[index]);
-
-    if (!isSequencial) {
-        alert("Por favor, insira as imagens de forma sequencial nos cards (Card 1, 2, 3).");
-        return;
-    }
-
-    // Recupera as capas já cadastradas no localStorage
-    const listaCapasProduto = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
-
-    // Filtra as capas existentes para a variação selecionada
-    const capasExistentes = listaCapasProduto.filter(capa => capa.variacaoCapa === variacaoCapa);
-
-    // Calcula o número de capas já cadastradas para a variação selecionada
-    const numCapas = capasExistentes.length;
-
-    // Salvar as capas que foram preenchidas
-    imagensPreenchidas.forEach(imagem => {
-        const cardNumber = imagem.card;
-        const file = imagem.input;
-
-        const capa = {
-            nomeProduto: nomeProduto,  // Agora sempre será "Todos"
-            variacaoCapa: variacaoCapa, // Agora também armazenando a variação da capa
-            numeroCapa: numCapas + cardNumber, // Sequencial: número já calculado + 1 para cada card
-            imagem: URL.createObjectURL(file) // Criando URL da imagem
-        };
-
-        listaCapasProduto.push(capa);
-        localStorage.setItem("ListaCapasProdutos", JSON.stringify(listaCapasProduto));
-    });
-
-    alert("Capas salvas com sucesso!");
-
-    // Fechar o modal após salvar
-    const modal = new bootstrap.Modal(document.getElementById('modalCadastroCapasProduto'));
-    modal.hide();
-
-    // Atualizar a galeria de capas
-    atualizarGaleriaCapas();
-
-    // Resetar os campos após salvar
-    resetarCamposCapas();
-}
-
-// Função para resetar os campos após salvar
-function resetarCamposCapas() {
-    document.getElementById('variacaoCapa').value = '';
-    document.getElementById("imagemProduto1").value = '';
-    document.getElementById("imagemProduto2").value = '';
-    document.getElementById("imagemProduto3").value = '';
-    document.getElementById("inputNumeroCapa1").value = '';
-    document.getElementById("inputNumeroCapa2").value = '';
-    document.getElementById("inputNumeroCapa3").value = '';
-    document.getElementById("previewImagemProduto1").style.display = 'none';
-    document.getElementById("previewImagemProduto2").style.display = 'none';
-    document.getElementById("previewImagemProduto3").style.display = 'none';
-}
-function irParaGaleriaCapas() {
-    window.location.href = "/MONIKRIATIVA/html/galeriaCapas.html";
-}
-
-// Função para carregar as capas ao abrir a página
-function carregarCapas() {
-    // Recupera as capas salvas do localStorage
-    const listaCapasProduto = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
-
-    // Filtra as capas por variação e ordena por numeroCapa
-    const capasFeminino = listaCapasProduto.filter(capa => capa.variacaoCapa === "Feminino").sort((a, b) => a.numeroCapa - b.numeroCapa);
-    const capasMasculino = listaCapasProduto.filter(capa => capa.variacaoCapa === "Masculino").sort((a, b) => a.numeroCapa - b.numeroCapa);
-
-    // Função para gerar os cards
-    function gerarCards(capas, containerId) {
-        const container = document.getElementById(containerId);
-        container.innerHTML = ""; // Limpa o conteúdo existente
-
-        // Cria o card para cada capa
-        capas.forEach(capa => {
-            const divCard = document.createElement("div");
-            divCard.classList.add("col-4");
-
-            divCard.innerHTML = `
-                <div class="card mb-4">
-                    <img src="${capa.imagem}" class="card-img-top" alt="Imagem da capa">
-                    <div class="card-body">
-                        <h5 class="card-title">Numº da Capa: ${capa.numeroCapa}</h5>
-                        <p class="card-text">Variação: ${capa.variacaoCapa}</p>
-                        <p class="card-text">Produto: ${capa.nomeProduto}</p>
-                    </div>
-                </div>
-            `;
-
-            container.appendChild(divCard);
-        });
-    }
-
-    // Carregar as capas nos contêineres correspondentes
-    gerarCards(capasFeminino, "exibicaoCapasFeminino");
-    gerarCards(capasMasculino, "exibicaoCapasMasculino");
-}
-
 // Chama a função ao carregar a página
-window.onload = carregarCapas;
-
-// Função para pré-visualizar a imagem
-function previewImagemCard(cardNumber) {
-    const inputFile = document.getElementById(`imagemProduto${cardNumber}`);
-    const previewImage = document.getElementById(`previewImagemProduto${cardNumber}`);
-
-    const file = inputFile.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            previewImage.src = event.target.result;
-            previewImage.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-    } else {
-        previewImage.style.display = 'none';
-    }
-}
+window.onload = function() {
+    carregarCapasMasculinas();
+    carregarCapasFemininas();
+};
 
 // Adicionando a chamada da função de pré-visualização de imagem
 document.getElementById("imagemProduto1").addEventListener('change', () => previewImagemCard(1));
 document.getElementById("imagemProduto2").addEventListener('change', () => previewImagemCard(2));
 document.getElementById("imagemProduto3").addEventListener('change', () => previewImagemCard(3));
-
-// Função para resetar os campos após salvar
-function resetarCamposCapas() {
-    document.getElementById('variacaoCapa').value = '';
-
-    document.getElementById("imagemProduto1").value = '';
-    document.getElementById("imagemProduto2").value = '';
-    document.getElementById("imagemProduto3").value = '';
-
-    document.getElementById("inputNumeroCapa1").value = '';
-    document.getElementById("inputNumeroCapa2").value = '';
-    document.getElementById("inputNumeroCapa3").value = '';
-
-    document.getElementById("previewImagemProduto1").style.display = 'none';
-    document.getElementById("previewImagemProduto2").style.display = 'none';
-    document.getElementById("previewImagemProduto3").style.display = 'none';
-}
-
-// Função para limpar os campos de cada card individualmente
-function limparCamposCard(cardNumber) {
-    const imagemInput = document.getElementById(`imagemProduto${cardNumber}`);
-    imagemInput.value = '';
-
-    const previewImagem = document.getElementById(`previewImagemProduto${cardNumber}`);
-    previewImagem.style.display = 'none';  
-    previewImagem.src = '';  
-}
 
 // Função para atualizar os números das capas com base na variação
 function atualizarNumerosCapas() {
@@ -797,85 +618,6 @@ function atualizarNumerosCapas() {
     }
 }
 
-function adicionarCadastroCapasProduto() {
-    // Definir "Todos" como o nome do produto
-    const nomeProduto = "Todos";
-    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
-
-    // Validação da variação da capa
-    if (!variacaoCapa || variacaoCapa === '-' || variacaoCapa === '') {
-        alert("Por favor, selecione uma variação da capa.");
-        return;
-    }
-
-    // Checar os inputs de imagem
-    const imagemProduto1 = document.getElementById("imagemProduto1").files[0];
-    const imagemProduto2 = document.getElementById("imagemProduto2").files[0];
-    const imagemProduto3 = document.getElementById("imagemProduto3").files[0];
-
-    // Array para armazenar os cards que possuem imagem
-    const imagensSelecionadas = [
-        { input: imagemProduto1, card: 1 },
-        { input: imagemProduto2, card: 2 },
-        { input: imagemProduto3, card: 3 }
-    ];
-
-    const imagensPreenchidas = imagensSelecionadas.filter(imagem => imagem.input);
-
-    // Validação: ao menos uma imagem deve ser selecionada
-    if (imagensPreenchidas.length === 0) {
-        alert("Por favor, selecione pelo menos uma imagem nos cards.");
-        return;
-    }
-
-    // Verifica se os cards foram preenchidos de forma sequencial
-    const primeirosCards = imagensPreenchidas.map(imagem => imagem.card);
-    const cardsSequenciais = [1, 2, 3];
-    const isSequencial = primeirosCards.every((value, index) => value === cardsSequenciais[index]);
-
-    if (!isSequencial) {
-        alert("Por favor, insira as imagens de forma sequencial nos cards (Card 1, 2, 3).");
-        return;
-    }
-
-    // Salvar as capas que foram preenchidas
-    imagensPreenchidas.forEach(imagem => {
-        const cardNumber = imagem.card;
-        const file = imagem.input;
-
-        const capa = {
-            nomeProduto: nomeProduto,  // Agora sempre será "Todos"
-            variacaoCapa: variacaoCapa, // Agora também armazenando a variação da capa
-            numeroCapa: document.getElementById(`inputNumeroCapa${cardNumber}`).value,
-            imagem: URL.createObjectURL(file) // Criando URL da imagem
-        };
-
-        // Adiciona a capa no array e no localStorage
-        const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
-        listaCapasProdutos.push(capa);
-        localStorage.setItem("ListaCapasProdutos", JSON.stringify(listaCapasProdutos));
-    });
-
-    alert("Capas salvas com sucesso!");
-
-    // Fechar o modal após salvar
-    const modal = new bootstrap.Modal(document.getElementById('modalCadastroCapasProduto'));
-    modal.hide();
-
-    // Atualizar a galeria de capas
-    atualizarGaleriaCapas();
-
-    // Resetar os campos após salvar
-    resetarCamposCapas();
-
-    console.log(listaCapasProdutos)
-}
-
-// Carregar as capas ao carregar a página
-window.onload = carregarCapas;
-
-
-
 // Função para pré-visualizar a imagem
 function previewImagemCard(cardNumber) {
     const inputFile = document.getElementById(`imagemProduto${cardNumber}`);
@@ -894,16 +636,203 @@ function previewImagemCard(cardNumber) {
     }
 }
 
-// Adicionando a chamada da função de pré-visualização de imagem
-document.getElementById("imagemProduto1").addEventListener('change', () => previewImagemCard(1));
-document.getElementById("imagemProduto2").addEventListener('change', () => previewImagemCard(2));
-document.getElementById("imagemProduto3").addEventListener('change', () => previewImagemCard(3));
+// Função para resetar os campos após salvar
+function resetarCamposCapas() {
+    document.getElementById('variacaoCapa').value = '';
+
+    document.getElementById("imagemProduto1").value = '';
+    document.getElementById("imagemProduto2").value = '';
+    document.getElementById("imagemProduto3").value = '';
+
+    document.getElementById("inputNumeroCapa1").value = '';
+    document.getElementById("inputNumeroCapa2").value = '';
+    document.getElementById("inputNumeroCapa3").value = '';
+
+    document.getElementById("previewImagemProduto1").style.display = 'none';
+    document.getElementById("previewImagemProduto2").style.display = 'none';
+    document.getElementById("previewImagemProduto3").style.display = 'none';
+}
+
+// Função para limpar os campos de cada card individualmente
+function limparCamposCard(cardNumber) {
+    const imagemInput = document.getElementById(`imagemProduto${cardNumber}`);
+    imagemInput.value = '';
+
+    const previewImagem = document.getElementById(`previewImagemProduto${cardNumber}`);
+    previewImagem.style.display = 'none';  
+    previewImagem.src = '';  
+}
+
+// Função para Salvar o Cadastro da Capa
+function adicionarCadastroCapasProduto() {
+    const nomeProduto = "Todos";
+    const variacaoCapa = document.getElementById("variacaoCapa").value.trim();
+
+    if (!variacaoCapa || variacaoCapa === '-' || variacaoCapa === '') {
+        alert("Por favor, selecione uma variação da capa.");
+        return;
+    }
+
+    const imagensSelecionadas = [
+        { input: document.getElementById("imagemProduto1").files[0], card: 1 },
+        { input: document.getElementById("imagemProduto2").files[0], card: 2 },
+        { input: document.getElementById("imagemProduto3").files[0], card: 3 }
+    ];
+
+    const imagensPreenchidas = imagensSelecionadas.filter(imagem => imagem.input);
+
+    if (imagensPreenchidas.length === 0) {
+        alert("Por favor, selecione pelo menos uma imagem nos cards.");
+        return;
+    }
+
+    const primeirosCards = imagensPreenchidas.map(imagem => imagem.card);
+    const cardsSequenciais = [1, 2, 3];
+    const isSequencial = primeirosCards.every((value, index) => value === cardsSequenciais[index]);
+
+    if (!isSequencial) {
+        alert("Por favor, insira as imagens de forma sequencial nos cards (Card 1, 2, 3).");
+        return;
+    }
+
+    // Processa todas as imagens e salva
+    const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+
+    let imagensConvertidas = 0;
+
+    imagensPreenchidas.forEach(imagem => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const capa = {
+                nomeProduto: nomeProduto,
+                variacaoCapa: variacaoCapa,
+                numeroCapa: document.getElementById(`inputNumeroCapa${imagem.card}`).value,
+                imagem: event.target.result // 🔥 Base64 armazenado aqui
+            };
+
+            listaCapasProdutos.push(capa);
+            imagensConvertidas++;
+
+            // Quando todas as imagens terminarem de ser lidas
+            if (imagensConvertidas === imagensPreenchidas.length) {
+                localStorage.setItem("ListaCapasProdutos", JSON.stringify(listaCapasProdutos));
+                alert("Capas salvas com sucesso!");
+
+                // Fecha o modal
+                const modal = new bootstrap.Modal(document.getElementById('modalCadastroCapasProduto'));
+                modal.hide();
+
+                resetarCamposCapas();
+            }
+        };
+
+        reader.readAsDataURL(imagem.input); // 👈 converte para Base64
+    });
+}
+
+function irParaGaleriaCapas() {
+    window.location.href = "/MONIKRIATIVA/html/galeriaCapas.html";
+}
+
+//==================================================
+//CARREGAR CAPAS FEMININAS E MASCULINAS
+
+function carregarCapasFemininas() {
+    // Garante que a lista exista
+    const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+    const capasFemininas = listaCapasProdutos.filter(capa => capa.variacaoCapa === "Feminino");
+
+    console.log("Total de capas femininas:", capasFemininas.length);
+
+    const campoExibicaoCapasFemininas = document.getElementById('campoExibicaoCapasFemininas');
+    if (!campoExibicaoCapasFemininas) {
+        console.error("Elemento #campoExibicaoCapasFemininas não encontrado no HTML!");
+        return;
+    }
+
+    campoExibicaoCapasFemininas.innerHTML = ""; // limpa antes de adicionar novas
+
+    for (let i = 0; i < capasFemininas.length; i++) {
+        const capa = capasFemininas[i];
+
+        const divCard = document.createElement("div");
+        divCard.classList.add("card", "m-2");
+        divCard.style.width = "15rem";
+        divCard.style.height = "25rem";
+
+        divCard.innerHTML = `
+            <div class="card-header text-center">
+                <span class="label-format">
+                    MODELO ID ${capa.numeroCapa || i + 1} - ${capa.variacaoCapa || "Sem Variação"}
+                </span>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center m-auto">
+                <img src="${capa.imagem || 'https://via.placeholder.com/150'}"
+                     alt="Imagem da capa"
+                     class="card-img-top mb-2"
+                     style="max-height: 400px; object-fit: contain;">
+            </div>
+            <div class="card-footer d-flex justify-content-center gap-2 py-3">
+                <button class="btn btn-sm btn-secondary"><i class="fa fa-eye"></i></button>
+                <button class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            </div>
+        `;
+
+        campoExibicaoCapasFemininas.appendChild(divCard);
+    }
+}
+function carregarCapasMasculinas() {
+    // Garante que a lista exista
+    const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+    const capasMasculinas = listaCapasProdutos.filter(capa => capa.variacaoCapa === "Masculino");
+
+    console.log("Total de capas Masculinas:", capasMasculinas.length);
+
+    const campoExibicaoCapasMasculinas = document.getElementById('campoExibicaoCapasMasculinas');
+    if (!campoExibicaoCapasMasculinas) {
+        console.error("Elemento #campoExibicaoCapasMasculinas não encontrado no HTML!");
+        return;
+    }
+
+    campoExibicaoCapasMasculinas.innerHTML = ""; // limpa antes de adicionar novas
+
+    for (let i = 0; i < capasMasculinas.length; i++) {
+        const capa = capasMasculinas[i];
+
+        const divCard = document.createElement("div");
+        divCard.classList.add("card", "m-2");
+        divCard.style.width = "15rem";
+        divCard.style.height = "25rem";
+
+        divCard.innerHTML = `
+            <div class="card-header text-center">
+                <span class="label-format">
+                    MODELO ID ${capa.numeroCapa || i + 1} - ${capa.variacaoCapa || "Sem Variação"}
+                </span>
+            </div>
+            <div class="card-body d-flex align-items-center justify-content-center m-auto">
+                <img src="${capa.imagem || 'https://via.placeholder.com/150'}"
+                     alt="Imagem da capa"
+                     class="card-img-top mb-2"
+                     style="max-height: 400px; object-fit: contain;
+                     border-radius: 20px 20px 10px 80px">
+            </div>
+            <div class="card-footer d-flex justify-content-center gap-2 py-3">
+                <button class="btn btn-sm btn-secondary"><i class="fa fa-eye"></i></button>
+                <button class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></button>
+                <button class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+            </div>
+        `;
+
+        campoExibicaoCapasMasculinas.appendChild(divCard);
+    }
+}
+//==================================================
 
 
 
-// =====================================================
 // INICIALIZAÇÃO
-// =====================================================
 window.addEventListener('load', () => {
     renderizarCategorias();
     atualizarSelectCategorias();
@@ -918,3 +847,7 @@ window.addEventListener('load', () => {
     const Modal = new bootstrap.Modal(ModalReal);
     Modal.show();*/
 });
+
+// Chama ao carregar a página
+document.addEventListener("DOMContentLoaded", carregarCapasFemininas);
+document.addEventListener("DOMContentLoaded", carregarCapasMasculinas);

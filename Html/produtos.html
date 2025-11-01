@@ -213,12 +213,16 @@
                                                 <button class="btn btn-success"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalCadastroCapasProduto"
-                                                    onclick="atualizaDataCadastroProduto(), atualizarNumerosCapas();"></i>
+                                                    onclick="atualizaDataCadastroProduto(),
+                                                    atualizarNumerosCapas();"></i>
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Capas</span>
                                                 </button>
                                                 
-                                                <button class="btn btn-danger" onclick="irParaGaleriaCapas()" id="btngaleriaCapas">
+                                                <button class="btn btn-danger" onclick="irParaGaleriaCapas(),
+                                                carregarCapasFemininas(), 
+                                                carregarCapasMasculinas()" 
+                                                id="btngaleriaCapas">
                                                     <i class="fa-regular fa-images"></i>
                                                     <span>&nbsp;&nbsp;Galeria de Capas</span>
                                                 </button>
@@ -245,9 +249,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row" id="exibicaoProdutosCadastrados">
-
-                                            </div>
+                                            <div class="row" id="exibicaoProdutosCadastrados"></div>
                                         </div>
                                     </div>
                                 </div>
