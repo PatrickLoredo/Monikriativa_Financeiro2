@@ -52,7 +52,9 @@
 }
 #button-shopee,
 #button-whatsapp,
-#button-Elo7{
+#button-Elo7,
+#btnFemininoCapas #buttonCapasFemininas,
+#btnMasculinoCapas #buttonCapasMasculinas{
     float: right;
     position: fixed;
     right: 10px;
@@ -74,6 +76,17 @@
 #button-Elo7:hover{
     transform: scale(1.1);
 }
+#btnFemininoCapas #buttonCapasFemininas{
+    background-color: rgb(255, 124, 146);
+}
+#btnMasculinoCapas #buttonCapasMasculinas{
+    background-color: rgb(124, 159, 255);
+}
+#btnFemininoCapas #buttonCapasFemininas,
+#btnMasculinoCapas #buttonCapasMasculinas{
+    font-size: 1rem;
+    top: 17px;
+}
 
 #button-shopee{
     bottom: 100px;
@@ -86,6 +99,26 @@
     top: 10px;
     right: 70px;
 }
+#btnFemininoCapas #buttonCapasFemininas{
+    right: 400px;
+}
+#btnMasculinoCapas #buttonCapasMasculinas{
+    right: 200px;
+}
+
+#cards-inicial-index .card-principal,
+#cards-inicial-insumos .card-principal,
+#cards-inicial-produtos .card-principal,
+#cards-inicial-vendas .card-principal,
+#btnFemininoCapas #buttonCapasFemininas,
+#btnMasculinoCapas #buttonCapasMasculinas,
+#button-Elo7,
+#button-shopee,
+#button-whatsapp,
+#button-alert-main{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 #cards-inicial-index .card-principal,
 #cards-inicial-insumos .card-principal,
 #cards-inicial-produtos .card-principal,
@@ -223,4 +256,8 @@
 
 .accordion-header > div {
   padding-right: 1rem; /* distancia da borda direita */
+}
+
+#btnFemininoCapas #buttonCapasFemininas{
+
 }

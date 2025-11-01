@@ -750,27 +750,37 @@ function carregarCapasFemininas() {
         return;
     }
 
-    campoExibicaoCapasFemininas.innerHTML = ""; // limpa antes de adicionar novas
+    // Limpa antes de adicionar novas
+    campoExibicaoCapasFemininas.innerHTML = "";
 
+    // Adiciona a classe de grid do Bootstrap
+    campoExibicaoCapasFemininas.classList.add("row", "g-3");
+
+    // Loop para renderizar os cards
     for (let i = 0; i < capasFemininas.length; i++) {
         const capa = capasFemininas[i];
 
-        const divCard = document.createElement("div");
-        divCard.classList.add("card", "m-2");
-        divCard.style.width = "15rem";
-        divCard.style.height = "25rem";
+        // Cria a coluna
+        const divCol = document.createElement("div");
+        divCol.classList.add("col-12", "col-sm-6", "col-md-3"); // 3 por linha em telas médias
 
+        // Cria o card
+        const divCard = document.createElement("div");
+        divCard.classList.add("card", "h-100", "shadow-sm");
+
+        // Monta o conteúdo
         divCard.innerHTML = `
             <div class="card-header text-center">
-                <span class="label-format">
-                    MODELO ID ${capa.numeroCapa || i + 1} - ${capa.variacaoCapa || "Sem Variação"}
+                <span class="label-format fw-bold">
+                    MODELO ${capa.numeroCapa || i + 1}
                 </span>
             </div>
-            <div class="card-body d-flex align-items-center justify-content-center m-auto">
+            <div class="card-body d-flex align-items-center justify-content-center">
                 <img src="${capa.imagem || 'https://via.placeholder.com/150'}"
-                     alt="Imagem da capa"
-                     class="card-img-top mb-2"
-                     style="max-height: 400px; object-fit: contain;">
+                    alt="Imagem da capa"
+                    class="card-img-top"
+                    style="max-height: 350px; object-fit: contain;
+                    border-radius: 40px">
             </div>
             <div class="card-footer d-flex justify-content-center gap-2 py-3">
                 <button class="btn btn-sm btn-secondary"><i class="fa fa-eye"></i></button>
@@ -779,7 +789,9 @@ function carregarCapasFemininas() {
             </div>
         `;
 
-        campoExibicaoCapasFemininas.appendChild(divCard);
+        // Adiciona o card dentro da coluna e depois ao container
+        divCol.appendChild(divCard);
+        campoExibicaoCapasFemininas.appendChild(divCol);
     }
 }
 function carregarCapasMasculinas() {
@@ -795,28 +807,37 @@ function carregarCapasMasculinas() {
         return;
     }
 
-    campoExibicaoCapasMasculinas.innerHTML = ""; // limpa antes de adicionar novas
+    // Limpa antes de adicionar novas
+    campoExibicaoCapasMasculinas.innerHTML = "";
 
+    // Adiciona a classe de grid do Bootstrap
+    campoExibicaoCapasMasculinas.classList.add("row", "g-3");
+
+    // Loop para renderizar os cards
     for (let i = 0; i < capasMasculinas.length; i++) {
         const capa = capasMasculinas[i];
 
-        const divCard = document.createElement("div");
-        divCard.classList.add("card", "m-2");
-        divCard.style.width = "15rem";
-        divCard.style.height = "25rem";
+        // Cria a coluna
+        const divCol = document.createElement("div");
+        divCol.classList.add("col-12", "col-sm-6", "col-md-3"); // 3 por linha em telas médias
 
+        // Cria o card
+        const divCard = document.createElement("div");
+        divCard.classList.add("card", "h-100", "shadow-sm");
+
+        // Monta o conteúdo
         divCard.innerHTML = `
             <div class="card-header text-center">
-                <span class="label-format">
-                    MODELO ID ${capa.numeroCapa || i + 1} - ${capa.variacaoCapa || "Sem Variação"}
+                <span class="label-format fw-bold">
+                    MODELO ${capa.numeroCapa || i + 1}
                 </span>
             </div>
-            <div class="card-body d-flex align-items-center justify-content-center m-auto">
+            <div class="card-body d-flex align-items-center justify-content-center">
                 <img src="${capa.imagem || 'https://via.placeholder.com/150'}"
-                     alt="Imagem da capa"
-                     class="card-img-top mb-2"
-                     style="max-height: 400px; object-fit: contain;
-                     border-radius: 20px 20px 10px 80px">
+                    alt="Imagem da capa"
+                    class="card-img-top"
+                    style="max-height: 350px; object-fit: contain;
+                    border-radius: 40px">
             </div>
             <div class="card-footer d-flex justify-content-center gap-2 py-3">
                 <button class="btn btn-sm btn-secondary"><i class="fa fa-eye"></i></button>
@@ -825,8 +846,24 @@ function carregarCapasMasculinas() {
             </div>
         `;
 
-        campoExibicaoCapasMasculinas.appendChild(divCard);
+        // Adiciona o card dentro da coluna e depois ao container
+        divCol.appendChild(divCard);
+        campoExibicaoCapasMasculinas.appendChild(divCol);
     }
+}
+
+function rolarPara(idDestino) {
+    const destino = document.getElementById(idDestino);
+    if (!destino) return;
+
+    // Calcula a posição com deslocamento de 150px acima
+    const offset = destino.getBoundingClientRect().top + window.scrollY - 70;
+
+    // Rola suavemente até a posição calculada
+    window.scrollTo({
+        top: offset,
+        behavior: 'smooth'
+    });
 }
 //==================================================
 
@@ -847,7 +884,3 @@ window.addEventListener('load', () => {
     const Modal = new bootstrap.Modal(ModalReal);
     Modal.show();*/
 });
-
-// Chama ao carregar a página
-document.addEventListener("DOMContentLoaded", carregarCapasFemininas);
-document.addEventListener("DOMContentLoaded", carregarCapasMasculinas);
