@@ -7,6 +7,9 @@ window.onload = function() {
 
     atualizarCodigoVenda();
 
+    // Chama a função que atualiza o select de produtos
+    atualizarSelectProdutosVendaManual();
+
     modalElement.addEventListener('shown.bs.modal', function () {
         verificaDataEntrega();
     });
@@ -74,6 +77,26 @@ function atualizarCodigoVenda() {
     inputDataVenda.value = dataFormatada;
     inputPesquisaDataVenda.value = dataFormatada;
 }
+
+function atualizarSelectProdutosVendaManual() {
+    const select = document.getElementById("produtoVendaManual");
+    if (!select) return;
+
+    // Limpa o select e adiciona o primeiro item
+    select.innerHTML = '<option value="escolha" selected>Escolha o Produto</option>';
+
+    // Carrega a lista do localStorage
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+
+    // Preenche o select com os produtos
+    listaCadastroProdutos.forEach(produto => {
+        const option = document.createElement("option");
+        option.value = produto.nomeCadastroProduto; // ou produto.id, se você tiver
+        option.textContent = produto.nomeCadastroProduto;
+        select.appendChild(option);
+    });
+}
+
 
 //Filtra a categoria de produto selecionada
 function localizaProduto() {
@@ -259,7 +282,23 @@ function verificaDataEntrega15dias() {
     
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
-    constructor(codigo, codigoPlataforma, dataVenda, dataEntrega, statusProducao, statusEntrega, plataforma, cliente, produto, preco, qtd, desconto, totalm, sexo, modeloCapa, NomePersonalizado, observacao) {
+    constructor(codigo, 
+        codigoPlataforma, 
+        dataVenda, 
+        dataEntrega, 
+        statusProducao, 
+        statusEntrega, 
+        plataforma, 
+        cliente, 
+        produto, 
+        preco, 
+        qtd, 
+        desconto, 
+        totalm, 
+        sexo, 
+        modeloCapa, 
+        NomePersonalizado, 
+        observacao) {
         this.codigo = codigo;
         this.codigoPlataforma = codigoPlataforma;
         this.dataVenda = dataVenda;
@@ -280,7 +319,6 @@ class VendaManual {
     }
 }
 
-//Salva Objeto de Venda Manual no Array e congela campos [OK]
 // Salva Objeto de Venda Manual no Array e congela campos [OK]
 function salvarVendaManual() {
     var codigo = document.getElementById("codigoVendaManual").value;
@@ -359,7 +397,6 @@ function salvarVendaManual() {
 
     console.log(listaVendasManuais);
 }
-
 
 //Limpar campos de Venda Manual [OK]
 function limparVendaManual() {

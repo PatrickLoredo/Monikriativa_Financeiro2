@@ -35,10 +35,11 @@ window.onload = function() {
     }*/
 
     formatarDataCadastroInsumo();
-    mostraCodigoInsumoVariavel();
+    verificaCodigoInsumoVariavel();
     preencherSelectCategoriasInsumo();
     renderizarCategoriasInsumos(); // <--- renderiza os botões na tela
     renderizarListaCategoriasInsumos(); // <--- modal completo
+    
 };
 
 function formatarDataCadastroInsumo() {
@@ -51,16 +52,17 @@ function formatarDataCadastroInsumo() {
     document.getElementById('dataCadastroInsumoVariavel').value = dataFormatada;
 }
 
-function mostraCodigoInsumoVariavel() {
+function verificaCodigoInsumoVariavel() {
     const codigoCadastroInsumoVariavel = document.getElementById('codigoCadastroInsumoVariavel');
-    let proximoCodigo = 1;
 
-    if (listaInsumosVariaveis.length > 0) {
-        const codigos = listaInsumosVariaveis.map(insumo => parseInt(insumo.codigo) || 0);
-        proximoCodigo = Math.max(...codigos) + 1;
-    }
+    if (!window.listaInsumosVariaveis)
+        window.listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 
-    codigoCadastroInsumoVariavel.value = " INSM_VR " + proximoCodigo;
+    const proximoCodigoNumero = listaInsumosVariaveis.length + 1;
+
+    const codigoFormatado = proximoCodigoNumero.toString().padStart(2, "0");
+
+    codigoCadastroInsumoVariavel.value = `INSM_VR ${codigoFormatado}`;
 }
 
 function preencherSelectCategoriasInsumo() {
@@ -79,6 +81,279 @@ function preencherSelectCategoriasInsumo() {
         selectCategoria.appendChild(option);
     });
 }
+
+function calculaPrecoInsumoVariavel() {
+    // Pega os inputs
+    const qtdCompraInput = document.getElementById('qtdCompraCadastroInsumoVariavel');
+    const precoTotalInput = document.getElementById('precoTotalCompraCadastroInsumo');
+    const precoFreteInput = document.getElementById('precoFreteCompraCadastroInsumo');
+    const precoAcrescimoInput = document.getElementById('precoAcrescimoCompraCadastroInsumo');
+    const precoDescontoInput = document.getElementById('precoDescontoCompraCadastroInsumo');
+    const precoUnitInput = document.getElementById('precoUnitarioCompraCadastroInsumo');
+
+    // Substitui vírgula por ponto para float
+    const qtdCompra = parseFloat(qtdCompraInput.value.replace(',', '.')) || 0;
+    const precoTotal = parseFloat(precoTotalInput.value.replace(',', '.')) || 0;
+    const precoFrete = parseFloat(precoFreteInput.value.replace(',', '.')) || 0;
+    const precoAcrescimo = parseFloat(precoAcrescimoInput.value.replace(',', '.')) || 0;
+    const precoDesconto = parseFloat(precoDescontoInput.value.replace(',', '.')) || 0;
+
+    // Calcula preço unitário
+    const precoTotalCompra = (precoTotal + precoFrete + precoAcrescimo) - precoDesconto;
+    const precoUnitario = qtdCompra > 0 ? precoTotalCompra / qtdCompra : 0;
+
+    // Salva no input usando **ponto para cálculo**, vírgula apenas para exibição
+    precoUnitInput.value = precoUnitario.toFixed(2).replace('.', ',');
+}
+
+class InsumoVariavel {
+    constructor(
+        dataCompraInsumoVariavel,
+        codigoInsumoVariavel,
+        nomeInsumoVariavel,
+        fornecedorInsumoVariavel,
+        categoriaInsumoVariavel,
+        qtdcompraInsumoVariavel,
+        precoTotalCompraInsumoVariavel,
+        precoFreteInsumoVariavel,
+        acrescimoInsumoVariavel,
+        descontoInsumoInsumoVariavel,
+        precoUnitarioInsumoVariavel
+    ) {
+        this.dataCompraInsumoVariavel = dataCompraInsumoVariavel;
+        this.codigoInsumoVariavel = codigoInsumoVariavel;
+        this.nomeInsumoVariavel = nomeInsumoVariavel;
+        this.fornecedorInsumoVariavel = fornecedorInsumoVariavel;
+        this.categoriaInsumoVariavel = categoriaInsumoVariavel;
+        this.qtdcompraInsumoVariavel = qtdcompraInsumoVariavel;
+        this.precoTotalCompraInsumoVariavel = precoTotalCompraInsumoVariavel;
+        this.precoFreteInsumoVariavel = precoFreteInsumoVariavel;
+        this.acrescimoInsumoVariavel = acrescimoInsumoVariavel;
+        this.descontoInsumoVariavel = descontoInsumoInsumoVariavel;
+        this.precoUnitarioInsumoVariavel = precoUnitarioInsumoVariavel;
+    }
+}
+
+function salvarInsumoVariavel() {
+    // Carrega lista existente do localStorage
+    if (!window.listaInsumosVariaveis)
+        window.listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+    // 🗓️ Captura e formata a data
+    let data = document.getElementById('dataCadastroInsumoVariavel').value;
+    if (data) {
+        const [ano, mes, dia] = data.split("-");
+        data = `${dia}/${mes}/${ano}`;
+    }
+
+    // 🧾 Captura os campos
+    const codigo = document.getElementById('codigoCadastroInsumoVariavel').value.trim();
+    const nome = document.getElementById('nomeCadastroInsumoVariavel').value.trim();
+    const fornecedor = document.getElementById('fornecedorInsumoVariavel').value.trim();
+    const categoria = document.getElementById('categoriaInsumoVariavel').value.trim();
+
+    // Converte valores numéricos, substituindo vírgula por ponto
+    const qtd = parseFloat(document.getElementById('qtdCompraCadastroInsumoVariavel').value.replace(',', '.')) || 0;
+    const precoTotal = parseFloat(document.getElementById('precoTotalCompraCadastroInsumo').value.replace(',', '.')) || 0;
+    const precoFrete = parseFloat(document.getElementById('precoFreteCompraCadastroInsumo').value.replace(',', '.')) || 0;
+    const precoAcrescimo = parseFloat(document.getElementById('precoAcrescimoCompraCadastroInsumo').value.replace(',', '.')) || 0;
+    const precoDesconto = parseFloat(document.getElementById('precoDescontoCompraCadastroInsumo').value.replace(',', '.')) || 0;
+    const precoUnitario = parseFloat(document.getElementById('precoUnitarioCompraCadastroInsumo').value.replace(',', '.')) || 0;
+
+    // 🛑 Verificação de campos obrigatórios
+    if (!data || !codigo || !nome || !fornecedor || !categoria) {
+        alert("⚠️ Por favor, preencha todos os campos obrigatórios antes de salvar.");
+        return;
+    }
+
+    // 🆕 Cria o novo objeto
+    const novoInsumo = new InsumoVariavel(
+        data,
+        codigo,
+        nome,
+        fornecedor,
+        categoria,
+        qtd,
+        precoTotal,
+        precoFrete,
+        precoAcrescimo,
+        precoDesconto,
+        precoUnitario
+    );
+
+    // 🔍 Verifica se já existe (por código OU nome)
+    const indiceExistente = listaInsumosVariaveis.findIndex(item =>
+        item.codigoInsumoVariavel === codigo || item.nomeInsumoVariavel.toLowerCase() === nome.toLowerCase()
+    );
+
+    if (indiceExistente !== -1) {
+        // 🔁 Atualiza o insumo existente
+        listaInsumosVariaveis[indiceExistente] = novoInsumo;
+        alert(`♻️ O insumo [${nome}] foi atualizado com sucesso!`);
+    } else {
+        // ➕ Adiciona novo insumo
+        listaInsumosVariaveis.push(novoInsumo);
+        alert(`✅ O insumo variável [${nome}] foi cadastrado com sucesso!`);
+    }
+
+    // 💾 Salva no localStorage
+    localStorage.setItem("listaInsumosVariaveis", JSON.stringify(listaInsumosVariaveis));
+
+    console.log("📋 Lista atualizada:", listaInsumosVariaveis);
+
+    // 🔄 Atualiza a exibição imediatamente
+    exibirInsumosVariaveisSalvos();
+
+    // 🧹 Limpa campos e atualiza código/data
+    limpaInsumoVariavel();
+    verificaCodigoInsumoVariavel();
+    atualizaDataInsumoVariavel();
+}
+
+function limpaInsumoVariavel(){
+    document.getElementById('nomeCadastroInsumoVariavel').value = '';
+    document.getElementById('fornecedorInsumoVariavel').value  = '';
+    document.getElementById('categoriaInsumoVariavel').value  = '';
+    document.getElementById('qtdCompraCadastroInsumoVariavel').value = '';
+    document.getElementById('precoTotalCompraCadastroInsumo').value = '';
+    document.getElementById('precoFreteCompraCadastroInsumo').value = "0,00";
+    document.getElementById('precoAcrescimoCompraCadastroInsumo').value = "0,00"
+    document.getElementById('precoDescontoCompraCadastroInsumo').value = "0,00";
+    document.getElementById('precoUnitarioCompraCadastroInsumo').value = '';
+
+    calculaPrecoInsumoVariavel();
+
+}
+
+function editarInsumosVariavel(){
+    document.getElementById('dataCadastroInsumoVariavel').disabled = false;
+    document.getElementById('nomeCadastroInsumoVariavel').disabled = false;
+    document.getElementById('fornecedorInsumoVariavel').disabled = false;
+    document.getElementById('categoriaInsumoVariavel').disabled = false;
+    document.getElementById('qtdCompraCadastroInsumoVariavel').disabled = false;
+    document.getElementById('precoTotalCompraCadastroInsumo').disabled = false;
+    document.getElementById('precoFreteCompraCadastroInsumo').disabled = false;
+    document.getElementById('precoAcrescimoCompraCadastroInsumo').disabled = false;
+    document.getElementById('precoDescontoCompraCadastroInsumo').disabled = false;
+}
+
+function exibirInsumosVariaveisSalvos() {
+    const exibicao = document.getElementById('exibicaoInsumosVariaveis');
+
+    // Limpa o conteúdo antes de preencher
+    exibicao.innerHTML = "";
+
+    // Carrega a lista do localStorage
+    const lista = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+    // Se não houver dados, mostra uma mensagem
+    if (lista.length === 0) {
+        exibicao.innerHTML = `
+            <div class="alert alert-secondary mt-3" role="alert">
+                Nenhum insumo variável cadastrado ainda.
+            </div>`;
+        return;
+    }
+
+    // Cria dinamicamente os blocos de cada insumo
+    lista.forEach(insumo => {
+        exibicao.innerHTML += `
+            <div class="row mt-2 mb-1">
+                <div class="col-2">
+                    <input type="text" class="form-control text-center" value="${insumo.codigoInsumoVariavel}" disabled>
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control text-center" value="${insumo.nomeInsumoVariavel}" disabled>
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control text-center" value="${insumo.fornecedorInsumoVariavel}" disabled>
+                </div>
+                <div class="col-1">
+                    <input type="text" class="form-control text-center" value="${parseFloat(insumo.precoTotalCompraInsumoVariavel).toFixed(2)}" disabled>
+                </div>
+                <div class="col-1">
+                    <input type="text" class="form-control text-center" value="${parseFloat(insumo.precoUnitarioInsumoVariavel).toFixed(2)}" disabled>
+                </div>
+                <div class="col">
+                    <button class="btn btn-primary" onclick="visualizarCadastroInsumoVariavel('${insumo.codigoInsumoVariavel}')">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="btn btn-danger" onclick="excluirInsumoVariavel('${insumo.codigoInsumoVariavel}')">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+function visualizarCadastroInsumoVariavel(codigo) {
+    // Recupera a lista do localStorage
+    const lista = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+    // Procura o insumo com o código clicado
+    const insumo = lista.find(item => item.codigoInsumoVariavel === codigo);
+
+    if (!insumo) {
+        alert("❌ Erro: insumo não encontrado!");
+        return;
+    }
+
+    // Preenche os campos do modal com os dados do insumo
+    document.getElementById('dataCadastroInsumoVariavel').value = insumo.dataCompraInsumoVariavel;
+    document.getElementById('codigoCadastroInsumoVariavel').value = insumo.codigoInsumoVariavel;
+    document.getElementById('nomeCadastroInsumoVariavel').value = insumo.nomeInsumoVariavel;
+    document.getElementById('fornecedorInsumoVariavel').value = insumo.fornecedorInsumoVariavel;
+    document.getElementById('categoriaInsumoVariavel').value = insumo.categoriaInsumoVariavel;
+
+    document.getElementById('dataCadastroInsumoVariavel').disabled = true;
+    document.getElementById('codigoCadastroInsumoVariavel').disabled = true;
+    document.getElementById('nomeCadastroInsumoVariavel').disabled = true;
+    document.getElementById('fornecedorInsumoVariavel').disabled = true;
+    document.getElementById('categoriaInsumoVariavel').disabled = true;
+    document.getElementById('qtdCompraCadastroInsumoVariavel').disabled = true;
+    document.getElementById('precoTotalCompraCadastroInsumo').disabled = true;
+    document.getElementById('precoFreteCompraCadastroInsumo').disabled = true;
+    document.getElementById('precoAcrescimoCompraCadastroInsumo').disabled = true;
+    document.getElementById('precoDescontoCompraCadastroInsumo').disabled = true;
+    document.getElementById('precoUnitarioCompraCadastroInsumo').disabled = true;
+
+    // Converte a data de dd/mm/aaaa para aaaa-mm-dd para mostrar no input[type=date]
+    if (insumo.dataCompraInsumoVariavel) {
+        const [dia, mes, ano] = insumo.dataCompraInsumoVariavel.split("/");
+        document.getElementById('dataCadastroInsumoVariavel').value = `${ano}-${mes}-${dia}`;
+    }
+
+    document.getElementById('qtdCompraCadastroInsumoVariavel').value = insumo.qtdcompraInsumoVariavel;
+    document.getElementById('precoTotalCompraCadastroInsumo').value = insumo.precoTotalCompraInsumoVariavel;
+    document.getElementById('precoFreteCompraCadastroInsumo').value = insumo.precoFreteInsumoVariavel;
+    document.getElementById('precoAcrescimoCompraCadastroInsumo').value = insumo.acrescimoInsumoVariavel;
+    document.getElementById('precoDescontoCompraCadastroInsumo').value = insumo.descontoInsumoVariavel;
+    document.getElementById('precoUnitarioCompraCadastroInsumo').value = insumo.precoUnitarioInsumoVariavel;
+
+    // Abre o modal do Bootstrap
+    const modal = new bootstrap.Modal(document.getElementById('modalCadastroInsumoVariavel'));
+    modal.show();
+}
+
+function excluirInsumoVariavel(codigo) {
+    if (!confirm("❗ Deseja realmente excluir este insumo?")) return;
+
+    // Carrega lista do localStorage
+    let lista = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+    // Filtra removendo o item com o código selecionado
+    lista = lista.filter(item => item.codigoInsumoVariavel !== codigo);
+
+    // Atualiza o localStorage
+    localStorage.setItem("listaInsumosVariaveis", JSON.stringify(lista));
+
+    // Atualiza a exibição
+    exibirInsumosVariaveisSalvos();
+
+    console.log(`🗑️ Insumo ${codigo} excluído com sucesso!`);
+}
+
 
 // =====================================================
 // FUNÇÕES DE CATEGORIA DE INSUMOS VARIÁVEIS
@@ -230,4 +505,6 @@ window.addEventListener('load', () => {
     renderizarListaCategoriasInsumos();
     muda_badge();
     balancarSino();
+    exibirInsumosVariaveisSalvos();
+
 });

@@ -343,27 +343,62 @@
                                             </div>
                                         </div>
 
-                                        <!--CUSTO DO PRODUTO-->
-                                        <div class="col-2">
-                                            <label for="" class="label-format mb-1">CUSTO DE INSUMOS</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control text-center"
-                                                id="custoInsumosCadastroProdutos"
-                                                oninput="calculaTaxas()">
-                                                <button class="btn btn-dark input-group-text"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalCalculoProduto">
-                                                    <i class="fa-solid fa-calculator"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-
                                         <!--ESTOQUE PRODUTO-->
                                         <div class="col-2">
                                             <label for="" class="label-format mb-1">Estoque</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control text-center"
                                                 id="estoqueCadastroProdutos">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col title-main text-center">
+                                            Insumos Variáveis
+                                        </div>
+
+                                        <div class="row" >
+                                            <div class="row mt-4 d-flex justify-content-center">
+                                                <div class="row">
+                                                    <div class="col-2">
+                                                        <label for="" class="label-format">Código</label>
+                                                    </div>
+                                                    <div class="col-5">
+                                                        <label for="" class="label-format">Nome Insumo Variável</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label for="" class="label-format">Preço</label>
+                                                    </div>
+                                                    <div class="col-1">
+                                                        <label for="" class="label-format">Qtd Uso</label>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <label for="" class="label-format">P.Total</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mt-2" id="exibicaoInsumosVariaveis">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mt-4">
+                                            <div class="col-10"></div>
+                                            <!--CUSTO DO PRODUTO-->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-1">CUSTO DE INSUMOS</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center bg-danger text-white"
+                                                    id="custoInsumosCadastroProdutos" disabled
+                                                    value="0,00">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -594,7 +629,7 @@
                                                 <select id="variacaoCapa" class="form-select text-center" 
                                                 onchange="atualizarNumerosCapas()">
                                                     <option value="-">-</option>
-                                                    <option value="Feminino">Feminino</option>
+                                                    <option value="Feminino" selected>Feminino</option>
                                                     <option value="Masculino">Masculino</option>
                                                 </select>
                                             </div>
@@ -765,149 +800,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!--MODAL CALCULO CUSTO PRODUTO-->
-                    <div class="modal fade" id="modalCalculoProduto" tabindex="-1" aria-labelledby="modalCalculoProdutoLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="title-main m-auto" 
-                                    id="modalCalculoProdutoLabel">Cálculo de Custo do Produto</h5>
-                                    <button type="button" class="btn btn-danger tex-white" 
-                                    data-bs-dismiss="modal" aria-label="Fechar">
-                                        <i class="fa fa-x"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="modalBodyCalculoProduto">
-                                    <div class="card">
-
-                                        <!--CABEÇALHO DO CARD-->
-                                        <div class="card-header">
-                                            <div class="row mb-3 text-center">
-                                                <div class="col-5">
-                                                    <label for="">Nome do Produto</label>
-                                                    <div class="input-group mt-2">
-                                                        <span class="input-group-text bg-primary text-white">
-                                                            <i class="fa-solid fa-box-open"></i>
-                                                        </span>
-                                                        <input type="text" class="form-control w-75" disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <label for="">Custo Total</label>
-                                                    <div class="input-group mt-2">
-                                                        <span class="input-group-text bg-dark text-white">
-                                                            <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                        </span>
-                                                        <input type="text" class="form-control text-center" 
-                                                        placeholder="R$ 0,00" disabled>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!--CORPO DO CARD-->
-                                        <div class="card-body">
-                                            <div class="row text-center">
-                                                <div class="col-6">
-                                                    <label for="">Insumo</label>
-                                                </div>
-                                                <div class="col-2">
-                                                    <label for="">Custo</label>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="">Qtd</label>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="">Total</label>
-                                                </div>
-                                            </div>
-                                            <div class="row d-flex justify-content-center mt-2">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" 
-                                                    placeholder="Nome do Insumo" disabled>
-                                                </div>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" class="form-control text-center" 
-                                                    placeholder="Quantidade" value="1">
-                                                </div>
-                                                <div class="col">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="row d-flex justify-content-center mt-2">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" 
-                                                    placeholder="Nome do Insumo" disabled>
-                                                </div>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" class="form-control text-center" 
-                                                    placeholder="Quantidade" value="1">
-                                                </div>
-                                                <div class="col">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="row d-flex justify-content-center mt-2">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" 
-                                                    placeholder="Nome do Insumo" disabled>
-                                                </div>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" class="form-control text-center" 
-                                                    placeholder="Quantidade" value="1">
-                                                </div>
-                                                <div class="col">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="row d-flex justify-content-center mt-2">
-                                                <div class="col-6">
-                                                    <input type="text" class="form-control" 
-                                                    placeholder="Nome do Insumo" disabled>
-                                                </div>
-                                                <div class="col-2">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                                <div class="col">
-                                                    <input type="number" class="form-control text-center" 
-                                                    placeholder="Quantidade" value="1">
-                                                </div>
-                                                <div class="col">
-                                                    <input type="text" class="form-control text-center" 
-                                                    placeholder="R$ 0,00" disabled>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer d-flex justify-content-center">
-                                    <button type="button" class="btn btn-success">
-                                        <i class="fa-solid fa-save"></i>&nbsp; Salvar Cálculo
-                                    </button>
-                                    <button type="button" class="btn btn-danger">
-                                        <i class="fa-solid fa-trash"></i>&nbsp; Excluir Cálculo
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -916,6 +808,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 
         <!--JS-->
+        <script src="insumos.js"></script>
         <script src="/MONIKRIATIVA/Js/produtos.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

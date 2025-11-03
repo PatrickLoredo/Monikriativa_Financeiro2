@@ -1,8 +1,16 @@
+const ModalReal = document.getElementById('modalCadastroProduto');
+const modal = new bootstrap.Modal(ModalReal);
+modal.show()
+carregarInsumosVariaveis();
+
+
 // ================================
 // LOCALSTORAGE E LISTAS INICIAIS
 const listaCategoriasProdutos = JSON.parse(localStorage.getItem("listaCategoriasProdutos")) || [];
 const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+
+const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 
 // Notificações
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
@@ -221,6 +229,8 @@ function calculaTaxas() {
     let custoInsumos = parseFloat(custoInsumosInput.value.replace(',', '.')) || 0;
     let precoShopee = parseFloat(precoShopeeInput.value.replace(',', '.')) || 0;
     let precoElo7 = parseFloat(precoElo7Input.value.replace(',', '.')) || 0;
+
+    console.log('Custo Insumo: ' + custoInsumosInput)
 
     // ==========================
     // CÁLCULO SHOPEE
@@ -511,6 +521,78 @@ function abrirModalProduto(codigoProduto) {
     calculaTaxas();
 }
 
+function carregarInsumosVariaveis() {
+    const container = document.getElementById('exibicaoInsumosVariaveis');
+    if (!container) return;
+
+    // Limpa container
+    container.innerHTML = "";
+
+    // Pega do localStorage
+    const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+    // Input de custo total
+    const inputCustoTotal = document.getElementById('custoInsumosCadastroProdutos');
+
+    if (listaInsumosVariaveis.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center">Nenhum insumo variável cadastrado</div>';
+        if (inputCustoTotal) inputCustoTotal.value = '0,00';
+        return;
+    }
+
+    listaInsumosVariaveis.forEach((insumo, index) => {
+        const precoUnit = parseFloat(insumo.precoUnitarioInsumoVariavel) || 0;
+
+        const divRow = document.createElement("div");
+        divRow.classList.add("row", "mb-2", "align-items-center");
+
+        divRow.innerHTML = `
+            <div class="col-2">
+                <input type="text" class="form-control text-center" disabled value="${insumo.codigoInsumoVariavel || index + 1}">
+            </div>
+            <div class="col-5">
+                <input type="text" class="form-control text-center" disabled value="${insumo.nomeInsumoVariavel || ''}">
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control text-center preco-unitario" disabled value="${precoUnit.toFixed(2)}">
+            </div>
+            <div class="col-1">
+                <input type="number" class="form-control text-center qtd-uso" value="0" min="0"
+                onclick="calculaTaxas()">
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control text-center total-linha" disabled value="0,00">
+            </div>
+        `;
+
+        container.appendChild(divRow);
+
+        const inputQtd = divRow.querySelector('.qtd-uso');
+        const inputTotalLinha = divRow.querySelector('.total-linha');
+
+        inputQtd.addEventListener('input', () => {
+            const qtd = parseFloat(inputQtd.value) || 0;
+            const totalLinha = precoUnit * qtd;
+            inputTotalLinha.value = totalLinha.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            atualizarCustoTotal();
+        });
+    });
+
+    function atualizarCustoTotal() {
+        let soma = 0;
+        const totaisLinha = container.querySelectorAll('.total-linha');
+        totaisLinha.forEach(input => {
+            // Remove vírgula e converte para número
+            const valor = parseFloat(input.value.replace(',', '.')) || 0;
+            soma += valor;
+        });
+        if (inputCustoTotal) inputCustoTotal.value = soma.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Atualiza total geral na primeira renderização
+    atualizarCustoTotal();
+}
 
 // =====================================================
 // FUNÇÕES AUXILIARES
@@ -562,7 +644,7 @@ function congelarInputs() {
 function descongelarInputs() {
     const ids = [
         'dataCadastroProduto', 'nomeCadastroProduto', 'plataformaCadastroProduto',
-        'categoriaCadastroProduto', 'custoInsumosCadastroProdutos',
+        'categoriaCadastroProduto',
         'estoqueCadastroProdutos', 'precoVendaShopeeCadastroProduto',
         'precoVendaElo7CadastroProduto'
     ];
@@ -794,6 +876,7 @@ function carregarCapasFemininas() {
         campoExibicaoCapasFemininas.appendChild(divCol);
     }
 }
+
 function carregarCapasMasculinas() {
     // Garante que a lista exista
     const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
@@ -865,10 +948,8 @@ function rolarPara(idDestino) {
         behavior: 'smooth'
     });
 }
+
 //==================================================
-
-
-
 // INICIALIZAÇÃO
 window.addEventListener('load', () => {
     renderizarCategorias();
@@ -879,8 +960,4 @@ window.addEventListener('load', () => {
     balancarSino();
     atualizaDataCadastroProduto();
     atualizarSelectProdutosCapas();
-
-    /*const ModalReal = document.getElementById('modalCadastroCapasProduto');
-    const Modal = new bootstrap.Modal(ModalReal);
-    Modal.show();*/
 });

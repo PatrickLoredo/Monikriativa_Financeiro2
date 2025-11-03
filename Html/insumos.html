@@ -233,6 +233,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <!--INSUMOS VARIÁVEIS CADASTRADOS-->
                         <div class="row my-3" id="resumo_insumos">
                             <div class="col">
@@ -246,7 +247,7 @@
                                                 <button class="btn btn-dark" 
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroInsumoVariavel"
-                                                onclick="criaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
+                                                onclick="verificaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Insumo Variável</span>
                                                 </button>
@@ -260,56 +261,27 @@
 
                                         <!--LABELS DE INSUMOS -->
                                         <div class="row text-center">
-                                            <div class="col-1">
-                                                <label class="label-format mb-1" for="">Código</label>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <label for="" class="label-format">Código</label>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="" class="label-format">Nome do Insumo</label>
+                                                </div>
+                                                <div class="col-2">
+                                                    <label for="" class="label-format">Fornecedor</label>
+                                                </div>
+                                                <div class="col-1 pe-4">
+                                                    <label for="" class="label-format">P. Total</label>
+                                                </div>
+                                                <div class="col-1 pe-5">
+                                                    <label for="" class="label-format">p.Unitário</label>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="" class="label-format"></label>
+                                                </div>
                                             </div>
-                                            <div class="col-2">
-                                                <label class="label-format mb-1" for="">Data</label>
-                                            </div>
-                                            <div class="col-4">
-                                                <label class="label-format mb-1" for="">Nome</label>
-                                            </div>
-                                            <div class="col-2">
-                                                <label class="label-format mb-1" for="">Fornecedor</label>
-                                            </div>
-                                            <div class="col-1">
-                                                <label class="label-format mb-1" for="">C.Unit</label>
-                                            </div>
-                                            <div class="col">
-                                                <label class="label-format mb-1" for=""></label>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <!--CODIGO DO INSUMO VARIAVEL-->
-                                            <div class="col-1">
-                                                <input type="text" class="form-control text-center" disabled>
-                                            </div>
-                                            <!--DATA DA COMPRA DO INSUMO VARIAVEL-->
-                                            <div class="col-2">
-                                                <input type="date" class="form-control text-center" disabled>
-                                            </div>
-                                            <!--NOME DO INSUMO VARIAVEL-->
-                                            <div class="col-4">
-                                                <input type="text" class="form-control text-center" disabled>
-                                            </div>
-                                            <!--FORNECEDOR DO INSUMO VARIAVEL-->
-                                            <div class="col-2">
-                                                <input type="text" class="form-control text-center" disabled>
-                                            </div>
-                                            <!--CUSTO UNITÁRIO DO INSUMO VARIAVEL-->
-                                            <div class="col-1">
-                                                <input type="text" class="form-control text-center" disabled>
-                                            </div>
-                                            <!--CAMPO PARA BOTÕES-->
-                                            <div class="col">
-                                                <button class="btn btn-primary">
-                                                    <i class="fa fa-eye btn-secondary"></i>
-                                                </button>
-                                                <button class="btn btn-danger">
-                                                    <i class="fa-solid fa-circle-xmark btn-danger"></i>
-                                                </button>
-                                            </div>
+                                            <div class="row" id="exibicaoInsumosVariaveis"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -336,7 +308,8 @@
                                                         <i class="fa fa-calendar"></i>
                                                     </span>
                                                     <input type="date" name="" 
-                                                    id="dataCadastroInsumoVariavel" class="form-control text-center">
+                                                    id="dataCadastroInsumoVariavel" 
+                                                    class="form-control text-center">
                                                 </div>
                                             </div>
                                         </div>
@@ -348,6 +321,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-body" id="modalBodyCadastroInsumoVariavel">
+                                        
+                                        <!--PRIMEIRA LINHA CADASTRO DE INSUMO VARIAVEL-->
                                         <div class="row mb-3 d-flex justify-content-center">
 
                                             <!--CODIGO INSUMO VARIAVEL-->
@@ -370,16 +345,17 @@
                                                         <i class="fa fa-tag"></i>
                                                     </span>
                                                     <input type="text" class="form-control"
-                                                    id="dataCadastroInsumo">
+                                                    id="nomeCadastroInsumoVariavel">
                                                 </div>
                                             </div>
                                             <div class="col-3">
-                                                <label for="" class="label-format mb-2">fornecedor</label>
+                                                <label for="" class="label-format mb-2">fornecedor</label>    
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-white">
                                                         <i class="fa fa-industry"></i>
                                                     </span>
-                                                    <select name="" id="fornecedorInsumoVariavel" class="form-select text-center">
+                                                    <select name="" id="fornecedorInsumoVariavel" 
+                                                    class="form-select text-center">
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -392,7 +368,8 @@
                                                     <span class="input-group-text bg-primary text-white">
                                                         <i class="fa-solid fa-inbox"></i>
                                                     </span>
-                                                    <select name="" id="categoriaInsumoVariavel" class="form-select text-center">
+                                                    <select name="" id="categoriaInsumoVariavel" 
+                                                    class="form-select text-center">
                                                         <option value="1">1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -400,14 +377,125 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="div my-4">
                                             <hr>
                                         </div>
+
+
+                                        <!--SEGUNDA LINHA DE CADASTRO INSUMO VARIAVEL-->
                                         <div class="row mb-3 d-flex justify-content-center">
                                             
+                                            <!---->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Qtd Compra</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-boxes-stacked"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center" 
+                                                    id="qtdCompraCadastroInsumoVariavel" 
+                                                    oninput="calculaPrecoInsumoVariavel()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Preço Total Compra</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-money-bill-1-wave"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoTotalCompraCadastroInsumo"
+                                                    oninput="calculaPrecoInsumoVariavel()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Preço Frete</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoFreteCompraCadastroInsumo"
+                                                    value="0,00"
+                                                    oninput="calculaPrecoInsumoVariavel()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Acréscimo</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoAcrescimoCompraCadastroInsumo"
+                                                    value="0,00"
+                                                    oninput="calculaPrecoInsumoVariavel()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Desconto</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoDescontoCompraCadastroInsumo"
+                                                    value="0,00"
+                                                    oninput="calculaPrecoInsumoVariavel()">
+                                                </div>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Preço Unitário</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoUnitarioCompraCadastroInsumo"
+                                                    disabled>
+                                                </div>
+                                            </div>                                            
                                         </div>
-                                        <div class="row mb-3 d-flex justify-content-center">
-                                            
+
+                                        
+                                        <div class="div my-4">
+                                            <hr>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button class="btn btn-success"
+                                                        onclick="salvarInsumoVariavel()">
+                                                            <i class="fa fa-save"></i>
+                                                            <span>&nbsp;&nbsp;Salvar</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-primary"
+                                                        onclick="editarInsumosVariavel()">
+                                                            <i class="fa fa-save"></i>
+                                                            <span>&nbsp;&nbsp;Editar</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-danger"
+                                                        onclick="limpaInsumoVariavel()">
+                                                            <i class="fa fa-broom"></i>
+                                                            <span>&nbsp;Limpar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -419,12 +507,16 @@
         </div>
         <!--Final do conteúdo Principal-->
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
+        crossorigin="anonymous"></script>
 
         <!--JS-->
         <script src="/MONIKRIATIVA/Js/insumos.js"></script>
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" 
+        integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" 
+        crossorigin="anonymous"></script>
     </body>
 </html>
