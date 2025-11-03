@@ -1,6 +1,8 @@
 const ModalReal = document.getElementById('modalCadastroProduto');
-const modal = new bootstrap.Modal(ModalReal);
-modal.show()
+if (ModalReal) {
+    const modal = new bootstrap.Modal(ModalReal);
+    modal.show();
+}
 carregarInsumosVariaveis();
 
 
@@ -654,10 +656,6 @@ function descongelarInputs() {
 // =====================================================
 // CAPAS
 // Chama a função ao carregar a página
-window.onload = function() {
-    carregarCapasMasculinas();
-    carregarCapasFemininas();
-};
 
 // Adicionando a chamada da função de pré-visualização de imagem
 document.getElementById("imagemProduto1").addEventListener('change', () => previewImagemCard(1));
@@ -816,10 +814,9 @@ function irParaGaleriaCapas() {
     window.location.href = "/MONIKRIATIVA/html/galeriaCapas.html";
 }
 
-//==================================================
-//CARREGAR CAPAS FEMININAS E MASCULINAS
-
 function carregarCapasFemininas() {
+    console.log("🔹 carregarCapasFemininas() iniciada");
+
     // Garante que a lista exista
     const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
     const capasFemininas = listaCapasProdutos.filter(capa => capa.variacaoCapa === "Feminino");
@@ -878,6 +875,8 @@ function carregarCapasFemininas() {
 }
 
 function carregarCapasMasculinas() {
+    console.log("🔹 carregarCapasMasculinas() iniciada");
+
     // Garante que a lista exista
     const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
     const capasMasculinas = listaCapasProdutos.filter(capa => capa.variacaoCapa === "Masculino");
@@ -949,6 +948,12 @@ function rolarPara(idDestino) {
     });
 }
 
+window.onload = function() {
+    console.log("✅ window.onload executado");
+    carregarCapasFemininas();
+    carregarCapasMasculinas();
+};
+
 //==================================================
 // INICIALIZAÇÃO
 window.addEventListener('load', () => {
@@ -961,3 +966,5 @@ window.addEventListener('load', () => {
     atualizaDataCadastroProduto();
     atualizarSelectProdutosCapas();
 });
+
+
