@@ -128,25 +128,6 @@
         </div>
         <!--FINAL BADGE-->
 
-        <!--
-        <div id="btnShopee">
-            <a href="https://seller.shopee.com.br/" target="_blank">
-                <button class="btn btn-orange text-white" id="button-shopee">
-                    <span class="label-format">Shopee</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>
-
-        <div id="btnElo7">
-            <a href="https://www.elo7.com.br/monikriativa" target="_blank">
-                <button class="btn btn-orange text-white" id="button-Elo7">
-                    <span class="label-format">Elo7</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>-->
-
         <!--Botão Whatsapp-->
         <div>
             <a href="https://wa.me/5537988550748" target="_blank">
@@ -240,48 +221,94 @@
                                 <div class="card card-principal" id="cardResumoInsumosVariaveis">
                                     <div class="card-body">
                                         <div class="row">
-                                            <div class="col-6">
-                                                <div class="m-1 mb-0 title-main">Cadastro de Insumos Variáveis</div>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-dark" 
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalCadastroInsumoVariavel"
-                                                onclick="verificaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
-                                                    <i class="fa-regular fa-square-plus"></i>
-                                                    <span>&nbsp;&nbsp;Cadastrar Insumo Variável</span>
-                                                </button>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <div class="m-1 mb-0 title-main">Cadastro de Insumos Variáveis</div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <button class="btn btn-dark w-100" 
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modalCadastroInsumoVariavel"
+                                                                onclick="verificaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
+                                                                <i class="fa-regular fa-square-plus"></i>
+                                                                <span>&nbsp;&nbsp;Cadastrar Insumo Variável</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button class="btn btn-outline-danger" type="button" 
+                                                                onclick="toggleCollapse('infoCadastroInsumosVariaveis', 'iconeCadastroInsumosVariaveis')">
+                                                                <i class="fa-solid fa-chevron-down d-block" id="iconeCadastroInsumosVariaveis"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body collapse" id="infoCadastroInsumosVariaveis">
+                                                    <!--LABELS DE INSUMOS -->
+                                                    <div class="row text-center">
+                                                        <div class="row">
+                                                            <div class="col-2"><label class="label-format">Código</label></div>
+                                                            <div class="col-4"><label class="label-format">Nome do Insumo</label></div>
+                                                            <div class="col-2"><label class="label-format">Fornecedor</label></div>
+                                                            <div class="col-1 pe-4"><label class="label-format">P. Total</label></div>
+                                                            <div class="col-1 pe-5"><label class="label-format">p.Unitário</label></div>
+                                                            <div class="col"><label class="label-format"></label></div>
+                                                        </div>
+                                                        <div class="row" id="exibicaoInsumosVariaveis"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <hr>
-                                            </div>
-                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                        <!--LABELS DE INSUMOS -->
-                                        <div class="row text-center">
-                                            <div class="row">
-                                                <div class="col-2">
-                                                    <label for="" class="label-format">Código</label>
+                        <!--INSUMOS FIXOS CADASTRADOS-->
+                        <div class="row my-3" id="resumo_insumosFixos">
+                            <div class="col">
+                                <div class="card card-principal" id="cardResumoInsumosFixos">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div class="row">
+                                                        <div class="col-8">
+                                                            <div class="m-1 mb-0 title-main">Cadastro de Insumos Fixos</div>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <button class="btn btn-dark w-100" 
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#modalCadastroInsumoFixo"
+                                                                onclick="verificaCodigoInsumoFixo(), atualizaDataInsumoFixo()">
+                                                                <i class="fa-regular fa-square-plus"></i>
+                                                                <span>&nbsp;&nbsp;Cadastrar Insumo Fixo</span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="col">
+                                                            <button class="btn btn-outline-danger" type="button" 
+                                                                onclick="toggleCollapse('infoCadastroInsumosFixos', 'iconeCadastroInsumosFixos')">
+                                                                <i class="fa-solid fa-chevron-down d-block" id="iconeCadastroInsumosFixos"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-4">
-                                                    <label for="" class="label-format">Nome do Insumo</label>
-                                                </div>
-                                                <div class="col-2">
-                                                    <label for="" class="label-format">Fornecedor</label>
-                                                </div>
-                                                <div class="col-1 pe-4">
-                                                    <label for="" class="label-format">P. Total</label>
-                                                </div>
-                                                <div class="col-1 pe-5">
-                                                    <label for="" class="label-format">p.Unitário</label>
-                                                </div>
-                                                <div class="col">
-                                                    <label for="" class="label-format"></label>
+                                                <div class="card-body collapse" id="infoCadastroInsumosFixos">
+                                                    <!--LABELS DE INSUMOS -->
+                                                    <div class="row text-center">
+                                                        <div class="row">
+                                                            <div class="col-2"><label class="label-format">Código</label></div>
+                                                            <div class="col-4"><label class="label-format">Nome do Insumo</label></div>
+                                                            <div class="col-2"><label class="label-format">Fornecedor</label></div>
+                                                            <div class="col-1 pe-4"><label class="label-format">P. Total</label></div>
+                                                            <div class="col-1 pe-5"><label class="label-format">p.Unitário</label></div>
+                                                            <div class="col"><label class="label-format"></label></div>
+                                                        </div>
+                                                        <div class="row" id="exibicaoInsumosFixos"></div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="row" id="exibicaoInsumosVariaveis"></div>
                                         </div>
                                     </div>
                                 </div>

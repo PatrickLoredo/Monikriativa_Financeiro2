@@ -354,53 +354,138 @@
 
                                 <hr>
 
+                                <!--CARD INSUMOS VARIAVEIS e FIXOS-->
                                 <div class="modal-body">
                                     <div class="row">
-                                        <div class="col title-main text-center">
-                                            Insumos Variáveis
-                                        </div>
 
-                                        <div class="row" >
-                                            <div class="row mt-4 d-flex justify-content-center">
+                                        <!--INSUMOS FIXOS-->
+                                        <div class="card mb-2">
+                                            <div class="card-header">
                                                 <div class="row">
-                                                    <div class="col-2">
-                                                        <label for="" class="label-format">Código</label>
+                                                    <div class="col-10 title-main text-center">
+                                                        Insumos Fixos
                                                     </div>
-                                                    <div class="col-5">
-                                                        <label for="" class="label-format">Nome Insumo Variável</label>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <label for="" class="label-format">Preço</label>
-                                                    </div>
-                                                    <div class="col-1">
-                                                        <label for="" class="label-format">Qtd Uso</label>
-                                                    </div>
-                                                    <div class="col-2">
-                                                        <label for="" class="label-format">P.Total</label>
+                                                    <div class="col">
+                                                        <button class="btn btn btn-outline-danger" 
+                                                            type="button" 
+                                                            onclick="verificaCollapseInsumosFixos()">
+                                                        <i class="fa-solid fa-chevron-down d-block" id="iconeInsumosProdutosFixos"></i> 
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row mt-2" id="exibicaoInsumosVariaveis">
-                                            </div>
-                                        </div>
 
-                                        <div class="row mt-4">
-                                            <div class="col-10"></div>
-                                            <!--CUSTO DO PRODUTO-->
-                                            <div class="col-2">
-                                                <label for="" class="label-format mb-1">CUSTO DE INSUMOS</label>
-                                                <div class="input-group">
-                                                    <span class="input-group-text bg-dark text-white">
-                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                    </span>
-                                                    <input type="text" class="form-control text-center bg-danger text-white"
-                                                    id="custoInsumosCadastroProdutos" disabled
-                                                    value="0,00">
+                                            <div class="collapse" id="infoInsumosFixosCadastroProdutos">
+                                                <div class="card-body">
+                                                    <div class="row" >
+                                                        <div class="row mt-4 d-flex justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">Código</label>
+                                                                </div>
+                                                                <div class="col-5">
+                                                                    <label for="" class="label-format">Nome Insumo Fixo</label>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">Preço Minuto</label>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <label for="" class="label-format">Qtd Uso</label>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">P.Total</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2" id="exibicaoInsumosFixos"></div>
+
+                                                        <div class="row mt-4 mb-3">
+                                                            <div class="col-9"></div>
+                                                            <!--CUSTO DO PRODUTO-->
+                                                            <div class="col-3">
+                                                                <label for="" class="label-format mb-1">CUSTO Total de INSUMOS Fixos</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text bg-dark text-white">
+                                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                                    </span>
+                                                                    <input type="text" class="form-control text-center bg-danger text-white"
+                                                                    id="custoInsumosFixosCadastroProdutos" disabled
+                                                                    value="0,00">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <!--FINAL INSUMOS FIXOS-->
+
+
+                                        <!--CARD INSUMOS VARIAVEIS-->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <div class="row">
+                                                    <div class="col-10 title-main text-center">
+                                                        Insumos Variáveis
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn btn-outline-danger" 
+                                                            type="button" 
+                                                            onclick="verificaCollapseInsumosVariaveis()">
+                                                        <i class="fa-solid fa-chevron-down d-block" id="iconeInsumosProdutos"></i> 
+                                                    </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="collapse" id="infoInsumosVariaveisCadastroProdutos">
+                                                <div class="card-body">
+                                                    <div class="row" >
+                                                        <div class="row mt-4 d-flex justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">Código</label>
+                                                                </div>
+                                                                <div class="col-5">
+                                                                    <label for="" class="label-format">Nome Insumo Variável</label>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">Preço Unitário</label>
+                                                                </div>
+                                                                <div class="col-1">
+                                                                    <label for="" class="label-format">Qtd Uso</label>
+                                                                </div>
+                                                                <div class="col-2">
+                                                                    <label for="" class="label-format">P.Total</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mt-2" id="exibicaoInsumosVariaveis"></div>
+
+                                                        <div class="row mt-5">
+                                                            <div class="col-9"></div>
+                                                            <!--CUSTO DO PRODUTO-->
+                                                            <div class="col-3">
+                                                                <label for="" class="label-format mb-1">CUSTO Total DE INSUMOS variáveis</label>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text bg-dark text-white">
+                                                                        <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                                    </span>
+                                                                    <input type="text" class="form-control text-center bg-danger text-white"
+                                                                    id="custoInsumosCadastroProdutos" disabled
+                                                                    value="0,00">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--FINAL INSUMOS VARIAVEIS-->
+                                        
                                     </div>
                                 </div>
+                                <!--FINAL CARD INSUMOS VARIAVEIS-->
 
                                 <hr>
 
@@ -545,6 +630,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!--FINAL INSUMOS FIXOS-->
 
                                     
                                 <div class="modal-footer">

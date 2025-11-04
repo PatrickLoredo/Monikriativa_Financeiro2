@@ -354,6 +354,46 @@ function excluirInsumoVariavel(codigo) {
     console.log(`🗑️ Insumo ${codigo} excluído com sucesso!`);
 }
 
+// Função genérica para abrir/fechar qualquer collapse com ícone
+function toggleCollapse(collapseId, iconeId) {
+    const collapseElement = document.getElementById(collapseId);
+    const icone = document.getElementById(iconeId);
+
+    if (!collapseElement || !icone) return;
+
+    const isClosed = icone.classList.contains('fa-chevron-down');
+
+    // Pega instância do Bootstrap Collapse ou cria se não existir
+    const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || 
+        new bootstrap.Collapse(collapseElement, { toggle: false });
+
+    if (isClosed) {
+        bsCollapse.show();
+        icone.classList.remove('fa-chevron-down');
+        icone.classList.add('fa-chevron-up');
+    } else {
+        bsCollapse.hide();
+        icone.classList.remove('fa-chevron-up');
+        icone.classList.add('fa-chevron-down');
+    }
+}
+
+// Opcional: força que todos os collapses iniciem fechados
+window.addEventListener("DOMContentLoaded", () => {
+    ['infoCadastroInsumosVariaveis', 'infoCadastroInsumosFixos'].forEach(id => {
+        const collapseEl = document.getElementById(id);
+        const iconeEl = document.getElementById(id.replace('info', 'icone'));
+        if (!collapseEl || !iconeEl) return;
+
+        collapseEl.classList.remove('show');
+        const bsCollapse = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+        bsCollapse.hide();
+
+        iconeEl.classList.remove('fa-chevron-up');
+        iconeEl.classList.add('fa-chevron-down');
+    });
+});
+
 
 // =====================================================
 // FUNÇÕES DE CATEGORIA DE INSUMOS VARIÁVEIS

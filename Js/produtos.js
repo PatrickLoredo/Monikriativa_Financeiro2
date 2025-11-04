@@ -13,6 +13,7 @@ const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProd
 const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
 
 const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+const listaInsumosFixos = JSON.parse(localStorage.getItem("listaInsumosFixos")) || [];
 
 // Notificações
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
@@ -596,6 +597,129 @@ function carregarInsumosVariaveis() {
     atualizarCustoTotal();
 }
 
+function carregarInsumosFixos() {
+    const container = document.getElementById('exibicaoInsumosFixos');
+    if (!container) return;
+
+    // Limpa container antes de preencher
+    container.innerHTML = "";
+
+    // Pega lista do localStorage
+    const listaInsumosFixos = JSON.parse(localStorage.getItem("listaInsumosFixos")) || [];
+
+    // Input do custo total
+    const inputCustoTotal = document.getElementById('custoInsumosFixosCadastroProdutos');
+
+    // Se não houver insumos cadastrados
+    if (listaInsumosFixos.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center">Nenhum insumo fixo cadastrado</div>';
+        if (inputCustoTotal) inputCustoTotal.value = '0,00';
+        return;
+    }
+
+    listaInsumosFixos.forEach((insumo, index) => {
+        const precoMinuto = parseFloat(insumo.precoMinutoInsumoFixo) || 0;
+
+        const divRow = document.createElement("div");
+        divRow.classList.add("row", "mb-2", "align-items-center");
+
+        divRow.innerHTML = `
+            <div class="col-2">
+                <input type="text" class="form-control text-center" disabled value="${insumo.codigoInsumoFixo || index + 1}">
+            </div>
+            <div class="col-5">
+                <input type="text" class="form-control text-center" disabled value="${insumo.nomeInsumoFixo || ''}">
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control text-center preco-minuto" disabled value="${precoMinuto.toFixed(2)}">
+            </div>
+            <div class="col-1">
+                <input type="number" class="form-control text-center qtd-uso" value="0" min="0">
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control text-center total-linha" disabled value="0,00">
+            </div>
+        `;
+
+        container.appendChild(divRow);
+
+        const inputQtd = divRow.querySelector('.qtd-uso');
+        const inputTotalLinha = divRow.querySelector('.total-linha');
+
+        // Atualiza o total de cada linha quando mudar a quantidade
+        inputQtd.addEventListener('input', () => {
+            const qtd = parseFloat(inputQtd.value) || 0;
+            const totalLinha = precoMinuto * qtd;
+            inputTotalLinha.value = totalLinha.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            atualizarCustoTotal();
+        });
+    });
+
+    // Calcula o total geral
+    function atualizarCustoTotal() {
+        let soma = 0;
+        const totaisLinha = container.querySelectorAll('.total-linha');
+        totaisLinha.forEach(input => {
+            const valor = parseFloat(input.value.replace(',', '.')) || 0;
+            soma += valor;
+        });
+        if (inputCustoTotal)
+            inputCustoTotal.value = soma.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Atualiza total geral na primeira renderização
+    atualizarCustoTotal();
+}
+
+
+
+//Verifica se Collapse está SHOW ou HIDE - INSUMOS FIXOS
+function verificaCollapseInsumosFixos() {
+    const collapseElement = document.getElementById('infoInsumosFixosCadastroProdutos');
+    const icone = document.getElementById('iconeInsumosProdutosFixos');
+
+    if (!collapseElement || !icone) return;
+
+    const isClosed = icone.classList.contains('fa-chevron-down');
+
+    // Pega a instância do Bootstrap Collapse ou cria se não existir
+    const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || 
+    new bootstrap.Collapse(collapseElement, { toggle: false });
+
+    if (isClosed) {
+        bsCollapse.show();
+        icone.classList.remove('fa-chevron-down');
+        icone.classList.add('fa-chevron-up');
+    } else {
+        bsCollapse.hide();
+        icone.classList.remove('fa-chevron-up');
+        icone.classList.add('fa-chevron-down');
+    }
+}
+
+//Verifica se Collapse está SHOW ou HIDE - INSUMOS VARIAVEIS
+function verificaCollapseInsumosVariaveis() {
+    const collapseElement = document.getElementById('infoInsumosVariaveisCadastroProdutos');
+    const icone = document.getElementById('iconeInsumosProdutos');
+
+    if (!collapseElement || !icone) return;
+
+    const isClosed = icone.classList.contains('fa-chevron-down');
+
+    // Pega a instância do Bootstrap Collapse ou cria se não existir
+    const bsCollapse = bootstrap.Collapse.getInstance(collapseElement) || 
+    new bootstrap.Collapse(collapseElement, { toggle: false });
+
+    if (isClosed) {
+        bsCollapse.show();
+        icone.classList.remove('fa-chevron-down');
+        icone.classList.add('fa-chevron-up');
+    } else {
+        bsCollapse.hide();
+        icone.classList.remove('fa-chevron-up');
+        icone.classList.add('fa-chevron-down');
+    }
+}
 // =====================================================
 // FUNÇÕES AUXILIARES
 // =====================================================
