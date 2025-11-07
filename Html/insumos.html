@@ -180,7 +180,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-4">
+                                    <div class="col-5">
                                         <!-- Botão para abrir modal de lista completa -->
                                         <button class="btn btn-primary w-100"
                                             data-bs-toggle="modal"
@@ -196,24 +196,6 @@
                                 <div class="row" id="amostradeCategoriasInsumos"></div>
                             </div>
                         </div>
-
-                        <!-- Modal Lista de Categorias de Insumos -->
-                        <div class="modal fade" id="modalListaCategoriasInsumos" 
-                            tabindex="-1" role="dialog" aria-labelledby="modalListaCategoriasInsumosLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg" role="document">
-                                <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title title-main m-auto">Lista de Categorias de Insumos Variáveis</h5>
-                                    <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
-                                        <i class="fa fa-x"></i>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row" id="campoListaCompletaCategorias"></div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
                         
                         <!--INSUMOS VARIÁVEIS CADASTRADOS-->
                         <div class="row my-3" id="resumo_insumos">
@@ -224,16 +206,16 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <div class="row">
-                                                        <div class="col-8">
+                                                        <div class="col-7">
                                                             <div class="m-1 mb-0 title-main">Cadastro de Insumos Variáveis</div>
                                                         </div>
-                                                        <div class="col-3">
+                                                        <div class="col-4">
                                                             <button class="btn btn-dark w-100" 
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#modalCadastroInsumoVariavel"
-                                                                onclick="verificaCodigoInsumoVariavel(), atualizaDataInsumoVariavel()">
-                                                                <i class="fa-regular fa-square-plus"></i>
-                                                                <span>&nbsp;&nbsp;Cadastrar Insumo Variável</span>
+                                                                onclick="formatarCadastroInsumos()">
+                                                            <i class="fa-regular fa-square-plus"></i>
+                                                            <span>&nbsp;&nbsp;Cadastrar Insumo Variável</span>
                                                             </button>
                                                         </div>
                                                         <div class="col">
@@ -274,14 +256,15 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <div class="row">
-                                                        <div class="col-8">
+                                                        <div class="col-7">
                                                             <div class="m-1 mb-0 title-main">Cadastro de Insumos Fixos</div>
                                                         </div>
-                                                        <div class="col-3">
+                                                        <div class="col-4">
                                                             <button class="btn btn-dark w-100" 
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#modalCadastroInsumoFixo"
-                                                                onclick="verificaCodigoInsumoFixo(), atualizaDataInsumoFixo()">
+                                                                onclick="verificaCodigoInsumoFixo(),
+                                                                atualizaDataInsumoFixo()">
                                                                 <i class="fa-regular fa-square-plus"></i>
                                                                 <span>&nbsp;&nbsp;Cadastrar Insumo Fixo</span>
                                                             </button>
@@ -300,9 +283,9 @@
                                                         <div class="row">
                                                             <div class="col-2"><label class="label-format">Código</label></div>
                                                             <div class="col-4"><label class="label-format">Nome do Insumo</label></div>
-                                                            <div class="col-2"><label class="label-format">Fornecedor</label></div>
-                                                            <div class="col-1 pe-4"><label class="label-format">P. Total</label></div>
-                                                            <div class="col-1 pe-5"><label class="label-format">p.Unitário</label></div>
+                                                            <div class="col-2"><label class="label-format">Total Pagar</label></div>
+                                                            <div class="col-1"><label class="label-format">Total Dias</label></div>
+                                                            <div class="col-1"><label class="label-format">P. Unitário</label></div>
                                                             <div class="col"><label class="label-format"></label></div>
                                                         </div>
                                                         <div class="row" id="exibicaoInsumosFixos"></div>
@@ -314,7 +297,6 @@
                                 </div>
                             </div>
                         </div>
-                        
 
                         <!--MODAL CADASTRO INSUMO VARIAVEL-->
                         <div class="modal fade" id="modalCadastroInsumoVariavel" 
@@ -508,7 +490,7 @@
                                                     </div>
                                                     <div class="col">
                                                         <button class="btn btn-primary"
-                                                        onclick="editarInsumosVariavel()">
+                                                        onclick="editarInsumoVariavel()">
                                                             <i class="fa fa-save"></i>
                                                             <span>&nbsp;&nbsp;Editar</span>
                                                         </button>
@@ -527,7 +509,176 @@
                                     </div>
                                 </div>
                             </div>
-                        <!--FINAL MODAL CADASTRO INSUMO-->
+                        </div>
+                        
+                        <!--MODAL CADASTRO INSUMO Fixo-->
+                        <div class="modal fade" id="modalCadastroInsumoFixo" 
+                        tabindex="-1" 
+                        aria-labelledby="modalCadastroInsumoLabel" 
+                        aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <div class="col-7">
+                                            <h1 class="modal-title title-main m-auto" 
+                                            id="modalCadastroInsumoLabel">Cadastro de Novo Insumo Fixo</h1>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="col">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </span>
+                                                    <input type="date" name="" 
+                                                    id="dataCadastroInsumoFixo" 
+                                                    class="form-control text-center">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-">
+                                            <button type="button" class="btn-danger btn" 
+                                            data-bs-dismiss="modal" aria-label="Close">
+                                                <i class="fa fa-x"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body" id="modalBodyCadastroInsumoFixo">
+                                        
+                                        <!--PRIMEIRA LINHA CADASTRO DE INSUMO Fixo-->
+                                        <div class="row mb-3">
+
+                                            <!--CODIGO INSUMO FIXO-->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Código</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-white">
+                                                        <i class="fa fa-barcode"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control" 
+                                                    id="codigoCadastroInsumoFixo" 
+                                                    disabled="disabled">
+                                                </div>
+                                            </div>
+
+                                            <!--NOME INSUMO FIXO-->
+                                            <div class="col-4">
+                                                <label for="" class="label-format mb-2">Nome do Insumo</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-primary text-white">
+                                                        <i class="fa fa-tag"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control"
+                                                    id="nomeCadastroInsumoFixo">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="div my-4">
+                                            <hr>
+                                        </div>
+
+
+                                        <!--SEGUNDA LINHA DE CADASTRO INSUMO Fixo-->
+                                        <div class="row mb-3">
+                                            
+                                            <!--TOTAL A PAGAR INSUMO FIXO-->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Total Pagar</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-boxes-stacked"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center" 
+                                                    id="totalPagarInsumoFixo" 
+                                                    oninput="calculaPrecoInsumoFixo()">
+                                                </div>
+                                            </div>
+
+                                            <!--TOTAL DIAS INSUMO FIXO-->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Total Dias</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-money-bill-1-wave"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="totalDIasInsumoFixo"
+                                                    oninput="calculaPrecoInsumoFixo()">
+                                                </div>
+                                            </div>
+
+                                            <!--PRECO MINUTO INSUMO FIXO-->
+                                            <div class="col-2">
+                                                <label for="" class="label-format mb-2">Preço Minuto</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-warning text-white">
+                                                        <i class="fa-solid fa-truck-ramp-box"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center"
+                                                    id="precoMinutoInsumoFixo"
+                                                    disabled>
+                                                </div>
+                                            </div>                                            
+                                        </div>
+
+                                        
+                                        <div class="div my-4">
+                                            <hr>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-4"></div>
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <button class="btn btn-success"
+                                                        onclick="salvarInsumoFixo()">
+                                                            <i class="fa fa-save"></i>
+                                                            <span>&nbsp;&nbsp;Salvar</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-primary"
+                                                        onclick="editarInsumosFixo()">
+                                                            <i class="fa fa-save"></i>
+                                                            <span>&nbsp;&nbsp;Editar</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col">
+                                                        <button class="btn btn-danger"
+                                                        onclick="limpaInsumoFixo()">
+                                                            <i class="fa fa-broom"></i>
+                                                            <span>&nbsp;Limpar</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                                                
+                        <!-- Modal Lista de Categorias de Insumos -->
+                        <div class="modal fade" id="modalListaCategoriasInsumos" 
+                            tabindex="-1" role="dialog" aria-labelledby="modalListaCategoriasInsumosLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title title-main m-auto">Lista de Categorias de Insumos Variáveis</h5>
+                                    <button type="button" class="btn-danger btn" data-bs-dismiss="modal" aria-label="Close">
+                                        <i class="fa fa-x"></i>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row" id="campoListaCompletaCategorias"></div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
