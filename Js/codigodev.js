@@ -37,6 +37,7 @@ const descricaoCodigoDev = document.getElementById('descricaoCodigoDev');
 const codigoDev = document.getElementById('codigoDev');
 const accordionFuncoes = document.getElementById('accordionFuncoes');
 const accordionElementos = document.getElementById('accordionElementos');
+const urlCorrecaoGit = document.getElementById("urlCorrecaoGit");
 
 // CLASSE PRINCIPAL
 class CodigoDev {
@@ -53,6 +54,11 @@ function corrigeUrlGit() {
     const entrada = document.getElementById("urlCorrecaoGit").value;
     const corrigida = entrada.replace(/\\/g, "/");
     document.getElementById("urlCorrigidaGit").value = corrigida;
+}
+
+//LIMPA O INPUT DE URL DO GIT
+function limpaUrlGit(){
+    urlCorrecaoGit.value = '';
 }
 
 // MAPA PARA LIGAR CATEGORIA -> ARRAY E ACCORDION
@@ -196,7 +202,6 @@ function copiarCodigoInput(idElemento, idBotao) {
         });
 }
 
-
 // 1) Atualiza o botão "cd LINK" com o valor digitado no input
 function atualizaBotaoLink() {
     const input = document.getElementById("urlCorrecaoGit");
@@ -269,7 +274,6 @@ function copiarCodigoInput(idInput, idBotao) {
         })
         .catch(err => console.error("Erro ao copiar:", err));
 }
-
 
 //CODIGO PARA COPIAR O CODE DIGITADO NOS ACCORDION
 function copiarCodigo(idElemento) {

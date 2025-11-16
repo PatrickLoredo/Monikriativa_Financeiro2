@@ -235,12 +235,21 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row d-flex justify-content-center">
-                                        <div class="col">
+                                        <div class="col-6">
                                             <label for="urlCorrecaoGit" class="label-format mb-1">
-                                                URL NORMAL  -  (LOCAL ONDE ESTÃO OS ARQUIVOS CODADOS)
+                                                URL 
                                             </label>
-                                            <input type="text" class="form-control text-center" id="urlCorrecaoGit" oninput="atualizaBotaoLink()">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control text-center" 
+                                                id="urlCorrecaoGit" 
+                                                oninput="atualizaBotaoLink()"
+                                                placeholder="Digite a URL do Local dos Arquivos Codados">
+                                                <span class="input-group-text bg-primary text-white" onclick="limpaUrlGit()">
+                                                    <i class="fa fa-eraser"></i>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <div class="col"></div>
                                     </div>
                                 </div>
                                 <div class="card-footer" id="btnInsereGit">
