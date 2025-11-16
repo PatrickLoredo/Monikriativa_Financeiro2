@@ -228,6 +228,49 @@
                                 </div>
                             </div>
 
+                            <!--CAMPO DE CORREÇÃO DE URL PARA GIT-->
+                            <div class="card card-principal my-3">
+                                <div class="card-header title-main text-center">
+                                    correção de URL para PUSH / COMMIT em Git
+                                </div>
+                                <div class="card-body">
+                                    <div class="row d-flex justify-content-center">
+                                        <div class="col">
+                                            <label for="urlCorrecaoGit" class="label-format mb-1">
+                                                URL NORMAL  -  (LOCAL ONDE ESTÃO OS ARQUIVOS CODADOS)
+                                            </label>
+                                            <input type="text" class="form-control text-center" id="urlCorrecaoGit" oninput="atualizaBotaoLink()">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer" id="btnInsereGit">
+                                    <div class="row">
+                                        <div class="col">
+                                            <button class="btn btn-outline-primary w-100 label-format" id="linkGit" data-clipboard="" onclick="copiarBotao(this)">
+                                                cd LINK
+                                            </button>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-outline-primary w-100 label-format" id="gitAdd" data-clipboard="git add ." onclick="copiarBotao(this)">
+                                                git add .
+                                            </button>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-outline-primary w-100 label-format" id="gitCommit" data-clipboard='git commit -m ""' onclick="copiarBotao(this)">
+                                                git commit -m ""
+                                            </button>
+                                        </div>
+                                        <div class="col-2">
+                                            <button class="btn btn-outline-primary w-100 label-format" id="gitPush" data-clipboard="git push" onclick="copiarBotao(this)">
+                                                git push
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
                             <!--CARD QUE MOSTRA OS CODIGOS DEV-->
                             <div class="card card-principal mt-3">
                                 <div class="card-body">

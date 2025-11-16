@@ -1,10 +1,12 @@
-const ModalReal = document.getElementById('modalCadastroProduto');
-if (ModalReal) {
-    const modal = new bootstrap.Modal(ModalReal);
-    modal.show();
-}
-carregarInsumosVariaveis();
+/*document.addEventListener("DOMContentLoaded", function() {
+    const ModalReal = document.getElementById('modalCadastroProduto');
+    if (ModalReal) {
+        const modal = new bootstrap.Modal(ModalReal);
+        modal.show();
+    }
+});*/
 
+carregarInsumosVariaveis();
 document.addEventListener("DOMContentLoaded", function() {
     const modalProduto = document.getElementById('modalCadastroProduto');
 
@@ -15,11 +17,14 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
 // ================================
 // LOCALSTORAGE E LISTAS INICIAIS
 const listaCategoriasProdutos = JSON.parse(localStorage.getItem("listaCategoriasProdutos")) || [];
 const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 const listaCapasProdutos = JSON.parse(localStorage.getItem("ListaCapasProdutos")) || [];
+
+const listaInsumosPorProduto = JSON.parse(localStorage.getItem("listaPorProduto")) || [];
 
 const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 const listaInsumosFixos = JSON.parse(localStorage.getItem("listaInsumosFixos")) || [];
@@ -214,19 +219,18 @@ function excluirCategoria(indice) {
 }
 
 // =====================================================
-// CÁLCULO TAXA SHOPEE
-function calculaTaxas() {
-    // ==========================
-    // CAMPOS
-    // ==========================
-    const custoInsumosInput = document.getElementById('custoInsumosCadastroProdutos');
+// CÁLCULO TAXA SHOPEE / ELO7 [OK]
+const custoInsumosInputVariaveis = document.getElementById('custoInsumosVariaveisCadastroProdutos');
+const custoInsumosInputFixos = document.getElementById('custoInsumosFixosCadastroProdutos');
 
+function calculaTaxas() {
     const precoShopeeInput = document.getElementById('precoVendaShopeeCadastroProduto');
     const custoShopeeInput = document.getElementById('custoShopeeCadastroProduto');
     const lucroShopeeInput = document.getElementById('lucroLiquidoShopeeCadastroInsumo');
     const percentualShopeeInput = document.getElementById('percentualLucroShopeeCadastroInsumo');
     const btnPrecoIdealShopee = document.getElementById('btnPrecoIdealShopee');
     const btnPrecoBaixoShopee = document.getElementById('btnPrecoBaixoShopee');
+
 
     const precoElo7Input = document.getElementById('precoVendaElo7CadastroProduto');
     const custoElo7Input = document.getElementById('custoElo7CadastroProduto');
@@ -235,14 +239,16 @@ function calculaTaxas() {
     const btnPrecoIdealElo7 = document.getElementById('btnPrecoIdealElo7');
     const btnPrecoBaixoElo7 = document.getElementById('btnPrecoBaixoElo7');
 
-    // ==========================
-    // CAPTURA E TRATAMENTO DE VALORES
-    // ==========================
-    let custoInsumos = parseFloat(custoInsumosInput.value.replace(',', '.')) || 0;
+    let custoInsumosVariaveisCorrigido = parseFloat(custoInsumosInputVariaveis.value.replace(',', '.')) || 0;
+    let custoInsumosFixosCorrigido = parseFloat(custoInsumosInputFixos.value.replace(',', '.')) || 0;
+
     let precoShopee = parseFloat(precoShopeeInput.value.replace(',', '.')) || 0;
     let precoElo7 = parseFloat(precoElo7Input.value.replace(',', '.')) || 0;
 
-    console.log('Custo Insumo: ' + custoInsumosInput)
+    const custoInsumosTotais = custoInsumosFixosCorrigido + custoInsumosVariaveisCorrigido;
+
+
+    console.log('Custo Insumo: ' + custoInsumosInputVariaveis)
 
     // ==========================
     // CÁLCULO SHOPEE
@@ -252,7 +258,7 @@ function calculaTaxas() {
         const taxaFixaShopee = 4;
 
         const custoShopee = (precoShopee * taxaPercentualShopee / 100) + taxaFixaShopee;
-        const lucroLiquidoShopee = precoShopee - custoShopee - custoInsumos;
+        const lucroLiquidoShopee = precoShopee - custoShopee - custoInsumosTotais;
         const percentualLucroShopee = (lucroLiquidoShopee * 100 / precoShopee);
 
         custoShopeeInput.value = custoShopee.toFixed(2);
@@ -284,18 +290,17 @@ function calculaTaxas() {
     // CÁLCULO ELO7
     // ==========================
     if (precoElo7 > 0) {
-        const taxaPercentualElo7 = 18;
+        const taxaPercentualElo7 = 20;
         const taxaFixaElo7 = 0;
 
         const custoElo7 = (precoElo7 * taxaPercentualElo7 / 100) + taxaFixaElo7;
-        const lucroLiquidoElo7 = precoElo7 - custoElo7 - custoInsumos;
+        const lucroLiquidoElo7 = precoElo7 - custoElo7 - custoInsumosTotais;
         const percentualLucroElo7 = (lucroLiquidoElo7 * 100 / precoElo7);
 
         custoElo7Input.value = custoElo7.toFixed(2);
         lucroElo7Input.value = lucroLiquidoElo7.toFixed(2);
         percentualElo7Input.value = percentualLucroElo7.toFixed(2) + ' %';
 
-        // Mostrar botões Elo7
         if(percentualLucroElo7 >= 40){
             btnPrecoIdealElo7.classList.remove('d-none');
             btnPrecoIdealElo7.classList.add('d-block');
@@ -315,6 +320,7 @@ function calculaTaxas() {
         btnPrecoIdealElo7.classList.add('d-none');
         btnPrecoBaixoElo7.classList.add('d-none');
     }
+
 }
 
 // CLASSE PRODUTO
@@ -325,8 +331,14 @@ class NovoProduto {
         nomeCadastroProduto,
         plataformaCadastroProduto,
         categoriaCadastroProduto,
-        custoInsumosCadastroProdutos,
         estoqueCadastroProdutos,
+        tempoProducaoProdutos,
+        tempoEnvioProdutos,
+
+        custoInsumosFixosProdutos,
+        custoInsumosVariaveisProdutos,
+        custoTotalInsumosProdutos,
+
         precoVendaShopeeCadastroProduto,
         custoShopeeCadastroProduto,
         lucroLiquidoShopeeCadastroInsumo,
@@ -341,12 +353,22 @@ class NovoProduto {
         this.nomeCadastroProduto = nomeCadastroProduto;
         this.plataformaCadastroProduto = plataformaCadastroProduto;
         this.categoriaCadastroProduto = categoriaCadastroProduto;
-        this.custoInsumosCadastroProdutos = custoInsumosCadastroProdutos;
         this.estoqueCadastroProdutos = estoqueCadastroProdutos;
+        this.tempoProducaoProdutos = tempoProducaoProdutos;
+        this.tempoEnvioProdutos = tempoEnvioProdutos;
+
+        // 💰 Custos
+        this.custoInsumosFixosProdutos = custoInsumosFixosProdutos;
+        this.custoInsumosVariaveisProdutos = custoInsumosVariaveisProdutos;
+        this.custoTotalInsumosProdutos = custoTotalInsumosProdutos;
+
+        // 🛒 Shopee
         this.precoVendaShopeeCadastroProduto = precoVendaShopeeCadastroProduto;
         this.custoShopeeCadastroProduto = custoShopeeCadastroProduto;
         this.lucroLiquidoShopeeCadastroInsumo = lucroLiquidoShopeeCadastroInsumo;
         this.percentualLucroShopeeCadastroInsumo = percentualLucroShopeeCadastroInsumo;
+
+        // 🧵 Elo7
         this.precoVendaElo7CadastroProduto = precoVendaElo7CadastroProduto;
         this.custoElo7CadastroProduto = custoElo7CadastroProduto;
         this.lucroLiquidoElo7CadastroInsumo = lucroLiquidoElo7CadastroInsumo;
@@ -354,47 +376,139 @@ class NovoProduto {
     }
 }
 
-// FUNÇÃO PARA SALVAR PRODUTO (CORRIGIDA)
-// =====================================================
-function salvarCadastroProduto() {
-    const dataCadastroProduto = document.getElementById('dataCadastroProduto').value;
-    const codigoCadastroProduto = document.getElementById('codigoCadastroProduto').value.trim();
-    const nomeCadastroProduto = document.getElementById('nomeCadastroProduto').value.trim();
-    const plataformaCadastroProduto = document.getElementById('plataformaCadastroProduto').value.trim();
-    const categoriaCadastroProduto = document.getElementById('categoriaCadastroProduto').value.trim();
-    const custoInsumosCadastroProdutos = document.getElementById('custoInsumosCadastroProdutos').value.trim();
-    const estoqueCadastroProdutos = document.getElementById('estoqueCadastroProdutos').value.trim();
-    const precoVendaShopeeCadastroProduto = document.getElementById('precoVendaShopeeCadastroProduto').value.trim();
-    const custoShopeeCadastroProduto = document.getElementById('custoShopeeCadastroProduto').value.trim();
-    const lucroLiquidoShopeeCadastroInsumo = document.getElementById('lucroLiquidoShopeeCadastroInsumo').value.trim();
-    const percentualLucroShopeeCadastroInsumo = document.getElementById('percentualLucroShopeeCadastroInsumo').value.trim();
-    const precoVendaElo7CadastroProduto = document.getElementById('precoVendaElo7CadastroProduto').value.trim();
-    const custoElo7CadastroProduto = document.getElementById('custoElo7CadastroProduto').value.trim();
-    const lucroLiquidoElo7CadastroInsumo = document.getElementById('lucroLiquidoElo7CadastroInsumo').value.trim();
-    const percentualLucroElo7CadastroInsumo = document.getElementById('percentualLucroElo7CadastroInsumo').value.trim();
+class InsumoProduto {
+    constructor(
+        codigoCadastroProduto,
+        papel_180g,
+        papel_75g,
+        papel_90g,
+        papel_Fotoadesivo,
+        papelao_capa,
+        papelao_caderneta,
+        sacolinha_plastica,
+        tassel,
+        cola_branca,
+        durex_grosso,
+        durex_fino,
+        elastico_chato,
+        fita_dupla_Face,
+        ilhos,
+        linha,
+        bopp,
+        caixa_papelao
+    ) {
+        this.codigoCadastroProduto = codigoCadastroProduto;
+        this.papel_180g = papel_180g;
+        this.papel_75g = papel_75g;
+        this.papel_90g = papel_90g;
+        this.papel_Fotoadesivo = papel_Fotoadesivo;
+        this.papelao_capa = papelao_capa;
+        this.papelao_caderneta = papelao_caderneta;
+        this.sacolinha_plastica = sacolinha_plastica;
+        this.tassel = tassel;
+        this.cola_branca = cola_branca;
+        this.durex_grosso = durex_grosso;
+        this.durex_fino = durex_fino;
+        this.elastico_chato = elastico_chato;
+        this.fita_dupla_Face = fita_dupla_Face;
+        this.ilhos = ilhos;
+        this.linha = linha;
+        this.bopp = bopp;
+        this.caixa_papelao = caixa_papelao;
+    }
+}
 
-    if (!dataCadastroProduto || !codigoCadastroProduto || !nomeCadastroProduto || !plataformaCadastroProduto || !categoriaCadastroProduto || !custoInsumosCadastroProdutos || !precoVendaShopeeCadastroProduto || !precoVendaElo7CadastroProduto) {
-        alert("Preencha todos os campos obrigatórios!");
-        return;
+// =====================================================
+// FUNÇÃO PRINCIPAL: SALVAR PRODUTO + INSUMOS USADOS [OK]
+function salvarCadastroProduto() {
+    const getValue = (id) => {
+        const el = document.getElementById(id);
+        if (!el) {
+            console.warn(`⚠️ Campo com id="${id}" não encontrado no HTML.`);
+            return "";
+        }
+        return (el.value || "").trim();
+    };
+
+    // ================================
+    // 📌 Dados básicos do produto
+    // ================================
+    const dataCadastroProduto = getValue('dataCadastroProduto');
+    const codigoCadastroProduto = getValue('codigoCadastroProduto');
+    const nomeCadastroProduto = getValue('nomeCadastroProduto');
+    const plataformaCadastroProduto = getValue('plataformaCadastroProduto');
+    const categoriaCadastroProduto = getValue('categoriaCadastroProduto');
+    const estoqueCadastroProdutos = getValue('estoqueCadastroProdutos');
+    const tempoProducaoProdutos = getValue('tempoProducaoProduto');
+    const tempoEnvioProdutos = getValue('tempoEnvioProdutos');
+
+    // ================================
+    // 💰 CUSTOS
+    // ================================
+    const custoInsumosFixosProdutos = getValue('custoInsumosFixosCadastroProdutos');
+    const custoInsumosVariaveisProdutos = getValue('custoInsumosVariaveisCadastroProdutos');
+
+    // 🔄 GARANTIA: recalcula total antes de salvar
+    if (typeof atualizaCampoCustoTotalInsumos === "function") {
+        atualizaCampoCustoTotalInsumos();
     }
 
-    // 🔧 Correção: formatar data sem timezone
-    const partes = dataCadastroProduto.split('-');
-    const dataCadastroProdutoFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+    const custoTotalInsumosProdutos =
+        document.getElementById('exibicaoTotalCustoInsumosProduto').textContent.trim();
 
+    // ================================
+    // 🛒 Shopee
+    // ================================
+    const precoVendaShopeeCadastroProduto = getValue('precoVendaShopeeCadastroProduto');
+    const custoShopeeCadastroProduto = getValue('custoShopeeCadastroProduto');
+    const lucroLiquidoShopeeCadastroInsumo = getValue('lucroLiquidoShopeeCadastroInsumo');
+    const percentualLucroShopeeCadastroInsumo = getValue('percentualLucroShopeeCadastroInsumo');
+
+    // ================================
+    // 🧵 Elo7
+    // ================================
+    const precoVendaElo7CadastroProduto = getValue('precoVendaElo7CadastroProduto');
+    const custoElo7CadastroProduto = getValue('custoElo7CadastroProduto');
+    const lucroLiquidoElo7CadastroInsumo = getValue('lucroLiquidoElo7CadastroInsumo');
+    const percentualLucroElo7CadastroInsumo = getValue('percentualLucroElo7CadastroInsumo');
+
+    // ================================
+    // 🗓 Formatar data DD/MM/AAAA
+    // ================================
+    let dataCadastroProdutoFormatada = dataCadastroProduto;
+    if (dataCadastroProduto.includes('-')) {
+        const partes = dataCadastroProduto.split('-');
+        dataCadastroProdutoFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+    }
+
+    // ================================
+    // 📦 Carregar lista existente
+    // ================================
+    let listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos"));
+    if (!Array.isArray(listaCadastroProdutos)) listaCadastroProdutos = [];
+
+    // ================================
+    // 🔍 Verificar se já existe pelo CÓDIGO
+    // ================================
     const indexExistente = listaCadastroProdutos.findIndex(p =>
-        p.codigoCadastroProduto === codigoCadastroProduto ||
-        p.nomeCadastroProduto.toLowerCase() === nomeCadastroProduto.toLowerCase()
+        p.codigoCadastroProduto === codigoCadastroProduto
     );
 
+    // ================================
+    // 🆕 Criar objeto do produto
+    // ================================
     const novoProduto = new NovoProduto(
         dataCadastroProdutoFormatada,
         codigoCadastroProduto,
         nomeCadastroProduto,
         plataformaCadastroProduto,
         categoriaCadastroProduto,
-        custoInsumosCadastroProdutos,
         estoqueCadastroProdutos,
+        tempoProducaoProdutos,
+        tempoEnvioProdutos,
+        custoInsumosFixosProdutos,
+        custoInsumosVariaveisProdutos,
+        custoTotalInsumosProdutos,
         precoVendaShopeeCadastroProduto,
         custoShopeeCadastroProduto,
         lucroLiquidoShopeeCadastroInsumo,
@@ -405,29 +519,90 @@ function salvarCadastroProduto() {
         percentualLucroElo7CadastroInsumo
     );
 
+    // ================================
+    // 💾 Atualizar ou inserir
+    // ================================
     if (indexExistente > -1) {
         listaCadastroProdutos[indexExistente] = novoProduto;
-        localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
-        alert(`Produto "${nomeCadastroProduto}" atualizado com sucesso!`);
+        alert(`✅ Produto "${nomeCadastroProduto}" atualizado com sucesso!`);
     } else {
         listaCadastroProdutos.push(novoProduto);
-        localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
-        alert(`Produto "${nomeCadastroProduto}" cadastrado com sucesso!`);
+        alert(`✅ Produto "${nomeCadastroProduto}" cadastrado com sucesso!`);
     }
 
-    congelarInputs();
-    renderizarProdutos();
-    console.log(listaCadastroProdutos);
+    // ================================
+    // 🔐 Salvar lista no localStorage
+    // ================================
+    localStorage.setItem('listaCadastroProdutos', JSON.stringify(listaCadastroProdutos));
 
-    const modal = bootstrap.Modal.getInstance(document.getElementById('modalCadastroProduto'));
-    modal.hide();
+    // ================================
+    // 💾 Salvar insumos vinculados
+    // ================================
+    salvarCadastroInsumosUtilizadosProdutos(codigoCadastroProduto);
+
+    // ================================
+    // 🔄 Atualizar tela
+    // ================================
+    if (typeof renderizarProdutos === "function") renderizarProdutos();
+
+    atualizaDataCadastroProduto(); // atualiza código automaticamente
+
+    console.log("✅ Lista de produtos atualizada:", listaCadastroProdutos);
+
+    // ================================
+    // ❌ Fecha MODAL
+    // ================================
+    const modalEl = document.getElementById('modalCadastroProduto');
+    bootstrap.Modal.getInstance(modalEl).hide();
+
+    // ================================
+    // 🔄 Atualiza página
+    // ================================
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 }
 
-// RENDERIZAR PRODUTOS
-function renderizarProdutos() {
-    const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
-    exibicaoProdutosCadastrados.innerHTML = '';
-    listaCadastroProdutos.forEach(produto => exibirProdutoCadastrado(produto));
+// =====================================================
+// FUNÇÃO AUXILIAR: SALVAR INSUMOS USADOS NO PRODUTO [OK]
+function salvarCadastroInsumosUtilizadosProdutos(codigoProduto) {
+    const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+    let listaPorProduto = JSON.parse(localStorage.getItem("listaPorProduto")) || [];
+
+    const insumosDoProduto = [];
+
+    // Seleciona todas as linhas do container onde estão os insumos exibidos no modal
+    const linhas = document.querySelectorAll('#exibicaoInsumosVariaveis .row');
+
+    linhas.forEach((linha, index) => {
+        const qtdInput = linha.querySelector('.qtd-uso');
+        const totalLinhaInput = linha.querySelector('.total-linha');
+
+        const qtd = parseFloat(qtdInput?.value) || 0;
+        const totalLinha = parseFloat(totalLinhaInput?.value.replace(',', '.')) || 0;
+
+        if (qtd > 0) {
+            const insumoBase = listaInsumosVariaveis[index];
+            if (insumoBase) {
+                insumosDoProduto.push({
+                    codigoProduto: codigoProduto,
+                    codigoInsumoVariavel: insumoBase.codigoInsumoVariavel,
+                    nomeInsumoVariavel: insumoBase.nomeInsumoVariavel,
+                    precoUnitarioInsumoVariavel: insumoBase.precoUnitarioInsumoVariavel,
+                    quantidadeUtilizada: qtd,
+                    totalLinha: totalLinha.toFixed(2)
+                });
+            }
+        }
+    });
+
+    // Remove insumos antigos do mesmo produto antes de salvar os novos
+    listaPorProduto = listaPorProduto.filter(item => item.codigoProduto !== codigoProduto);
+    listaPorProduto.push(...insumosDoProduto);
+
+    localStorage.setItem("listaPorProduto", JSON.stringify(listaPorProduto));
+
+    console.log(`✅ Insumos do produto ${codigoProduto} salvos com sucesso:`, insumosDoProduto);
 }
 
 // EXIBIR PRODUTO
@@ -446,35 +621,36 @@ function exibirProdutoCadastrado(produto) {
     row2.innerHTML = `
         <!--NOME DO PRODUTO-->
         <div class="col-5">
-            <div class="input-group mt-1">
-                <span class="input-group-text bg-primary text-white"><i class="fa fa-tag"></i></span>
-                <input type="text" class="form-control text-center" value="${produto.nomeCadastroProduto}" disabled>
-            </div>
+            <input type="text" class="form-control text-center label-format" value="${produto.nomeCadastroProduto}" disabled>
         </div>
 
         <!--PRECO CUSTO DO PRODUTO-->
-        <div class="col-2">
-            <div class="input-group mt-1 w-75">
-                <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
-                <input type="text" class="form-control text-center" value="${produto.custoInsumosCadastroProdutos}" disabled>
-            </div>
+        <div class="col-1">
+            <input type="text" class="form-control text-center label-format" value="${produto.custoTotalInsumosProdutos}" disabled>
         </div>
 
-        <!--PRECO VENDA DO PRODUTO-->
-        <div class="col-2">
-            <div class="input-group mt-1 w-75">
-                <span class="input-group-text bg-primary text-white"><i class="fa-solid fa-brazilian-real-sign"></i></span>
-                <input type="text" class="form-control text-center" value="${produto.precoVendaShopeeCadastroProduto}" disabled>
-            </div>
+        <!--TAXA PLATAFORMA-->
+        <div class="col-1">
+            <input type="text" class="form-control text-center label-format" value="${produto.custoShopeeCadastroProduto}" disabled>
+        </div>
+
+        <!--PRECO BRUTO VENDA DO PRODUTO-->
+        <div class="col-1">
+            <input type="text" class="form-control text-center label-format" value="${produto.precoVendaShopeeCadastroProduto}" disabled>
+        </div>
+
+        <!--LUCRO LIQUIDO-->
+        <div class="col-1">
+            <input type="text" class="form-control text-center label-format" value="${produto.lucroLiquidoShopeeCadastroInsumo}" disabled>
         </div>
 
         <!--PERCENTUAL DE LUCRO-->
-        <div class="col-2">
-            <input type="text" class="form-control mt-1 text-center w-50" value="${produto.percentualLucroShopeeCadastroInsumo}" disabled>
+        <div class="col-1">
+            <input type="text" class="form-control text-center label-format" value="${produto.percentualLucroShopeeCadastroInsumo}" disabled>
         </div>
 
         <!--BOTÕES-->
-        <div class="col-1">
+        <div class="col">
             <button class="btn btn-sm btn-primary mt-1" onclick="abrirModalProduto('${produto.codigoCadastroProduto}')">
                 <i class="fa fa-eye"></i>
             </button>
@@ -489,6 +665,13 @@ function exibirProdutoCadastrado(produto) {
     exibicaoProdutosCadastrados.appendChild(row);
 }
 
+// RENDERIZAR PRODUTOS
+function renderizarProdutos() {
+    const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
+    exibicaoProdutosCadastrados.innerHTML = '';
+    listaCadastroProdutos.forEach(produto => exibirProdutoCadastrado(produto));
+}
+
 // DELETAR PRODUTO
 function deletarProduto(codigoProduto) {
     const index = listaCadastroProdutos.findIndex(p => p.codigoCadastroProduto === codigoProduto);
@@ -501,38 +684,90 @@ function deletarProduto(codigoProduto) {
 
 // ABRIR MODAL PRODUTO
 function abrirModalProduto(codigoProduto) {
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
     const produto = listaCadastroProdutos.find(p => p.codigoCadastroProduto === codigoProduto);
     if (!produto) return alert('Produto não encontrado.');
 
     const partesData = produto.dataCadastroProduto.split('/');
     const dataInput = partesData.length === 3 ? `${partesData[2]}-${partesData[1]}-${partesData[0]}` : produto.dataCadastroProduto;
 
+    // Preenche dados básicos
     document.getElementById('dataCadastroProduto').value = dataInput;
     document.getElementById('codigoCadastroProduto').value = produto.codigoCadastroProduto;
     document.getElementById('nomeCadastroProduto').value = produto.nomeCadastroProduto;
     document.getElementById('plataformaCadastroProduto').value = produto.plataformaCadastroProduto;
     document.getElementById('categoriaCadastroProduto').value = produto.categoriaCadastroProduto;
-    document.getElementById('custoInsumosCadastroProdutos').value = produto.custoInsumosCadastroProdutos;
     document.getElementById('estoqueCadastroProdutos').value = produto.estoqueCadastroProdutos;
+    document.getElementById('tempoProducaoProduto').value = produto.tempoProducaoProdutos;
+
+    // 💰 Custos
+    document.getElementById('custoInsumosFixosCadastroProdutos').value = produto.custoInsumosFixosProdutos;
+    document.getElementById('custoInsumosVariaveisCadastroProdutos').value = produto.custoInsumosVariaveisProdutos;
+    document.getElementById('exibicaoTotalCustoInsumosProduto').value = produto.custoTotalInsumosProdutos;
+
+    // 🛒 Shopee
     document.getElementById('precoVendaShopeeCadastroProduto').value = produto.precoVendaShopeeCadastroProduto;
     document.getElementById('custoShopeeCadastroProduto').value = produto.custoShopeeCadastroProduto;
     document.getElementById('lucroLiquidoShopeeCadastroInsumo').value = produto.lucroLiquidoShopeeCadastroInsumo;
     document.getElementById('percentualLucroShopeeCadastroInsumo').value = produto.percentualLucroShopeeCadastroInsumo;
+
+    // 🧵 Elo7
     document.getElementById('precoVendaElo7CadastroProduto').value = produto.precoVendaElo7CadastroProduto;
     document.getElementById('custoElo7CadastroProduto').value = produto.custoElo7CadastroProduto;
     document.getElementById('lucroLiquidoElo7CadastroInsumo').value = produto.lucroLiquidoElo7CadastroInsumo;
     document.getElementById('percentualLucroElo7CadastroInsumo').value = produto.percentualLucroElo7CadastroInsumo;
 
+// =====================================================
+// 📦 Recupera insumos utilizados neste produto (CORRIGIDO)
+// =====================================================
+const listaInsumosPorProduto = JSON.parse(localStorage.getItem("listaPorProduto")) || [];
+const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+
+// obtém TODOS os insumos do produto (não apenas 1)
+const insumosProduto = listaInsumosPorProduto.filter(p => p.codigoProduto === codigoProduto);
+
+if (insumosProduto.length > 0) {
+
+    insumosProduto.forEach(insumo => {
+
+        // identifica qual é o índice deste insumo dentro da lista geral
+        const indice = listaInsumosVariaveis.findIndex(i =>
+            i.codigoInsumoVariavel === insumo.codigoInsumoVariavel
+        );
+
+        if (indice > -1) {
+
+            // encontra o input de quantidade
+            const inputQtd = document.getElementById(`qtd_utilizada_Produto${indice}`);
+
+            // acha a linha para acessar o total
+            const linha = inputQtd?.closest('.row');
+            const inputTotalLinha = linha?.querySelector('.total-linha');
+
+            if (inputQtd) inputQtd.value = insumo.quantidadeUtilizada;
+            if (inputTotalLinha) inputTotalLinha.value = insumo.totalLinha;
+        }
+    });
+
+    console.log("✅ Insumos carregados no modal:", insumosProduto);
+
+} else {
+    console.warn("⚠️ Nenhum insumo associado a este produto.");
+}
+
+
+    // =====================================================
     congelarInputs();
 
     // Mostrar modal
     const modal = new bootstrap.Modal(document.getElementById('modalCadastroProduto'));
     modal.show();
 
-    // ⚡ Chamar cálculo imediatamente
+    // ⚡ Recalcula taxas
     calculaTaxas();
 }
 
+//EXIBE OS INSUMOS VARIAVEIS DENTRO DO MODAL DE CADASTRO DE PRODUTOS (INSUMOS CADASTRADOS ANTERIORMENTE NO ARRAY) 
 function carregarInsumosVariaveis() {
     const container = document.getElementById('exibicaoInsumosVariaveis');
     if (!container) return;
@@ -544,7 +779,7 @@ function carregarInsumosVariaveis() {
     const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 
     // Input de custo total
-    const inputCustoTotal = document.getElementById('custoInsumosCadastroProdutos');
+    const inputCustoTotal = document.getElementById('custoInsumosVariaveisCadastroProdutos');
 
     if (listaInsumosVariaveis.length === 0) {
         container.innerHTML = '<div class="col-12 text-center">Nenhum insumo variável cadastrado</div>';
@@ -569,7 +804,7 @@ function carregarInsumosVariaveis() {
                 <input type="text" class="form-control text-center preco-unitario" disabled value="${precoUnit.toFixed(2)}">
             </div>
             <div class="col-1">
-                <input type="number" class="form-control text-center qtd-uso" value="0" min="0"
+                <input type="number" class="form-control text-center qtd-uso" value="0" min="0" id="qtd_utilizada_Produto${index}"
                 onclick="calculaTaxas()">
             </div>
             <div class="col-2">
@@ -609,6 +844,7 @@ function carregarInsumosVariaveis() {
 
 }
 
+//EXIBE OS INSUMOS FIXOS DENTRO DO MODAL DE CADASTRO DE PRODUTOS (INSUMOS CADASTRADOS ANTERIORMENTE NO ARRAY) 
 function carregarInsumosFixos() {
     const container = document.getElementById('exibicaoInsumosFixos');
     if (!container) return;
@@ -678,7 +914,7 @@ function carregarInsumosFixos() {
 function atualizaCampoCustoTotalInsumos() {
     const campoExibeTotalCustoProduto = document.getElementById('exibicaoTotalCustoInsumosProduto');
     const custoFixos = document.getElementById('custoInsumosFixosCadastroProdutos').value;
-    const custoVariaveis = document.getElementById('custoInsumosCadastroProdutos').value;
+    const custoVariaveis = document.getElementById('custoInsumosVariaveisCadastroProdutos').value;
 
     // Converte string brasileira "12,34" em número 12.34
     const valorFixos = parseFloat(custoFixos.replace('.', '').replace(',', '.')) || 0;
@@ -689,9 +925,6 @@ function atualizaCampoCustoTotalInsumos() {
     if (campoExibeTotalCustoProduto)
         campoExibeTotalCustoProduto.textContent = totalGeral.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
-
-
-
 
 //Verifica se Collapse está SHOW ou HIDE - INSUMOS FIXOS
 function verificaCollapseInsumosFixos() {
@@ -764,7 +997,7 @@ function limparCadastroProduto() {
     document.getElementById('nomeCadastroProduto').value = '';
     document.getElementById('plataformaCadastroProduto').value = 'Todas Plataformas';
     document.getElementById('categoriaCadastroProduto').value = '';
-    document.getElementById('custoInsumosCadastroProdutos').value = '';
+    document.getElementById('custoInsumosVariaveisCadastroProdutos').value = '';
     document.getElementById('precoVendaShopeeCadastroProduto').value = '';
     document.getElementById('custoShopeeCadastroProduto').value = '';
     document.getElementById('lucroLiquidoShopeeCadastroInsumo').value = '';
@@ -778,8 +1011,8 @@ function limparCadastroProduto() {
 function congelarInputs() {
     const ids = [
         'dataCadastroProduto', 'codigoCadastroProduto', 'nomeCadastroProduto',
-        'plataformaCadastroProduto', 'categoriaCadastroProduto', 'custoInsumosCadastroProdutos',
-        'estoqueCadastroProdutos', 'precoVendaShopeeCadastroProduto', 'custoShopeeCadastroProduto',
+        'plataformaCadastroProduto', 'categoriaCadastroProduto', 'custoInsumosVariaveisCadastroProdutos',
+        'estoqueCadastroProdutos', 'tempoProducaoProduto','precoVendaShopeeCadastroProduto', 'custoShopeeCadastroProduto',
         'lucroLiquidoShopeeCadastroInsumo', 'percentualLucroShopeeCadastroInsumo',
         'precoVendaElo7CadastroProduto', 'custoElo7CadastroProduto', 'lucroLiquidoElo7CadastroInsumo',
         'percentualLucroElo7CadastroInsumo'
@@ -791,7 +1024,8 @@ function descongelarInputs() {
     const ids = [
         'dataCadastroProduto', 'nomeCadastroProduto', 'plataformaCadastroProduto',
         'categoriaCadastroProduto',
-        'estoqueCadastroProdutos', 'precoVendaShopeeCadastroProduto',
+        'estoqueCadastroProdutos', 'tempoProducaoProduto',
+        'precoVendaShopeeCadastroProduto',
         'precoVendaElo7CadastroProduto'
     ];
     ids.forEach(id => document.getElementById(id).disabled = false);

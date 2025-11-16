@@ -48,6 +48,13 @@ class CodigoDev {
     }
 }
 
+// CORRIGE A URL DO GIT TROCANDO O \ POR /
+function corrigeUrlGit() {
+    const entrada = document.getElementById("urlCorrecaoGit").value;
+    const corrigida = entrada.replace(/\\/g, "/");
+    document.getElementById("urlCorrigidaGit").value = corrigida;
+}
+
 // MAPA PARA LIGAR CATEGORIA -> ARRAY E ACCORDION
 const mapCategoria = {
     "Funções Javascript": { lista: listaFuncoesJS, tipo: 'Funcoes' },
@@ -106,6 +113,10 @@ function salvarAtalhoCodigoDev() {
 
     const modal = bootstrap.Modal.getInstance(document.getElementById('modalCadastroDev'));
     modal.hide();
+
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 }
 
 // CRIAR ITEM DO ACCORDION
@@ -114,6 +125,8 @@ function criarAccordionItem(codigo, index, tipo) {
     const accordionItem = document.createElement('div');
     accordionItem.classList.add('accordion-item');
     accordionItem.id = `accordion${tipo}Item${index}`;
+
+    const codigoId = `codigoDev_${tipo}_${index}`;
 
     accordionItem.innerHTML = `
         <h2 class="accordion-header" id="heading${tipo}${index}">
@@ -132,13 +145,144 @@ function criarAccordionItem(codigo, index, tipo) {
         </h2>
         <div id="collapse${tipo}${index}" class="accordion-collapse collapse" aria-labelledby="heading${tipo}${index}" data-bs-parent="#accordion${tipo}">
             <div class="accordion-body">
+
                 <strong>${codigo.descricaoCodigoDev}</strong>
-                <pre class="mt-2"><code>${codigo.codigoDev}</code></pre>
+
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <pre class="mt-2 mb-0 flex-grow-1"><code id="${codigoId}">${codigo.codigoDev}</code></pre>
+
+                    <button class="btn btn-success btn-sm ms-3" onclick="copiarCodigo('${codigoId}')">
+                        <i class="fa fa-copy"></i>
+                    </button>
+                </div>
+
             </div>
         </div>
     `;
-
     accordionContainer.appendChild(accordionItem);
+}
+
+//CODIGO PARA COPIAR O CODE DIGITADO NO INPUT DE CORRECAO DE URL DE GIT
+function copiarCodigoInput(idElemento, idBotao) {
+    const elemento = document.getElementById(idElemento);
+    const codigo = elemento.value !== undefined ? elemento.value : elemento.innerText;
+
+    navigator.clipboard.writeText(codigo)
+        .then(() => {
+            console.log("Código copiado!");
+
+            const btn = document.getElementById(idBotao);
+            const icon = btn.querySelector("i");
+
+            // Troca apenas o ícone
+            icon.classList.remove("fa-copy");
+            icon.classList.add("fa-check");
+
+            // Troca a cor do botão
+            btn.classList.remove("btn-primary");
+            btn.classList.add("btn-success");
+
+            // Após 1 segundo, volta ao estado original
+            setTimeout(() => {
+                icon.classList.remove("fa-check");
+                icon.classList.add("fa-copy");
+
+                btn.classList.remove("btn-success");
+                btn.classList.add("btn-primary");
+            }, 1000);
+        })
+        .catch(err => {
+            console.error("Erro ao copiar:", err);
+        });
+}
+
+
+// 1) Atualiza o botão "cd LINK" com o valor digitado no input
+function atualizaBotaoLink() {
+    const input = document.getElementById("urlCorrecaoGit");
+    const btnLink = document.getElementById("linkGit");
+
+    const valor = input.value.trim();
+    btnLink.innerText = `cd ${valor}`; // Atualiza o texto do botão
+    btnLink.dataset.clipboard = `cd ${valor}`; // Atualiza o valor que será copiado
+}
+
+// 2) Copia o valor exato do botão clicado
+function copiarBotao(botao) {
+    const texto = botao.dataset.clipboard || botao.innerText;
+
+    navigator.clipboard.writeText(texto)
+        .then(() => {
+            console.log("Texto copiado:", texto);
+
+            // Adiciona efeito visual
+            botao.classList.remove("btn-outline-primary");
+            botao.classList.add("btn-success");
+
+            const icon = botao.querySelector("i");
+            if (icon) {
+                icon.classList.remove("fa-copy");
+                icon.classList.add("fa-check");
+            }
+
+            setTimeout(() => {
+                botao.classList.remove("btn-success");
+                botao.classList.add("btn-outline-primary");
+
+                if (icon) {
+                    icon.classList.remove("fa-check");
+                    icon.classList.add("fa-copy");
+                }
+            }, 1000);
+        })
+        .catch(err => console.error("Erro ao copiar:", err));
+}
+
+// 3) Função para copiar input (usada para o botão "URL CORRIGIDA GIT")
+function copiarCodigoInput(idInput, idBotao) {
+    const input = document.getElementById(idInput);
+    const botao = document.getElementById(idBotao);
+    const texto = input.value;
+
+    navigator.clipboard.writeText(texto)
+        .then(() => {
+            console.log("Texto copiado:", texto);
+
+            botao.classList.remove("btn-primary");
+            botao.classList.add("btn-success");
+
+            const icon = botao.querySelector("i");
+            if (icon) {
+                icon.classList.remove("fa-copy");
+                icon.classList.add("fa-check");
+            }
+
+            setTimeout(() => {
+                botao.classList.remove("btn-success");
+                botao.classList.add("btn-primary");
+
+                if (icon) {
+                    icon.classList.remove("fa-check");
+                    icon.classList.add("fa-copy");
+                }
+            }, 1000);
+        })
+        .catch(err => console.error("Erro ao copiar:", err));
+}
+
+
+//CODIGO PARA COPIAR O CODE DIGITADO NOS ACCORDION
+function copiarCodigo(idElemento) {
+    const codigo = document.getElementById(idElemento).innerText;
+
+    navigator.clipboard.writeText(codigo)
+        .then(() => {
+            console.log("Código copiado com sucesso!");
+        })
+        .catch(err => {
+            console.error("Erro ao copiar:", err);
+            console.log("Não foi possível copiar o código.");
+        });
 }
 
 // ABRIR MODAL

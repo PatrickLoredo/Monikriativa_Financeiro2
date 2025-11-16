@@ -208,7 +208,8 @@
 #cardResumoInsumos label,
 #modalCalculoProduto label,
 #modalBodyCadastroInsumo label,
-.label-format{
+.label-format,
+#btnInsereGit button{
     display: flex;
     justify-content:center;
     text-transform: uppercase;
@@ -258,6 +259,6 @@
   padding-right: 1rem; /* distancia da borda direita */
 }
 
-#btnFemininoCapas #buttonCapasFemininas{
-
+#exibicaoProdutosCadastrados input{
+    font-size: 0.715rem;
 }

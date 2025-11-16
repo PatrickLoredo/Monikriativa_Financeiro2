@@ -97,7 +97,6 @@ function atualizarSelectProdutosVendaManual() {
     });
 }
 
-
 //Filtra a categoria de produto selecionada
 function localizaProduto() {
     const produtoVendaManual = document.getElementById('produtoVendaManual').value;
