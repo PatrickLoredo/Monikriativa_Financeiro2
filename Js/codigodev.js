@@ -157,7 +157,7 @@ function criarAccordionItem(codigo, index, tipo) {
                 <div class="d-flex justify-content-between align-items-center mt-2">
                     <pre class="mt-2 mb-0 flex-grow-1"><code id="${codigoId}">${codigo.codigoDev}</code></pre>
 
-                    <button class="btn btn-success btn-sm ms-3" onclick="copiarCodigo('${codigoId}')">
+                    <button class="btn btn-success btn-sm ms-3" onclick="copiarCodigo(this, '${codigoId}')">
                         <i class="fa fa-copy"></i>
                     </button>
                 </div>
@@ -275,19 +275,46 @@ function copiarCodigoInput(idInput, idBotao) {
         .catch(err => console.error("Erro ao copiar:", err));
 }
 
-//CODIGO PARA COPIAR O CODE DIGITADO NOS ACCORDION
-function copiarCodigo(idElemento) {
-    const codigo = document.getElementById(idElemento).innerText;
+//ATUALIZA PAGINA
+function refresh(){
+    setTimeout(() => {
+        location.reload();
+    }, 300);
 
-    navigator.clipboard.writeText(codigo)
+}
+
+//CODIGO PARA COPIAR O CODE DIGITADO NOS ACCORDION
+function copiarCodigo(botao, idElemento) {
+    const codigo = document.getElementById(idElemento);
+    if (!codigo) return;
+
+    navigator.clipboard.writeText(codigo.innerText)
         .then(() => {
             console.log("Código copiado com sucesso!");
+
+            const icon = botao.querySelector("i");
+
+            // Salva texto original do botão
+            const textoOriginal = botao.innerText;
+
+            // Troca ícone e adiciona "Copiado"
+            if (icon) {
+                icon.classList.replace("fa-copy", "fa-check");
+            }
+            botao.classList.replace("btn-success", "btn-primary");
+            botao.innerHTML = `<i class="fa fa-check"></i> Copiado`;
+
+            // Após 500ms volta ao estado original
+            setTimeout(() => {
+                botao.classList.replace("btn-primary", "btn-success");
+                botao.innerHTML = `<i class="fa fa-copy"></i>`; // mantém só o ícone original
+            }, 1200);
         })
         .catch(err => {
             console.error("Erro ao copiar:", err);
-            console.log("Não foi possível copiar o código.");
         });
 }
+
 
 // ABRIR MODAL
 function abrirModalCadastroDev(index, tipo) {
