@@ -174,6 +174,10 @@
 #bodyTabelaVendas .bg-shopee{
     background-color: rgb(252, 167, 9);
 }
+#infoPrazoEntrega #btn-orange{
+    background-color: rgb(255, 115, 0);
+}
+
 #selectFiltroResumoVendas .bg-orange,
 #bodyTabelaVendasFiltro .bg-shopee,
 #bodyTabelaVendas .bg-shopee,

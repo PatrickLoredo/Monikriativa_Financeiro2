@@ -14,6 +14,57 @@ window.onload = function() {
         verificaDataEntrega();
     });
 };
+
+
+//ABRIR MODAL AUTOMATICAMENTE
+document.addEventListener("DOMContentLoaded", function() {
+    const modalElement = document.getElementById('modalCadastroVenda'); // container .modal
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    atualizarSelectProdutosVendaManual();
+    // garante listeners
+    const selectProduto = document.getElementById("produtoVendaManual");
+    if (selectProduto) {
+        selectProduto.addEventListener("change", function () {
+            atualizarTempoEnvioProduto(this.value);
+        });
+    }
+
+    const dataVenda = document.getElementById("dataVendaManual");
+    if (dataVenda) {
+        dataVenda.addEventListener("change", verificaDataEntrega);
+    }
+});
+
+
+document.getElementById("produtoVendaManual").addEventListener("change", function () {
+    atualizarTempoEnvioProduto(this.value);
+    atualizarPrecoUnitario(this.value);
+});
+
+
+document.getElementById("plataformaVendaManual").addEventListener("change", function () {
+    const produto = document.getElementById("produtoVendaManual").value;
+    atualizarPrecoUnitario(produto);
+});
+
+function parsePrecoBR(valor) {
+    if (!valor) return 0;
+
+    return Number(
+        String(valor)
+            .replace("R$", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+            .trim()
+    ) || 0;
+}
+
 /*---------------------------------------------------*/ 
 //VARIAVEIS / CONSTANTES / ARRAYS
 
@@ -22,6 +73,8 @@ var tamanhoListaVendas = listaVendas.length;
 
 var listaVendasManuais =[]
 var tamanhoListaVendasManuais = listaVendasManuais.length+1;
+
+const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 
 const btnBaixarRelatorioVendas = document.getElementById("btnBaixarRelatorioVendas");
 const btnSalvarVendaRealizada = document.getElementById("btnSalvarVendaRealizada");
@@ -78,23 +131,220 @@ function atualizarCodigoVenda() {
     inputPesquisaDataVenda.value = dataFormatada;
 }
 
+//Atualiza o select de produtos em Venda Manual com todos os produtos cadastrados em listaCadastroProdutos
 function atualizarSelectProdutosVendaManual() {
     const select = document.getElementById("produtoVendaManual");
     if (!select) return;
 
-    // Limpa o select e adiciona o primeiro item
     select.innerHTML = '<option value="escolha" selected>Escolha o Produto</option>';
 
-    // Carrega a lista do localStorage
     const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 
-    // Preenche o select com os produtos
     listaCadastroProdutos.forEach(produto => {
         const option = document.createElement("option");
-        option.value = produto.nomeCadastroProduto; // ou produto.id, se você tiver
+        option.value = produto.nomeCadastroProduto;
         option.textContent = produto.nomeCadastroProduto;
+        // opcional: guardar o tempo direto no option para fallback
+        if (produto.tempoEnvioProdutos !== undefined) {
+            option.dataset.tempo = String(produto.tempoEnvioProdutos);
+        }
         select.appendChild(option);
     });
+}
+
+//Inputa o botão de acordo com o o prazo e Status de Envio [OK]
+function verificarStatusEntrega() {
+    const dataEntrega = document.getElementById("dataEntregaManual").value;
+    const statusEntrega = document.getElementById("statusEntrega").value;
+
+    const btnDentroPrazo = document.querySelector("#infoPrazoEntrega .btn-success");
+    const btnAtrasado = document.querySelector("#infoPrazoEntrega .btn-danger");
+    const btnEntregue = document.getElementById('btn-orange');
+
+    // Função auxiliar para esconder tudo
+    function esconderTodos() {
+        btnDentroPrazo.classList.add("d-none");
+        btnAtrasado.classList.add("d-none");
+        btnEntregue.classList.add("d-none");
+    }
+
+    // GERAR DATA DE HOJE (corrigido)
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    // STATUS: ENTREGUE
+    if (statusEntrega === 'Entregue') {
+        esconderTodos();
+        btnEntregue.classList.remove("d-none");
+        return;
+    }
+
+    // STATUS: A caminho ou Não escolhido
+    if (statusEntrega === 'A caminho' ||
+        statusEntrega === 'Sem Escolha Status Entrega') {
+        esconderTodos();
+        return;
+    }
+
+    // NÃO EXISTE DATA → esconde tudo
+    if (!dataEntrega) {
+        esconderTodos();
+        return;
+    }
+
+    // CONVERTE A DATA DO INPUT
+    const envio = new Date(dataEntrega);
+    envio.setHours(0, 0, 0, 0);
+
+    // NÃO ENTREGUE → VERIFICA PRAZO
+    esconderTodos();
+
+    if (envio >= hoje) {
+        // Dentro do prazo
+        btnDentroPrazo.classList.remove("d-none");
+    } else {
+        // Atrasado
+        btnAtrasado.classList.remove("d-none");
+    }
+}
+
+//Inputa a data de Entrega [OK]
+function verificaDataEntrega() {
+    const dataVendaInput = document.getElementById("dataVendaManual");
+    const tempoEnvioInput = document.getElementById("tempoEnvioProduto");
+    const dataEntregaInput = document.getElementById("dataEntregaManual");
+
+    if (!dataEntregaInput) return;
+
+    const dataVenda = dataVendaInput ? dataVendaInput.value : "";
+    // pega tempo como Number; se vazio -> NaN
+    const tempoEnvio = tempoEnvioInput ? Number(tempoEnvioInput.value) : NaN;
+
+    // debug opcional: descomente se quiser ver no console
+    // console.log('verificaDataEntrega()', { dataVenda, tempoEnvio });
+
+    // validação simples
+    if (!dataVenda || !Number.isFinite(tempoEnvio) || tempoEnvio <= 0) {
+        dataEntregaInput.value = "";
+        dataEntregaInput.disabled = true;
+        return;
+    }
+
+    // Criando data de forma segura (tratando timezone)
+    // dataVenda vem no formato YYYY-MM-DD
+    const parts = dataVenda.split("-");
+    // parts: [YYYY, MM, DD]
+    const year = Number(parts[0]);
+    const month = Number(parts[1]) - 1; // JS Date month é 0-based
+    const day = Number(parts[2]);
+
+    const dt = new Date(year, month, day);
+    dt.setDate(dt.getDate() + Math.floor(tempoEnvio)); // adiciona dias
+
+    // formata para YYYY-MM-DD local (ajusta timezone)
+    const adjusted = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000);
+    const yyyy = adjusted.getFullYear();
+    const mm = String(adjusted.getMonth() + 1).padStart(2, "0");
+    const dd = String(adjusted.getDate()).padStart(2, "0");
+    const isoDate = `${yyyy}-${mm}-${dd}`;
+
+    dataEntregaInput.value = isoDate;
+    dataEntregaInput.disabled = false;
+
+    verificarStatusEntrega();
+}
+
+//Inputa o valor Unitário do Produto de acordo com o cadastro no Array [OK]
+function atualizarPrecoUnitarioVendaManual() {
+    const plataforma = document.getElementById("plataformaVendaManual").value;
+    const produtoSelecionado = document.getElementById("produtoVendaManual").value;
+    const precoInput = document.getElementById("precoUnitarioVendaManual");
+
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+
+    // Valores padrão
+    if (produtoSelecionado === "escolha" || plataforma === "escolha") {
+        precoInput.value = "R$ 0,00";
+        return;
+    }
+
+    // Localiza o produto
+    const produto = listaCadastroProdutos.find(p => p.nomeCadastroProduto === produtoSelecionado);
+
+    if (!produto) {
+        precoInput.value = "R$ 0,00";
+        return;
+    }
+
+    let preco = 0;
+
+    // Lógica por plataforma
+    switch (plataforma) {
+        case "Shopee":
+            preco = produto.precoVendaShopeeCadastroProduto || 0;
+            break;
+        case "Elo7":
+            preco = produto.precoVendaElo7CadastroProduto || 0;
+            break;
+        case "Venda Avulsa":
+        default:
+            preco = 0;
+            break;
+    }
+
+    // Formata como moeda BR (mesmo se vier número ou string)
+    precoInput.value = Number(preco).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    });
+}
+
+// Listener adicionado **somente uma vez** [OK]
+document.getElementById("produtoVendaManual").addEventListener("change", function () {
+    atualizarTempoEnvioProduto(this.value);
+});
+
+// Atualiza o input de Tempo de Envio conforme o produto selecionado
+function atualizarTempoEnvioProduto(nomeProduto) {
+    const tempoInput = document.getElementById("tempoEnvioProduto");
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+
+    if (!tempoInput) return;
+
+    // reset se escolha padrão
+    if (!nomeProduto || nomeProduto === "escolha") {
+        tempoInput.value = "";
+        tempoInput.disabled = true;
+        // recalcula caso já haja data
+        verificaDataEntrega();
+        return;
+    }
+
+    // procurar produto
+    const produto = listaCadastroProdutos.find(item => item.nomeCadastroProduto === nomeProduto);
+
+    // fallback: tentar pegar data-attribute do option
+    const select = document.getElementById("produtoVendaManual");
+    let tempoFallback = null;
+    if (select) {
+        const opt = Array.from(select.options).find(o => o.value === nomeProduto);
+        if (opt && opt.dataset && opt.dataset.tempo) tempoFallback = Number(opt.dataset.tempo);
+    }
+
+    if (produto && (produto.tempoEnvioProdutos !== undefined && produto.tempoEnvioProdutos !== null && produto.tempoEnvioProdutos !== "")) {
+        tempoInput.value = produto.tempoEnvioProdutos;
+        tempoInput.disabled = false;
+    } else if (tempoFallback !== null) {
+        tempoInput.value = tempoFallback;
+        tempoInput.disabled = false;
+    } else {
+        // se não existir tempo definido
+        tempoInput.value = "";
+        tempoInput.disabled = true;
+    }
+
+    // sempre que atualizamos o tempo do produto, recalculamos a data de entrega
+    verificaDataEntrega();
 }
 
 //Filtra a categoria de produto selecionada
@@ -122,6 +372,76 @@ function localizaProduto() {
 
     return resultadoEscolhaProduto; // Retorna o valor para uso posterior
 }
+
+//Atualiza o preço Unitário conforme seleção de Produto e de acordo com o Cadastro
+function atualizarPrecoUnitario(produtoNome) {
+    const plataforma = document.getElementById("plataformaVendaManual").value;
+    const inputPreco = document.getElementById("precoUnitarioVendaManual");
+
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+    const produto = listaCadastroProdutos.find(item => item.nomeCadastroProduto === produtoNome);
+
+    // Se não encontrou produto ou plataforma inválida
+    if (!produto || plataforma === "escolha" || produtoNome === "escolha") {
+        inputPreco.value = "0,00";
+        return;
+    }
+
+    let preco = 0;
+
+    // Seleção por plataforma
+    if (plataforma === "Shopee") {
+        preco = produto.precoVendaShopeeCadastroProduto;
+    } 
+    else if (plataforma === "Elo7") {
+        preco = produto.precoVendaElo7CadastroProduto;
+    }
+
+    // ---------- BLINDAGEM COMPLETA CONTRA NaN ----------
+    if (preco === undefined || preco === null) preco = 0;
+
+    // Remove R$, pontos, vírgulas e converte para número
+    preco = Number(
+        String(preco)
+            .replace("R$", "")
+            .replace(/\./g, "")
+            .replace(",", ".")
+            .trim()
+    );
+
+    // Se ainda assim der NaN → vira 0
+    if (isNaN(preco)) preco = 0;
+
+    // Formata para padrão brasileiro
+    inputPreco.value = preco.toFixed(2).replace(".", ",");
+}
+
+
+function calcularTotalBrutoVendaManual() {
+    const precoUnitario = document.getElementById('precoUnitarioVendaManual').value;
+    const quantidade = document.getElementById('qtdVendaManual').value;
+    const acrescimoDesconto = document.getElementById('descontoAcrescimoVendaManual').value;
+    const totalVendaManual = document.getElementById('totalVendaManual');
+
+    // Converte valores
+    const preco = parseFloat(precoUnitario.replace(",", "."));
+    const qtd = parseFloat(quantidade);
+    const adcDesc = parseFloat(acrescimoDesconto.replace(",", "."));
+
+    // Evita erro se valores inválidos
+    if (isNaN(preco) || isNaN(qtd)) {
+        totalVendaManual.value = "";
+        return;
+    }
+
+    const total = (preco * qtd) + (isNaN(adcDesc) ? 0 : adcDesc);
+
+    // Formata padrão BR
+    totalVendaManual.value = total.toFixed(2).replace(".", ",");
+
+    console.log(totalVendaManual.value);
+}
+
 
 //Exibe Status Atual da Data de Entrega
 function verificaStatusEntrega() {
@@ -188,96 +508,6 @@ function verificaStatusEntrega() {
         }
     }
 }
-
-//Verifica tipo de Produto que vai ser enviado para definir prazo para produção
-function verificaDataEntrega() {
-    const tipoProduto = localizaProduto(); // Armazena o valor retornado de localizaProduto
-    const dataVendaManual = document.getElementById("dataVendaManual");
-
-    console.log(dataEntregaManual)
-
-    if(dataEntregaManual.length<8){
-        console.log('Data preenchida incorretamente')
-    }
-    else{
-        if(dataVendaManual.value.length <8){
-            console.log('Data Incompleta');
-        }
-        else{
-            if (tipoProduto === 'caderneta') {
-            verificaDataEntrega15dias();
-            } else if (tipoProduto === 'capa') {
-                verificaDataEntrega7dias();
-            }
-            else {
-                console.log("Produto não identificado");
-                document.getElementById(dataEntregaManual).value = ''
-            }
-        }
-    verificaStatusEntrega()
-    } 
-}
-
-//Define data de Entrega de 7 Dias (data venda + 7 dias)
-function verificaDataEntrega7dias() {
-    // Pega o valor do input de data da venda
-    const dataVenda = document.getElementById("dataVendaManual").value;
-
-    // Se não tiver preenchido, não faz nada
-    if (!dataVenda) {
-        console.log("Data da venda não preenchida");
-        return;
-    }
-
-    // Cria objeto Date a partir da string yyyy-mm-dd
-    const data = new Date(dataVenda);
-
-    // Soma 8 dias
-    data.setDate(data.getDate() + 8);
-
-    // Formata para dd/mm/aaaa
-    const dia = String(data.getDate()).padStart(2, "0");
-    const mes = String(data.getMonth() + 1).padStart(2, "0"); // Janeiro é 0
-    const ano = data.getFullYear();
-    const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
-
-    // Atualiza o input type="date" com yyyy-mm-dd
-    const inputEntrega = document.getElementById("dataEntregaManual");
-
-    inputEntrega.value = `${ano}-${mes}-${dia}`;
-
-    console.log("Data de entrega:", dataEntregaFormatada);
-}
-
-//Define data de Entrega de 15 Dias (data venda + 15 dias)
-function verificaDataEntrega15dias() {
-    // Pega o valor do input de data da venda
-    const dataVenda = document.getElementById("dataVendaManual").value;
-
-    // Se não tiver preenchido, não faz nada
-    if (!dataVenda) {
-        console.log("Data da venda não preenchida");
-        return;
-    }
-
-    // Cria objeto Date a partir da string yyyy-mm-dd
-    const data = new Date(dataVenda);
-
-    // Soma 8 dias
-    data.setDate(data.getDate() + 16);
-
-    // Formata para dd/mm/aaaa
-    const dia = String(data.getDate()).padStart(2, "0");
-    const mes = String(data.getMonth() + 1).padStart(2, "0"); // Janeiro é 0
-    const ano = data.getFullYear();
-    const dataEntregaFormatada = `${dia}/${mes}/${ano}`;
-
-    // Atualiza o input type="date" com yyyy-mm-dd
-    const inputEntrega = document.getElementById("dataEntregaManual");
-    inputEntrega.value = `${ano}-${mes}-${dia}`;
-
-    console.log("Data de entrega:", dataEntregaFormatada);
-}
     
 //Cria Objeto de Venda Manual [OK]
 class VendaManual {
@@ -330,8 +560,9 @@ function salvarVendaManual() {
     var cliente = document.getElementById("clienteVendaManual").value;
     var produto = document.getElementById("produtoVendaManual").value;
     var preco = parseFloat(document.getElementById("precoUnitarioVendaManual").value) || 0;
-    var qtd = parseInt(document.getElementById("qtdVendaManual").value) || 0;
     var desconto = parseFloat(document.getElementById("descontoAcrescimoVendaManual").value) || 0;
+    var total = parseFloat(document.getElementById("totalVendaManual").value) || 0;
+    var qtd = parseInt(document.getElementById("qtdVendaManual").value) || 0;
     var total = parseFloat(document.getElementById("totalVendaManual").value) || 0;
     var sexo = document.getElementById("sexoVendaManual").value;
     var modeloCapa = document.getElementById("modeloCapaVendaManual").value;
