@@ -246,10 +246,15 @@ function atualizaBotaoLink() {
     const input = document.getElementById("urlCorrecaoGit");
     const btnLink = document.getElementById("linkGit");
 
-    const valor = input.value.trim();
-    btnLink.innerText = `cd ${valor}`; // Atualiza o texto do botão
-    btnLink.dataset.clipboard = `cd ${valor}`; // Atualiza o valor que será copiado
+    let valor = input.value.trim();
+
+    // Troca todas as barras \ por /
+    valor = valor.replaceAll("\\", "/");
+
+    btnLink.innerText = `cd ${valor}`; 
+    btnLink.dataset.clipboard = `cd ${valor}`;
 }
+
 
 // 2) Copia o valor exato do botão clicado
 function copiarBotao(botao) {
@@ -352,7 +357,6 @@ function copiarCodigo(botao, idElemento) {
             console.error("Erro ao copiar:", err);
         });
 }
-
 
 // ABRIR MODAL
 function abrirModalCadastroDev(index, tipo) {

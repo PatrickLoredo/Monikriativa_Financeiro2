@@ -148,45 +148,79 @@
                         <div class="card card-principal my-3">
                             <div class="card-header">
                                 <div class="row">
-                                    <div class="col">
-                                        <div class="title-main">Categorias de Produtos</div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-6">
-                                        <hr>
-                                    </div>
-                                </div>
-                                <div class="row mt-3">
-                                    <div class="col-3">
-                                        <div class="input-group">
-                                            <input type="text" name="" 
-                                            id="inputNovaCategoriaProduto" 
-                                            class="form-control text-center"
-                                            disabled>
-                                            <button class="btn btn-success d-none input-group-text"
-                                            id="btnSalvarNovaCategoriaProduto"
-                                            onclick="salvarNovaCategoriaProduto()">
-                                                <i class="fa fa-save"></i>
-                                            </button>
+                                    <div class="col-6" style="border-right: 1px solid lightgray;">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="title-main">Categorias de Produtos</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col-7">
+                                                <div class="input-group">
+                                                    <input type="text" name="" 
+                                                    id="inputNovaCategoriaProduto" 
+                                                    class="form-control text-center"
+                                                    disabled>
+                                                    <button class="btn btn-success d-none input-group-text"
+                                                    id="btnSalvarNovaCategoriaProduto"
+                                                    onclick="salvarNovaCategoriaProduto()">
+                                                        <i class="fa fa-save"></i>
+                                                    </button>
 
-                                            <button class="btn btn-dark d-block input-group-text"
-                                            id="btnAdicionarNovaCategoriaProduto"
-                                            onclick="adicionarNovaCategoriaProduto()">
-                                                <i class="fa fa-plus-circle"></i>
-                                            </button>
+                                                    <button class="btn btn-dark d-block input-group-text"
+                                                    id="btnAdicionarNovaCategoriaProduto"
+                                                    onclick="adicionarNovaCategoriaProduto()">
+                                                        <i class="fa fa-plus-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col">
+                                                <button class="btn btn-primary"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalListaCategorias">
+                                                    <i class="fa fa-list">&nbsp;&nbsp;</i>
+                                                    <span>Lista de Categorias</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="row" id="amostradeCategorias"></div>
+                                    </div>
+
+                                    <div class="col-6" style="border-right: 1px solid lightgray;">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="title-main">Capas de Produtos</div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <hr>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-3">
+                                            <div class="col d-flex justify-content-center gap-2">
+                                                <button class="btn btn-success"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalCadastroCapasProduto"
+                                                    onclick="atualizaDataCadastroProduto(),
+                                                    atualizarNumerosCapas();"></i>
+                                                    <i class="fa-regular fa-square-plus"></i>
+                                                    <span>&nbsp;&nbsp;Cadastrar Capas</span>
+                                                </button>
+                                                
+                                                <button class="btn btn-danger" 
+                                                onclick="irParaGaleriaCapas()" id="btngaleriaCapas">
+                                                    <i class="fa-regular fa-images"></i>
+                                                    <span>&nbsp;&nbsp;Galeria de Capas</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-4">
-                                        <button class="btn btn-primary"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalListaCategorias">
-                                            <i class="fa fa-list">&nbsp;&nbsp;</i>
-                                            <span>Lista de Categorias</span>
-                                        </button>
-                                    </div>
-                                    </div>
-                                    <div class="row" id="amostradeCategorias"></div>
                                 </div>
                             </div>
                         </div>
@@ -212,21 +246,6 @@
                                                                 carregarInsumosFixos();">
                                                     <i class="fa-regular fa-square-plus"></i>
                                                     <span>&nbsp;&nbsp;Cadastrar Produto</span>
-                                                </button>
-
-                                                <button class="btn btn-success"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalCadastroCapasProduto"
-                                                    onclick="atualizaDataCadastroProduto(),
-                                                    atualizarNumerosCapas();"></i>
-                                                    <i class="fa-regular fa-square-plus"></i>
-                                                    <span>&nbsp;&nbsp;Cadastrar Capas</span>
-                                                </button>
-                                                
-                                                <button class="btn btn-danger" 
-                                                onclick="irParaGaleriaCapas()" id="btngaleriaCapas">
-                                                    <i class="fa-regular fa-images"></i>
-                                                    <span>&nbsp;&nbsp;Galeria de Capas</span>
                                                 </button>
                                             </div>
                                         </div>
