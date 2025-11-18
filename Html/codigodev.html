@@ -244,7 +244,8 @@
                                                 id="urlCorrecaoGit" 
                                                 oninput="atualizaBotaoLink()"
                                                 placeholder="Digite a URL do Local dos Arquivos Codados">
-                                                <span class="input-group-text bg-primary text-white" onclick="limpaUrlGit()">
+                                                <span class="input-group-text bg-primary text-white" 
+                                                onclick="limpaUrlGit()">
                                                     <i class="fa fa-eraser"></i>
                                                 </span>
                                             </div>
@@ -255,22 +256,26 @@
                                 <div class="card-footer" id="btnInsereGit">
                                     <div class="row">
                                         <div class="col">
-                                            <button class="btn btn-outline-primary w-100 label-format" id="linkGit" data-clipboard="" onclick="copiarBotao(this)">
+                                            <button class="btn btn-outline-primary w-100 label-format" 
+                                            id="linkGit" data-clipboard="" onclick="copiarBotao(this)">
                                                 cd LINK
                                             </button>
                                         </div>
                                         <div class="col-2">
-                                            <button class="btn btn-outline-primary w-100 label-format" id="gitAdd" data-clipboard="git add ." onclick="copiarBotao(this)">
+                                            <button class="btn btn-outline-primary w-100 label-format" 
+                                            id="gitAdd" data-clipboard="git add ." onclick="copiarBotao(this)">
                                                 git add .
                                             </button>
                                         </div>
                                         <div class="col-2">
-                                            <button class="btn btn-outline-primary w-100 label-format" id="gitCommit" data-clipboard='git commit -m ""' onclick="copiarBotao(this)">
+                                            <button class="btn btn-outline-primary w-100 label-format" 
+                                            id="gitCommit" data-clipboard='git commit -m ""' onclick="copiarBotao(this)">
                                                 git commit -m ""
                                             </button>
                                         </div>
                                         <div class="col-2">
-                                            <button class="btn btn-outline-primary w-100 label-format" id="gitPush" data-clipboard="git push" onclick="copiarBotao(this)">
+                                            <button class="btn btn-outline-primary w-100 label-format" 
+                                            id="gitPush" data-clipboard="git push" onclick="copiarBotao(this)">
                                                 git push
                                             </button>
                                         </div>
@@ -291,12 +296,23 @@
                                                         <div class="col text-center">
                                                             Funcões Javascript
                                                         </div>
-                                                        <div class="col-2">
+
+                                                        <!--BUTTON DE REFRESH DA PAGINA-->
+                                                        <div class="col-1">
                                                             <button class="btn btn-sm btn-dark"
                                                             onclick="refresh()">
                                                                 <i class="fa fa-refresh"></i>
                                                             </button>
                                                         </div>
+
+                                                        <!--BUTTON DE BAIXAR ARQUIVO TXT DOS CODIGOS GRAVADOS-->
+                                                        <div class="col-1">
+                                                            <button class="btn btn-sm btn-success" 
+                                                            onclick="baixarCodigosFuncoes()">
+                                                                <i class="fa fa-download"></i>
+                                                            </button>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
@@ -372,8 +388,12 @@
                                                                 <select name="" id="categoriaCodigoDev" 
                                                                 class="form-select text-center">
                                                                     <option value="-">-</option>
-                                                                    <option value="Funções Javascript">Funções Javascript</option>
-                                                                    <option value="Estilização de Elementos">Estilização de Elementos</option>
+                                                                    <option value="Funções Javascript">
+                                                                        Funções Javascript
+                                                                    </option>
+                                                                    <option value="Estilização de Elementos">
+                                                                        Estilização de Elementos
+                                                                    </option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -399,7 +419,9 @@
 
                                                     <!--CODIGO DEV-->
                                                     <div class="col">
-                                                        <label for="" class="mt-3 mb-2 label-format">código de programação</label>
+                                                        <label for="" class="mt-3 mb-2 label-format">
+                                                            código de programação
+                                                        </label>
                                                         <textarea name="" id="codigoDev" 
                                                         class="form-control mb-2" rows="15"></textarea>
                                                     </div>

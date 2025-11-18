@@ -168,6 +168,45 @@ function criarAccordionItem(codigo, index, tipo) {
     accordionContainer.appendChild(accordionItem);
 }
 
+
+function baixarCodigosFuncoes() {
+    const itens = document.querySelectorAll('#accordionFuncoes .accordion-item');
+
+    if (itens.length === 0) {
+        alert("Nenhum código encontrado.");
+        return;
+    }
+
+    let conteudoTXT = "===== LISTA DE FUNÇÕES =====\n\n";
+
+    itens.forEach((item, index) => {
+        const titulo = item.querySelector('.accordion-button').innerText.trim();
+        const codigo = item.querySelector('code').innerText;
+
+        conteudoTXT += `====================== FUNÇÃO ${index + 1}) =============================\n\n`;
+        conteudoTXT += `Nome da Função: ${titulo}\n\n`;
+        conteudoTXT += `Código da Função:\n\n`;
+        conteudoTXT += codigo + "\n\n\n\n";
+
+    });
+
+    // Criar blob
+    const blob = new Blob([conteudoTXT], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    // Criar link temporário
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'funcoes_codigo.txt';
+    document.body.appendChild(a);
+    a.click();
+
+    // Limpar
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+
 //CODIGO PARA COPIAR O CODE DIGITADO NO INPUT DE CORRECAO DE URL DE GIT
 function copiarCodigoInput(idElemento, idBotao) {
     const elemento = document.getElementById(idElemento);
@@ -302,7 +341,6 @@ function copiarCodigo(botao, idElemento) {
                 icon.classList.replace("fa-copy", "fa-check");
             }
             botao.classList.replace("btn-success", "btn-primary");
-            botao.innerHTML = `<i class="fa fa-check"></i> Copiado`;
 
             // Após 500ms volta ao estado original
             setTimeout(() => {
