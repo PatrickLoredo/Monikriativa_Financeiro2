@@ -1,10 +1,10 @@
-/*document.addEventListener("DOMContentLoaded", function() {
-    const ModalReal = document.getElementById('modalCadastroProduto');
+document.addEventListener("DOMContentLoaded", function() {
+    const ModalReal = document.getElementById('modalCadastroMultiplosProduto');
     if (ModalReal) {
         const modal = new bootstrap.Modal(ModalReal);
         modal.show();
     }
-});*/
+});
 
 carregarInsumosVariaveis();
 document.addEventListener("DOMContentLoaded", function() {
@@ -665,6 +665,134 @@ function exibirProdutoCadastrado(produto) {
     exibicaoProdutosCadastrados.appendChild(row);
 }
 
+// VERIFICAR ARQUIVO XLSX e XLS E MOSTRA CABEÇALHO DA TABELA DA IMPORTAÇÃO
+function verificarArquivoXLS() {
+    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
+    const arquivo = input.files[0];
+
+    const campoTabela = document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos");
+    const linhaXls = document.getElementById("linhaArquivoXlsProdutoMassa");
+
+    if (!arquivo) {
+        campoTabela.classList.replace("d-block", "d-none");
+        linhaXls.classList.replace("d-block", "d-none");
+        return;
+    }
+
+    const nome = arquivo.name.toLowerCase();
+
+    const ehXls  = nome.endsWith(".xls");
+    const ehXlsx = nome.endsWith(".xlsx");
+
+    if (ehXls || ehXlsx) {
+
+        campoTabela.classList.remove("d-none");
+        campoTabela.classList.add("d-block");
+
+        linhaXls.classList.remove("d-none");
+        linhaXls.classList.add("d-block");
+
+    } else {
+
+        campoTabela.classList.replace("d-block", "d-none");
+        linhaXls.classList.replace("d-block", "d-none");
+
+        alert("Arquivo inválido. Selecione um arquivo XLS ou XLSX.");
+        input.value = "";
+    }
+}
+
+function baixarModeloProdutos() {
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+
+    const dadosImportantesTabela = [
+        'Data de Cadastro', 
+        'Código', 
+        'Nome do Produto', 
+        'Plataformas de Vendas', 
+        'Categoria', 
+        'Tempo de Produção',
+        'Tempo de Envio',
+        'Preço de Venda Shopee',
+        'Preço de Venda Elo7',
+        ''
+    ];
+
+    const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
+    const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+
+    const linhaTitulo = [dadosImportantesTabela[0], dataAtual];
+
+    const linhaCabecalho = [...dadosImportantesTabela.slice(1, 10)];
+
+    for (let i = 0; i < listaInsumosVariaveis.length; i++) {
+        linhaCabecalho.push(listaInsumosVariaveis[i].nomeInsumoVariavel);
+    }
+
+    // -------------------------
+    // GERAR AS LINHAS DE PRODUTOS
+    // -------------------------
+
+    const linhasProdutos = [];
+    let codigosExistentes = listaCadastroProdutos.length;
+
+    for (let i = 0; i < 20; i++) {
+
+        const proximoNumero = codigosExistentes + 1;
+
+        const proximoCodigo = 
+            proximoNumero < 10 
+                ? `PRD 0${proximoNumero}` 
+                : `PRD ${proximoNumero}`;
+
+        codigosExistentes++;
+
+        // Cria a linha vazia com a quantidade de colunas do cabeçalho
+        const linha = Array(linhaCabecalho.length).fill("");
+
+        // Insere o código do produto na primeira coluna
+        linha[0] = proximoCodigo;
+
+        linhasProdutos.push(linha);
+    }
+
+    // -------------------------
+    // CRIA A PLANILHA
+    // -------------------------
+
+    const ws = XLSX.utils.aoa_to_sheet([
+        linhaTitulo,
+        linhaCabecalho,
+        ...linhasProdutos  // EXPANDE AS LINHAS
+    ]);
+
+    // Ajusta coluna
+    const todasLinhas = [linhaTitulo, linhaCabecalho, ...linhasProdutos];
+    ws['!cols'] = linhaCabecalho.map((_, i) => {
+        let maxLength = 10;
+        todasLinhas.forEach(row => {
+            if (row[i]) maxLength = Math.max(maxLength, String(row[i]).length + 2);
+        });
+        return { wch: maxLength };
+    });
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "ModeloProdutos");
+
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const blob = new Blob([wbout], { type: "application/octet-stream" });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "modelo_cadastro_produtos.xlsx";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+
 // RENDERIZAR PRODUTOS
 function renderizarProdutos() {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
@@ -786,7 +914,7 @@ function carregarInsumosVariaveis() {
         if (inputCustoTotal) inputCustoTotal.value = '0,00';
         return;
     }
-
+    
     listaInsumosVariaveis.forEach((insumo, index) => {
         const precoUnit = parseFloat(insumo.precoUnitarioInsumoVariavel) || 0;
 
