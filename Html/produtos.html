@@ -747,18 +747,6 @@
                                             Cadastro em Massa de Produtos
                                         </h5>
                                     </div>
-                                    <div class="col-2">
-                                        <label for="" class="label-format mb-2">
-                                            data do cadastro
-                                        </label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-primary text-white">
-                                                <i class="fa fa-calendar"></i>
-                                            </span>
-                                            <input type="date" class="form-control text-center" 
-                                            id="dataCadastroMultiplosProduto">
-                                        </div>
-                                    </div>
                                     <div class="col-">
                                         <button type="button" class="btn-danger btn" 
                                         data-bs-dismiss="modal" aria-label="Close">
@@ -792,6 +780,11 @@
                                                 <i class="fa-solid fa-triangle-exclamation d-flex justify-content-center align-items-center fs-5">&nbsp;&nbsp;&nbsp;</i>
                                                 <span>A quantidade máxima de produtos para cadastro em massa é de 
                                                     <b>20 produtos por arquivo</b>.
+                                                </span>
+                                            </div>
+                                            <div class="alert alert-danger label-format" role="alert">
+                                                <i class="fa-solid fa-triangle-exclamation d-flex justify-content-center align-items-center fs-5">&nbsp;&nbsp;&nbsp;</i>
+                                                <span>Ao preencher o cadastro <b>não salte linhas </b>e siga a ordem de preenchimento do arquivo.
                                                 </span>
                                             </div>
                                         </div>
@@ -843,9 +836,10 @@
                                                             <th>Código</th>
                                                             <th>Nome do Produto</th>
                                                             <th>Categoria</th>
-                                                            <th>Preço de Venda Shopee</th>
-                                                            <th>Preço de Venda Elo7</th>
-                                                            <th>Estoque</th>
+                                                            <th>Preço Shopee</th>
+                                                            <th>Preço Elo7</th>
+                                                            <th>Tempo Envio</th>
+                                                            <th>Tempo Produção</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="corpoTabelaCadastroMultiplosProdutos" class="text-center">
