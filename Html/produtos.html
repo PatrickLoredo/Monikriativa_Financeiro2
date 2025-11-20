@@ -802,7 +802,7 @@
                                     <!--CAMPO PARA INSERIR ARQUIVO XLS-->
                                     <div class="row">
                                         <div class="col d-flex align-items-center justify-content-center">
-                                            <span class="fs-6 label-format fw-bolder text-center text-danger">
+                                            <span class="label-format fw-bolder text-center text-danger" style="font-size: 0.9rem;">
                                                 Insira o arquivo no campo ao lado
                                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
                                                 <i class="fa fa-arrow-right d-flex align-items-center"></i>
@@ -816,12 +816,23 @@
                                                 class="form-control"
                                                 accept=".xls, .xlsx"
                                                 onchange="verificarArquivoXLS()">
-                                                <span class="input-group-text btn bg-dark text-white">
+                                                <span class="input-group-text btn bg-danger text-white"
+                                                onclick="exibirTabelaCadastroMultiplo()">
                                                     <i class="fa fa-upload"></i>
                                                 </span>                                       
                                             </div>
                                         </div>
-                                        <div class="col-1"></div>
+                                        <div class="col-3 m-auto">
+                                            <button class="btn btn-sm btn-success label-format">
+                                                <i class="fa-solid fa-floppy-disk"></i>
+                                                <span class="ms-2">Salvar</span>
+                                            </button>
+                                            <button class="btn btn-sm btn-primary label-format"
+                                            onclick="limparInputXls()">
+                                                <i class="fa-solid fa-broom"></i>
+                                                <span class="ms-2">limpar</span>
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <!--CAMPO DE EXIBIÇÂO DE ARQUIVOS IMPORTADOS-->
@@ -859,17 +870,10 @@
                                     <div class="row">
                                         <div class="col"></div>
                                         <div class="col-2">
-                                            <button class="btn btn-success label-format w-100">
-                                                <i class="fa-solid fa-floppy-disk"></i>
-                                                <span class="ms-2">Salvar</span>
-                                            </button>
+                                            
                                         </div>
                                         <div class="col-2">
-                                            <button class="btn btn-primary label-format w-100"
-                                            onclick="limparInputXls()">
-                                                <i class="fa-solid fa-broom"></i>
-                                                <span class="ms-2">limpar</span>
-                                            </button>
+                                            
                                         </div>
                                         <div class="col"></div>
                                     </div>

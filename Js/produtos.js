@@ -29,6 +29,7 @@ const listaInsumosPorProduto = JSON.parse(localStorage.getItem("listaPorProduto"
 const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 const listaInsumosFixos = JSON.parse(localStorage.getItem("listaInsumosFixos")) || [];
 
+
 // Notificações
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 const badgeNotificacao = document.getElementById("badge-notificacao");
@@ -418,7 +419,6 @@ class InsumoProduto {
     }
 }
 
-// =====================================================
 // FUNÇÃO PRINCIPAL: SALVAR PRODUTO + INSUMOS USADOS [OK]
 function salvarCadastroProduto() {
     const getValue = (id) => {
@@ -563,7 +563,6 @@ function salvarCadastroProduto() {
     }, 300);
 }
 
-// =====================================================
 // FUNÇÃO AUXILIAR: SALVAR INSUMOS USADOS NO PRODUTO [OK]
 function salvarCadastroInsumosUtilizadosProdutos(codigoProduto) {
     const listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
@@ -730,10 +729,6 @@ function baixarModeloProdutos() {
         linhaCabecalho.push(listaInsumosVariaveis[i].nomeInsumoVariavel);
     }
 
-    // -------------------------
-    // GERAR AS LINHAS DE PRODUTOS
-    // -------------------------
-
     const linhasProdutos = [];
     let codigosExistentes = listaCadastroProdutos.length;
 
@@ -748,27 +743,39 @@ function baixarModeloProdutos() {
 
         codigosExistentes++;
 
-        // Cria a linha vazia com a quantidade de colunas do cabeçalho
         const linha = Array(linhaCabecalho.length).fill("");
 
-        // Insere o código do produto na primeira coluna
         linha[0] = proximoCodigo;
 
         linhasProdutos.push(linha);
     }
 
-    // -------------------------
-    // CRIA A PLANILHA
-    // -------------------------
+    // -------------------------------------
+    // 👉 ADICIONAR A LINHA 50 COM A PALAVRA
+    // -------------------------------------
+    const linha50 = Array(linhaCabecalho.length).fill("");
+    linha50[0] = "oficial_monikriativa";
 
-    const ws = XLSX.utils.aoa_to_sheet([
+    // -------------------------------------
+    // MONTA TODAS AS LINHAS
+    // -------------------------------------
+    const todasLinhas = [
         linhaTitulo,
         linhaCabecalho,
-        ...linhasProdutos  // EXPANDE AS LINHAS
-    ]);
+        ...linhasProdutos
+    ];
 
-    // Ajusta coluna
-    const todasLinhas = [linhaTitulo, linhaCabecalho, ...linhasProdutos];
+    // Garante que existam 49 linhas antes da linha 50
+    while (todasLinhas.length < 49) {
+        todasLinhas.push(Array(linhaCabecalho.length).fill(""));
+    }
+
+    // Linha 50 agora fica na posição index 49
+    todasLinhas.push(linha50);
+
+    const ws = XLSX.utils.aoa_to_sheet(todasLinhas);
+
+    // Ajuste de largura
     ws['!cols'] = linhaCabecalho.map((_, i) => {
         let maxLength = 10;
         todasLinhas.forEach(row => {
@@ -793,6 +800,7 @@ function baixarModeloProdutos() {
     URL.revokeObjectURL(url);
 }
 
+//LER O ARQUIVO MAS NÃO EXIBIR TABELA
 function verificarArquivoXLS() {
     const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
     const arquivo = input.files[0];
@@ -805,35 +813,53 @@ function verificarArquivoXLS() {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: "array" });
 
-        // Lê a primeira aba
         const primeiraAba = workbook.Sheets[workbook.SheetNames[0]];
-
-        // Converte para matriz (AOA)
         const aoa = XLSX.utils.sheet_to_json(primeiraAba, { header: 1, defval: "" });
 
-        preencherTabelaExibicao(aoa);
+        // Apenas armazena — NÃO EXIBE ainda
+        dadosPlanilhaLidos = aoa;
     };
 
     reader.readAsArrayBuffer(arquivo);
 }
 
+//BOTÃO QUE SOMENTE EXIBE A TABELA
+function exibirTabelaCadastroMultiplo() {
+    if (!dadosPlanilhaLidos || dadosPlanilhaLidos.length === 0) {
+        alert("Nenhum arquivo carregado!");
+        return;
+    }
+
+    const linha50 = dadosPlanilhaLidos[49];
+    const valorLinha50 = linha50 ? (linha50[0] || "") : "";
+
+    if (valorLinha50 !== "oficial_monikriativa") {
+        alert("⚠ A planilha carregada não é a oficial!\nBaixe novamente o modelo e preencha corretamente.");
+
+        limparInputXls(); // limpa tudo
+        return;
+    }
+    else{
+        preencherTabelaExibicao(dadosPlanilhaLidos);
+    }
+
+}
+
+//PREENCHER A TABELA
 function preencherTabelaExibicao(aoa) {
     const corpo = document.getElementById("corpoTabelaCadastroMultiplosProdutos");
     corpo.innerHTML = ""; // limpa
 
-    // Ler da linha 3 até a 22 → AOA índice 2 até 21
     for (let i = 2; i <= 21 && i < aoa.length; i++) {
 
-        // MAPEAMENTO EXATO DAS COLUNAS
-        const col1 = aoa[i][0] || ""; // pega coluna 1 (A)
-        const col2 = aoa[i][1] || ""; // pega coluna 2 (B)
-        const col3 = aoa[i][3] || ""; // pega coluna 4 (D)
-        const col4 = aoa[i][6] || ""; // pega coluna 7 (G)
-        const col5 = aoa[i][7] || ""; // pega coluna 8 (H)
-        const col6 = aoa[i][5] || ""; // pega coluna 6 (F)
-        const col7 = aoa[i][4] || ""; // pega coluna 5 (E)
+        const col1 = aoa[i][0] || ""; // A
+        const col2 = aoa[i][1] || ""; // B
+        const col3 = aoa[i][3] || ""; // D
+        const col4 = aoa[i][6] || ""; // G
+        const col5 = aoa[i][7] || ""; // H
+        const col6 = aoa[i][5] || ""; // F
+        const col7 = aoa[i][4] || ""; // E
 
-        // Ignora linha totalmente vazia
         if (!col1 && !col2 && !col3 && !col4 && !col5 && !col6 && !col7) continue;
 
         const linha = document.createElement("tr");
@@ -851,25 +877,28 @@ function preencherTabelaExibicao(aoa) {
         corpo.appendChild(linha);
     }
 
-    // Mostrar tabela
-    document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos").classList.remove("d-none");
+    document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos")
+        .classList.remove("d-none");
 }
 
+//LIMPAR INPUT E SUMIR A TABELA
 function limparInputXls() {
     const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
     const corpoTabela = document.getElementById("corpoTabelaCadastroMultiplosProdutos");
     const campoExibicao = document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos");
 
-    // 1. Limpa o campo de upload
+    // Limpa upload
     input.value = "";
 
-    // 2. Limpa todas as linhas da tabela
+    // Limpa tabela
     corpoTabela.innerHTML = "";
 
-    // 3. Esconde o bloco da tabela
+    // Esconde a tabela
     campoExibicao.classList.add("d-none");
-}
 
+    // Limpa dados carregados
+    dadosPlanilhaLidos = [];
+}
 
 // RENDERIZAR PRODUTOS
 function renderizarProdutos() {
