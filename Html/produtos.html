@@ -791,7 +791,8 @@
                                         <div class="col mt-4">
                                             <button class="btn btn-primary w-50 h-75"
                                             onclick="baixarModeloProdutos()">
-                                                <i class="fa-solid fa-file-arrow-down fa-bounce fs-1"></i>
+                                                <i class="fa-solid fa-file-arrow-down fa-bounce fs-1">
+                                                </i>
                                             </button>
                                         </div>
                                     </div>
@@ -801,14 +802,20 @@
 
                                     <!--CAMPO PARA INSERIR ARQUIVO XLS-->
                                     <div class="row">
-                                        <div class="col d-flex align-items-center justify-content-center">
-                                            <span class="label-format fw-bolder text-center text-danger" style="font-size: 0.9rem;">
-                                                Insira o arquivo no campo ao lado
-                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                                                <i class="fa fa-arrow-right d-flex align-items-center"></i>
-                                            </span>
+                                        <div class="col d-flex align-items-center">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <ol>
+                                                        <li class="mb-2">Importe a Planilha preenchida ao lado</li>
+                                                        <li class="mb-2">Clique no ícone de Upload &nbsp;
+                                                            <b><i class="fa fa-upload"></i></b>
+                                                        </li>
+                                                        <li>Clique em Salvar para concluir o Cadastro</li>
+                                                    </ol>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-5">
+                                        <div class="col-5 d-flex align-items-center">
                                             <div class="input-group">
                                                 <input type="file" 
                                                 name="uploadArquivoCadastroMultiplosProdutos" 
@@ -823,7 +830,8 @@
                                             </div>
                                         </div>
                                         <div class="col-3 m-auto">
-                                            <button class="btn btn-sm btn-success label-format">
+                                            <button class="btn btn-sm btn-success label-format"
+                                            onclick="salvarCadastroMultiplo()">
                                                 <i class="fa-solid fa-floppy-disk"></i>
                                                 <span class="ms-2">Salvar</span>
                                             </button>

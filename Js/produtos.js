@@ -825,10 +825,14 @@ function verificarArquivoXLS() {
 
 //BOTÃO QUE SOMENTE EXIBE A TABELA
 function exibirTabelaCadastroMultiplo() {
-    if (!dadosPlanilhaLidos || dadosPlanilhaLidos.length === 0) {
-        alert("Nenhum arquivo carregado!");
+    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
+
+    if(input.value === ""){
+        alert("⚠  Nenhum arquivo carregado!. \n\n Importe um arquivo XLS ou XLSX modelo clicando no botão de baixar acima.");
         return;
     }
+
+    //VERIFICA SE É A PLANILHA OFICIAL
 
     const linha50 = dadosPlanilhaLidos[49];
     const valorLinha50 = linha50 ? (linha50[0] || "") : "";
@@ -899,6 +903,70 @@ function limparInputXls() {
     // Limpa dados carregados
     dadosPlanilhaLidos = [];
 }
+
+function salvarCadastroMultiplo() {
+    if (!dadosPlanilhaLidos || dadosPlanilhaLidos.length === 0) {
+        alert("Nenhum arquivo carregado!");
+        return;
+    }
+
+    const aoa = dadosPlanilhaLidos;
+
+    let primeira = null;
+    let ultima = null;
+    let encontrouVazio = false;
+    let quebra = false;
+
+    for (let i = 2; i <= 21; i++) {
+        const valor = aoa[i][1] ? aoa[i][1].toString().trim() : "";
+
+        if (valor !== "") {
+
+            if (primeira === null) {
+                primeira = i + 1; // registrar primeira preenchida
+            }
+
+            // Se encontrou um vazio antes e agora encontrou algo = quebra
+            if (encontrouVazio) {
+                quebra = true;
+                break;
+            }
+
+            ultima = i + 1; // atualizar a última preenchida
+
+        } else {
+
+            // só marcar vazio depois que já houve preenchimentos
+            if (primeira !== null) {
+                encontrouVazio = true;
+            }
+        }
+    }
+
+    // === Nenhuma linha preenchida ===
+    if (primeira === null) {
+        alert("PLANILHA NAO FOI PREENCHIDA NENHUM NOME DOS PRODUTOS");
+        return;
+    }
+
+    // === Quebra detectada ===
+    if (quebra) {
+        alert("QUEBRA DE SEQUÊNCIA DE PREENCHIMENTO DETECTADA!\nPREENCHA NOVAMENTE SEM SALTOS.");
+        return;
+    }
+
+    // === Todas preenchidas ===
+    if (primeira === 3 && ultima === 22) {
+        alert("TUDO PREENCHIDO!");
+        return;
+    }
+
+    // === Preenchimento parcial contínuo (válido) ===
+    alert(`PREENCHIDO DE ${primeira} ATÉ ${ultima}`);
+}
+
+
+//====================================================
 
 // RENDERIZAR PRODUTOS
 function renderizarProdutos() {
