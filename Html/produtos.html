@@ -762,7 +762,8 @@
                                     <div class="row" id="">
                                         <div class="col-10">
                                             <!--ALERT DE INSTRUCOES-->
-                                            <div class="alert alert-primary label-format" role="alert">
+                                            <!-- ALERT 1 -->
+                                            <div class="alert alert-primary label-format fade show" role="alert">
                                                 <ol>
                                                     <li>
                                                         Para o cadastro em massa dos Produtos é necessário <b>baixar o arquivo modelo</b> clicando no Botão ao lado.
@@ -775,23 +776,32 @@
                                                     </li>
                                                 </ol>
                                             </div>
-                                            <!--ALERT DE INSTRUCOES-->
-                                            <div class="alert alert-danger label-format" role="alert">
+
+                                            <!-- ALERT 2 -->
+                                            <div class="alert alert-danger label-format alert-dismissible fade show" role="alert">
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                                 <i class="fa-solid fa-triangle-exclamation d-flex justify-content-center align-items-center fs-5">&nbsp;&nbsp;&nbsp;</i>
-                                                <span><u><b>A quantidade máxima</b></u> para cadastro em massa é de 
+                                                <span>
+                                                    <u><b>A quantidade máxima</b></u> para cadastro em massa é de 
                                                     <b><u>20 produtos por arquivo</u></b>.
                                                 </span>
                                             </div>
-                                            <div class="alert alert-danger label-format text-start" role="alert">
+
+                                            <!-- ALERT 3 -->
+                                            <div class="alert alert-danger label-format text-start alert-dismissible fade show" role="alert">
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                                 <i class="fa-solid fa-triangle-exclamation fs-5">&nbsp;&nbsp;&nbsp;</i>
-                                                <span>Ao preencher o cadastro na Planilha <b><u>não salte linhas</u></b> e siga a ordem de preenchimento do arquivo.
+                                                <span>
+                                                    Ao preencher o cadastro na Planilha <b><u>não salte linhas</u></b> 
+                                                    e siga a ordem de preenchimento do arquivo.
                                                 </span>
                                             </div>
+
                                         </div>
-                                        <div class="col mt-4">
-                                            <button class="btn btn-primary w-50 h-75"
+                                        <div class="col my-2 pb-3">
+                                            <button class="btn btn-primary w-50 h-100"
                                             onclick="baixarModeloProdutos()">
-                                                <i class="fa-solid fa-file-arrow-down fa-bounce fs-1">
+                                                <i class="fa-solid fa-file-arrow-down fa-beat fs-1">
                                                 </i>
                                             </button>
                                         </div>
@@ -831,7 +841,8 @@
                                         </div>
                                         <div class="col-3 m-auto">
                                             <button class="btn btn-sm btn-success label-format"
-                                            onclick="salvarCadastroMultiplo()">
+                                            onclick="salvarCadastroMultiplo()"
+                                            id="btnSalvarProdutoMassa">
                                                 <i class="fa-solid fa-floppy-disk"></i>
                                                 <span class="ms-2">Salvar</span>
                                             </button>
@@ -848,8 +859,9 @@
                                         <hr>
                                     </div>
 
-                                    <div class="row d-none" id="campoExibicaoTabelaCadastroMultiplosProdutos">
+                                    <div class="row d-none mb-5" id="campoExibicaoTabelaCadastroMultiplosProdutos">
                                         <div class="col">
+
                                             <div class="table-responsive">
                                                 <table class="table table-striped table-hover">
                                                     <thead class="table-secondary text-center">
@@ -864,26 +876,23 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody id="corpoTabelaCadastroMultiplosProdutos" class="text-center">
-                                                        <!-- Linhas da tabela serão adicionadas aqui dinamicamente -->
                                                     </tbody>
                                                 </table>
                                             </div>
+
+                                            <!-- AQUI ESTÁ O BOTÃO, FORA DA TABLE! -->
+                                            <button class="btn btn-primary mt-3" 
+                                                    id="btnSubirUploadProdutoMassa" 
+                                                    onclick="rolarParaSalvar('btnSalvarProdutoMassa', 500)">
+                                                <i class="fa-solid fa-arrow-up fa-bounce"></i>
+                                            </button>
+
                                         </div>
                                     </div>
+
 
                                     <div class="row d-none" id="linhaArquivoXlsProdutoMassa">
                                         <hr>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col"></div>
-                                        <div class="col-2">
-                                            
-                                        </div>
-                                        <div class="col-2">
-                                            
-                                        </div>
-                                        <div class="col"></div>
                                     </div>
                                 </div>
                             </div>

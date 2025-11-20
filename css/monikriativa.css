@@ -266,3 +266,12 @@
 #exibicaoProdutosCadastrados input{
     font-size: 0.715rem;
 }
+#btnSubirUploadProdutoMassa{
+    position: absolute;
+    right: 20px;
+    bottom: 10px;
+    width: 60px;
+    height: 60px;
+    border-radius: 360px;
+    font-size: 25px;
+}

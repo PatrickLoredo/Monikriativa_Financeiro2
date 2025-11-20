@@ -968,6 +968,41 @@ function salvarCadastroMultiplo() {
     alert(`PREENCHIDO DE ${primeira} ATÉ ${ultima}`);
 }
 
+function rolarParaSalvar(idDestino, distancia) {
+    const destino = document.getElementById(idDestino);
+    if (!destino) return;
+
+    const offset = parseInt(distancia, 10) || 0;
+
+    // 1) Detecta se o elemento está dentro de um container com overflow
+    let container = destino.parentElement;
+    while (container) {
+        const style = window.getComputedStyle(container);
+        if (/(auto|scroll)/.test(style.overflowY)) {
+            break; 
+        }
+        container = container.parentElement;
+    }
+
+    if (container && container.scrollHeight > container.clientHeight) {
+        // Caso esteja dentro de um container com scroll interno
+        const pos = destino.offsetTop - offset;
+        container.scrollTo({ top: pos, behavior: "smooth" });
+        return;
+    }
+
+    // Caso normal: scroll da página
+    const posicao =
+        destino.getBoundingClientRect().top +
+        window.pageYOffset -
+        offset;
+
+    window.scrollTo({
+        top: posicao,
+        behavior: "smooth"
+    });
+}
+
 //====================================================
 
 // RENDERIZAR PRODUTOS
