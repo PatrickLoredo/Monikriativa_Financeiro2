@@ -702,6 +702,7 @@ function verificarArquivoXLS() {
     }
 }
 
+//GERA O MODELO DE PLANILHA DE CADASTRO EM MASSA DE PRODUTOS E BAIXA
 function baixarModeloProdutos() {
     const dataAtual = new Date().toLocaleDateString('pt-BR');
 
@@ -790,6 +791,83 @@ function baixarModeloProdutos() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+function verificarArquivoXLS() {
+    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
+    const arquivo = input.files[0];
+
+    if (!arquivo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+
+        // Lê a primeira aba
+        const primeiraAba = workbook.Sheets[workbook.SheetNames[0]];
+
+        // Converte para matriz (AOA)
+        const aoa = XLSX.utils.sheet_to_json(primeiraAba, { header: 1, defval: "" });
+
+        preencherTabelaExibicao(aoa);
+    };
+
+    reader.readAsArrayBuffer(arquivo);
+}
+
+function preencherTabelaExibicao(aoa) {
+    const corpo = document.getElementById("corpoTabelaCadastroMultiplosProdutos");
+    corpo.innerHTML = ""; // limpa
+
+    // Ler da linha 3 até a 22 → AOA índice 2 até 21
+    for (let i = 2; i <= 21 && i < aoa.length; i++) {
+
+        // MAPEAMENTO EXATO DAS COLUNAS
+        const col1 = aoa[i][0] || ""; // pega coluna 1 (A)
+        const col2 = aoa[i][1] || ""; // pega coluna 2 (B)
+        const col3 = aoa[i][3] || ""; // pega coluna 4 (D)
+        const col4 = aoa[i][6] || ""; // pega coluna 7 (G)
+        const col5 = aoa[i][7] || ""; // pega coluna 8 (H)
+        const col6 = aoa[i][5] || ""; // pega coluna 6 (F)
+        const col7 = aoa[i][4] || ""; // pega coluna 5 (E)
+
+        // Ignora linha totalmente vazia
+        if (!col1 && !col2 && !col3 && !col4 && !col5 && !col6 && !col7) continue;
+
+        const linha = document.createElement("tr");
+
+        linha.innerHTML = `
+            <td>${col1}</td>
+            <td>${col2}</td>
+            <td>${col3}</td>
+            <td>${col4}</td>
+            <td>${col5}</td>
+            <td>${col6}</td>
+            <td>${col7}</td>
+        `;
+
+        corpo.appendChild(linha);
+    }
+
+    // Mostrar tabela
+    document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos").classList.remove("d-none");
+}
+
+function limparInputXls() {
+    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
+    const corpoTabela = document.getElementById("corpoTabelaCadastroMultiplosProdutos");
+    const campoExibicao = document.getElementById("campoExibicaoTabelaCadastroMultiplosProdutos");
+
+    // 1. Limpa o campo de upload
+    input.value = "";
+
+    // 2. Limpa todas as linhas da tabela
+    corpoTabela.innerHTML = "";
+
+    // 3. Esconde o bloco da tabela
+    campoExibicao.classList.add("d-none");
 }
 
 

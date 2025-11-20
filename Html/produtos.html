@@ -778,13 +778,13 @@
                                             <!--ALERT DE INSTRUCOES-->
                                             <div class="alert alert-danger label-format" role="alert">
                                                 <i class="fa-solid fa-triangle-exclamation d-flex justify-content-center align-items-center fs-5">&nbsp;&nbsp;&nbsp;</i>
-                                                <span>A quantidade máxima de produtos para cadastro em massa é de 
-                                                    <b>20 produtos por arquivo</b>.
+                                                <span><u><b>A quantidade máxima</b></u> para cadastro em massa é de 
+                                                    <b><u>20 produtos por arquivo</u></b>.
                                                 </span>
                                             </div>
-                                            <div class="alert alert-danger label-format" role="alert">
-                                                <i class="fa-solid fa-triangle-exclamation d-flex justify-content-center align-items-center fs-5">&nbsp;&nbsp;&nbsp;</i>
-                                                <span>Ao preencher o cadastro <b>não salte linhas </b>e siga a ordem de preenchimento do arquivo.
+                                            <div class="alert alert-danger label-format text-start" role="alert">
+                                                <i class="fa-solid fa-triangle-exclamation fs-5">&nbsp;&nbsp;&nbsp;</i>
+                                                <span>Ao preencher o cadastro na Planilha <b><u>não salte linhas</u></b> e siga a ordem de preenchimento do arquivo.
                                                 </span>
                                             </div>
                                         </div>
@@ -801,9 +801,11 @@
 
                                     <!--CAMPO PARA INSERIR ARQUIVO XLS-->
                                     <div class="row">
-                                        <div class="col">
-                                            <span class="fs-6 label-format fw-bolder text-center">
-                                                Insira o arquivo, com os registros dos produtos a serem cadastrados, no campo ao lado.
+                                        <div class="col d-flex align-items-center justify-content-center">
+                                            <span class="fs-6 label-format fw-bolder text-center text-danger">
+                                                Insira o arquivo no campo ao lado
+                                                <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                                <i class="fa fa-arrow-right d-flex align-items-center"></i>
                                             </span>
                                         </div>
                                         <div class="col-5">
@@ -814,7 +816,7 @@
                                                 class="form-control"
                                                 accept=".xls, .xlsx"
                                                 onchange="verificarArquivoXLS()">
-                                                <span class="input-group-text btn bg-danger text-white">
+                                                <span class="input-group-text btn bg-dark text-white">
                                                     <i class="fa fa-upload"></i>
                                                 </span>                                       
                                             </div>
@@ -863,7 +865,8 @@
                                             </button>
                                         </div>
                                         <div class="col-2">
-                                            <button class="btn btn-primary label-format w-100">
+                                            <button class="btn btn-primary label-format w-100"
+                                            onclick="limparInputXls()">
                                                 <i class="fa-solid fa-broom"></i>
                                                 <span class="ms-2">limpar</span>
                                             </button>
