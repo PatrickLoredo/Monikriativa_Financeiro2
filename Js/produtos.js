@@ -905,8 +905,17 @@ function limparInputXls() {
 }
 
 function salvarCadastroMultiplo() {
+
+    // --- VERIFICA SE O INPUT TEM ARQUIVO ---
+    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
+    if (!input.files || input.files.length === 0) {
+        alert("⚠  Nenhum arquivo carregado!. \n\n Importe um arquivo XLS ou XLSX modelo clicando no botão de baixar acima.");
+        return;
+    }
+
+    // --- VERIFICA SE A PLANILHA FOI LIDA ---
     if (!dadosPlanilhaLidos || dadosPlanilhaLidos.length === 0) {
-        alert("Nenhum arquivo carregado!");
+        alert("⚠  Nenhum arquivo carregado!. \n\n Importe um arquivo XLS ou XLSX modelo clicando no botão de baixar acima.");
         return;
     }
 
@@ -923,48 +932,41 @@ function salvarCadastroMultiplo() {
         if (valor !== "") {
 
             if (primeira === null) {
-                primeira = i + 1; // registrar primeira preenchida
+                primeira = i + 1;
             }
 
-            // Se encontrou um vazio antes e agora encontrou algo = quebra
             if (encontrouVazio) {
                 quebra = true;
                 break;
             }
 
-            ultima = i + 1; // atualizar a última preenchida
+            ultima = i + 1;
 
         } else {
 
-            // só marcar vazio depois que já houve preenchimentos
             if (primeira !== null) {
                 encontrouVazio = true;
             }
         }
     }
 
-    // === Nenhuma linha preenchida ===
     if (primeira === null) {
         alert("PLANILHA NAO FOI PREENCHIDA NENHUM NOME DOS PRODUTOS");
         return;
     }
 
-    // === Quebra detectada ===
     if (quebra) {
         alert("QUEBRA DE SEQUÊNCIA DE PREENCHIMENTO DETECTADA!\nPREENCHA NOVAMENTE SEM SALTOS.");
         return;
     }
 
-    // === Todas preenchidas ===
     if (primeira === 3 && ultima === 22) {
         alert("TUDO PREENCHIDO!");
         return;
     }
 
-    // === Preenchimento parcial contínuo (válido) ===
     alert(`PREENCHIDO DE ${primeira} ATÉ ${ultima}`);
 }
-
 
 //====================================================
 
