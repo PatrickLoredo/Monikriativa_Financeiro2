@@ -15,7 +15,8 @@
         <script src="https://kit.fontawesome.com/e9987e6d2b.js" crossorigin="anonymous"></script> 
 
         <!--BOOTSTRAP CSS-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         
         <!--BOOTSTRAP ICONS-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
@@ -165,7 +166,8 @@
                                             <div class="col-4">
                                                 <div class="d-flex justify-content-end">
                                                     <div class="input-group" id="selectFiltroResumoVendas">
-                                                        <select class="form-select text-center" aria-label="Default select example">
+                                                        <select class="form-select text-center" 
+                                                        aria-label="Default select example">
                                                             <option selected> - - -   Selecione o Período   - - - </option>
                                                             <option value="1">Últimos 7 dias</option>
                                                             <option value="2">Últimos 30 dias</option>
@@ -259,8 +261,7 @@
                                             <div class="col-3">
                                                 <button class="btn btn-primary w-100 m-auto"
                                                 data-bs-toggle="modal"
-                                                data-bs-target="#modalCadastroVenda"
-                                                onclick="atualizarCodigoVenda()">
+                                                data-bs-target="#modalCadastroVenda">
                                                     <i class="fa-solid fa-cart-shopping"></i>
                                                     &nbsp;&nbsp;Adicionar Venda Manual
                                                 </button>
@@ -303,8 +304,7 @@
                                                             <span class="input-group-text bg-primary text-white">
                                                                 <i class="fa-solid fa-magnifying-glass"></i>
                                                             </span>
-                                                            <select name="" id="selectFiltroVenda" class="form-select text-center" 
-                                                            onclick="validaTipoFiltroVenda()">
+                                                            <select name="" id="selectFiltroVenda" class="form-select text-center">
                                                                 <option value="escolha">-</option>
                                                                 <option value="filtro-data-Venda">Data da Venda</option>
                                                                 <option value="filtro-codigo-Venda">Código da Venda</option>
@@ -318,7 +318,9 @@
                                                             <span class="input-group-text bg-danger text-white">
                                                                 <i class="fa-solid fa-calendar-days"></i>
                                                             </span>
-                                                            <input type="date" name="" id="pesquisaDataVenda" class="text-center form-control">
+                                                            <input type="date" name="" 
+                                                            id="pesquisaDataVenda" 
+                                                            class="text-center form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-3 d-none" id="FiltrovendaCodigo">
@@ -346,7 +348,8 @@
                                                         data-bs-target="">
                                                             <i class="fa-solid fa-filter"></i>&nbsp; Filtrar
                                                         </button>
-                                                        <button class="btn btn-success me-2 d-none" id="btnBaixarRelatorioVendas">
+                                                        <button class="btn btn-success me-2 d-none" 
+                                                        id="btnBaixarRelatorioVendas">
                                                             <i class="fa-solid fa-file-arrow-down"></i>
                                                         </button>
                                                     </div>
@@ -415,8 +418,7 @@
                                         <div class="col-1">
                                             <button type="button" 
                                             class="btn bg-danger text-white" 
-                                            data-bs-dismiss="modal" aria-label="Fechar"
-                                            onclick="verificaDataEntrega()">
+                                            data-bs-dismiss="modal" aria-label="Fechar">
                                             <i class="fa fa-x"></i>
                                             </button>
                                         </div>
@@ -461,8 +463,7 @@
                                                             </span>
                                                             <input type="date" name="" 
                                                             id="dataVendaManual" 
-                                                            class="form-control text-center"
-                                                            onchange="verificaDataEntrega()">
+                                                            class="form-control text-center">
                                                         </div>
                                                     </div>
 
@@ -475,8 +476,7 @@
                                                             </span>
                                                             <select name="" 
                                                             id="plataformaVendaManual" 
-                                                            class="form-select text-center"
-                                                            onchange="atualizarTotaisVendaManual()">
+                                                            class="form-select text-center">
                                                                 <option value="escolha">Escolha a Plataforma</option>
                                                                 <option value="Shopee" selected>Shopee</option>
                                                                 <option value="Elo7">Elo7</option>
@@ -494,7 +494,7 @@
                                                             </span>
                                                             <input type="date" name="" 
                                                             id="dataEntregaManual" 
-                                                            class="form-control text-center" disabled>
+                                                            class="form-control text-center">
                                                         </div>
                                                     </div>
                                                     
@@ -506,8 +506,7 @@
                                                                 <i class="fa-solid fa-brush"></i>
                                                             </span>
                                                             <select name="" id="statusProducaoVendaManual" 
-                                                            class="form-select text-center"
-                                                            onchange="verificaStatusEntrega()">
+                                                            class="form-select text-center">
                                                                 <option value="semEscolhaProducao">-</option>
                                                                 <option value="Em Produção" selected>Em Produção</option>
                                                                 <option value="Enviado">Enviado</option>
@@ -524,8 +523,7 @@
                                                                 <i class="fa-solid fa-truck-ramp-box"></i>
                                                             </span>
                                                             <select name="" id="statusEntrega" 
-                                                            class="form-select text-center"
-                                                            onchange="verificarStatusEntrega()">
+                                                            class="form-select text-center">
                                                                 <option value="Sem Escolha Status Entrega">-</option>
                                                                 <option value="Não Enviado" selected>Não Enviado</option>
                                                                 <option value="A caminho">A caminho</option>
@@ -548,7 +546,8 @@
                                                             <i class="fa fa-truck-fast"></i>
                                                             <span class="label-format">Atrasado para Envio</span>
                                                         </button>
-                                                        <button class="button btn btn-sm text-white w-100 d-none" id="btn-orange">
+                                                        <button class="button btn btn-sm text-white w-100 d-none" 
+                                                        id="btn-orange">
                                                             <i class="fa-solid fa-parachute-box"></i>
                                                             <i class="fa-solid fa-check-to-slot"></i>
                                                             <span class="label-format">Produto Entregue</span>
@@ -558,10 +557,10 @@
                                             </div>
 
                                             <!-- CORPO DO CARD -->
-                                            <div class="card-body">
+                                            <div class="card-body" id="cardCadastroVenda">
                                                 <div class="row mb-4">
                                                     <!-- CLIENTE -->
-                                                    <div class="col-6">
+                                                    <div class="col">
                                                         <label for="">Cliente</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-danger text-white">
@@ -573,169 +572,209 @@
                                                         </div>
                                                     </div>
 
-                                                    <!-- PRODUTO -->
-                                                    <div class="col-6">
-                                                        <label for="">Produto</label>
+                                                    <div class="col-2">
+                                                        <label for="" class="fw-bold text-success">Total Bruto</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text text-white bg-primary">
+                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                            </span>
+                                                            <input type="text" id="totalBrutoCompra" 
+                                                            class="form-control text-center letra" 
+                                                            placeholder="R$ 0,00" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-2">
+                                                        <label for="" class="fw-bold text-success">receber Plataforma</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text bg-orange text-white">
+                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                            </span>
+                                                            <input type="text" id="totalReceberShopee" 
+                                                            class="form-control text-center bg-orange text-white letra" 
+                                                            placeholder="R$ 0,00">
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- LUCRO PARA CASA-->
+                                                    <div class="col-2">
+                                                        <label for="" class="fw-bold text-primary">Saldo da Casa</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text bg-success text-white">
+                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
+                                                            </span>
+
+                                                            <input type="text" id="lucroLiquidoReal" 
+                                                            class="form-control text-center letra" 
+                                                            placeholder="R$ 0,00" disabled>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Custos Insumos-->
+                                                    <div class="col-2">
+                                                        <label for="" class="fw-bold text-danger">Saldo empresa</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-box-open"></i>
+                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
                                                             </span>
-                                                            <select name="" id="produtoVendaManual" 
-                                                                    class="form-select text-center" 
-                                                                    onchange="selecionarProdutoVendaManual(); 
-                                                                    atualizarTotaisVendaManual();">
-                                                                <option value="escolha" selected>Escolha o Produto</option>
-                                                            </select>
+
+                                                            <input type="text" id="lucroLiquidoRealEmpresa" 
+                                                            class="form-control text-center letra" 
+                                                            placeholder="R$ 0,00"
+                                                            disabled>
+
+                                                            <span class="input-group-text bg-dark text-white">
+                                                                <i class="uppercase fw-bold fw-6" 
+                                                                id="percentualLiquidoEmpresa"></i>&nbsp;&nbsp;
+
+                                                                <i class="fa fa-percent mt-1" style="font-size: 0.8rem;"></i>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
 
-                                                <div class="row my-3">
-                                                    <!-- TEMPO DE ENVIO -->
-                                                    <div class="col-2">
-                                                        <label for="">Tempo Envio</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-truck-fast"></i>
-                                                            </span>
-                                                            <input type="number" 
-                                                                id="tempoEnvioProduto"
-                                                                class="form-control text-center" 
-                                                                min="7"
-                                                                max="15"
-                                                                disabled>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- PREÇO UNITÁRIO -->
-                                                    <div class="col-2">
-                                                        <label for="">Preço Unitário</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                            </span>
-                                                            <input type="text" 
-                                                                id="precoUnitarioVendaManual"
-                                                                class="form-control text-center" 
-                                                                placeholder="R$ 0,00" disabled>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- QUANTIDADE -->
-                                                    <div class="col-2">
-                                                        <label for="">Quantidade</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-scale-unbalanced-flip"></i>
-                                                            </span>
-                                                            <input type="number" 
-                                                                id="qtdVendaManual"
-                                                                min="1"
-                                                                class="form-control text-center" 
-                                                                placeholder="Quantidade" 
-                                                                value="1"
-                                                                oninput="calcularTotalBrutoVendaManual(); atualizarTotaisVendaManual();">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- DESCONTO / ACRÉSCIMOS -->
-                                                    <div class="col-2">
-                                                        <label for="">Desconto/Acréscimos</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-money-bill"></i>
-                                                            </span>
-                                                            <input type="text" 
-                                                                id="descontoAcrescimoVendaManual"
-                                                                class="form-control text-center" 
-                                                                placeholder="R$ 0,00"
-                                                                value="0"
-                                                                oninput="calcularTotalBrutoVendaManual(); atualizarTotaisVendaManual();">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- TOTAL BRUTO -->
-                                                    <div class="col-2">
-                                                        <label for="">Total Bruto</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                            </span>
-                                                            <input type="text" 
-                                                                id="totalVendaManual"
-                                                                class="form-control text-center" 
-                                                                placeholder="R$ 0,00" disabled>
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- TOTAL LÍQUIDO -->
-                                                    <div class="col-2">
-                                                        <label for="">Total Líquido</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                            </span>
-                                                            <input type="text" 
-                                                                id="totalLiquidoVendaManual"
-                                                                class="form-control text-center" 
-                                                                placeholder="R$ 0,00" disabled>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="card-footer">
-                                                <div class="row mt-3">
-                                                    <!--SEXO-->
-                                                    <div class="col-3">
-                                                        <label for="">Sexo</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-primary text-white">
-                                                                <i class="fa-solid fa-mars-and-venus"></i>
-                                                            </span>
-                                                            <select name="" id="sexoVendaManual" 
-                                                            class="form-select text-center">
-                                                                <option value="nao escolhido">-</option>
-                                                                <option value="Fem">Feminino</option>
-                                                                <option value="Masc">Masculino</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <!--MODELO DE CAPA-->
-                                                    <div class="col-3">
-                                                        <label for="">Modelo de Capa</label>
-                                                        <div class="input-group">
-                                                            <span 
-                                                            class="input-group-text bg-primary text-white">
-                                                                <i class="fa-solid fa-book"></i>
-                                                            </span>
-                                                            <input type="number" 
-                                                            id="modeloCapaVendaManual"
-                                                            class="form-control text-center" 
-                                                            placeholder="Nº Capa">
-                                                        </div>
-                                                    </div>
-
-                                                    <!--Nome Personalizado-->
+                                                <div class="row">
+                                                    <div class="col-8"></div>
                                                     <div class="col">
-                                                        <label for="">Nome Personalizado</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-primary text-white">
-                                                                <i class="fa-solid fa-box-open"></i>
-                                                            </span>
-                                                            <input type="text" 
-                                                            id="nomePersonalizadoVendaManual"
-                                                            class="form-control text-center" 
-                                                            placeholder="Nome Personalizado" 
-                                                            value="">
-                                                        </div>
+                                                        <span class="btn bg-secondary text-white uppercase letra w-100" 
+                                                        style="font-size: 0.7rem;"
+                                                        onclick="calcularLucro()">
+                                                            <span class="fw-bold">Lucro Liquido da Venda: &nbsp;</span>
+                                                            <span class="" id="resultadoLucroLiquidoVenda"></span>
+                                                            <i class="fa fa-percent"></i>
+                                                        </span>
                                                     </div>
                                                 </div>
+
+                                                <!--====================================== TABELA ======================================-->
+                                                <div class="row mt-2">
+                                                    <div class="col">
+                                                        <table class="table table-striped table-hover table-bordered" 
+                                                        id="tabelaCadastroVenda">
+                                                            <tr class="text-center uppercase table-dark" 
+                                                                style="font-size: 0.7rem;">
+                                                                <th>produto</th>
+                                                                <th>sexo</th>
+                                                                <th>qtd</th>
+                                                                <th>p.unitario</th>
+                                                                <th>descontos</th>
+                                                                <th>p.total</th>
+                                                                <th>insumos</th>
+                                                                <th>capa</th>
+                                                                <th>Nome Pers.</th>
+                                                                <th>
+                                                                    <button class="btn btn-primary btn-sm"
+                                                                    onclick="insereNovoProdutoCadastro()">
+                                                                        <i class="fa fa-plus"></i>
+                                                                    </button>
+                                                                </th>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <!--PRODUTO-->
+                                                                <td id="1">
+                                                                    <select name="" id="produtoVendaManual_1" 
+                                                                        class="form-select text-center"
+                                                                        onchange="recuperaPrecoUnitarioLinha(1), 
+                                                                        calculoBrutoLinha(1),
+                                                                        calcularLucro()">
+                                                                        <option value="escolha" selected>
+                                                                            Escolha o Produto
+                                                                        </option>
+                                                                    </select>
+                                                                </td>
+
+                                                                <!--SEXO-->
+                                                                <td>
+                                                                    <select name="" id="sexoVendaManual_1" 
+                                                                    class="form-select text-center">
+                                                                        <option value="nao escolhido">-</option>
+                                                                        <option value="Fem">Feminino</option>
+                                                                        <option value="Masc">Masculino</option>
+                                                                    </select>
+                                                                </td>
+
+                                                                <!--QTD-->
+                                                                <td>
+                                                                    <input type="number" 
+                                                                    id="qtdVendaManual_1"
+                                                                    class="form-control text-center" 
+                                                                    placeholder="qtd"
+                                                                    value="1"
+                                                                    oninput="recuperaPrecoUnitarioLinha(1);
+                                                                    calculoBrutoLinha(1);
+                                                                    verificaQtdProdutos()">
+                                                                </td>
+
+                                                                <!--P.UNITARIO-->
+                                                                <td>
+                                                                    <input type="text" 
+                                                                        id="precoUnitarioVendaManual_1"
+                                                                        class="form-control text-center" 
+                                                                        placeholder="R$ 0,00"
+                                                                        oninput="calculoBrutoLinha(1)">
+                                                                </td>
+
+                                                                <!--ACRESCIMO-->
+                                                                <td>
+                                                                    <input type="text" 
+                                                                        id="descontoAcrescimoVendaManual_1"
+                                                                        class="form-control text-center" 
+                                                                        placeholder="R$ 0,00"
+                                                                        value="0,00"
+                                                                        oninput="calculoBrutoLinha(1)">
+                                                                </td>
+
+                                                                <!--P.total venda-->
+                                                                <td>
+                                                                    <input type="text" 
+                                                                        id="totalVendaManual_1"
+                                                                        class="form-control text-center" 
+                                                                        placeholder="R$ 0,00">
+                                                                </td>
+
+                                                                <!--P.total insumos-->
+                                                                <td>
+                                                                    <input type="text" 
+                                                                        id="insumosVendaManual_1"
+                                                                        class="form-control text-center" 
+                                                                        placeholder="R$ 0,00">
+                                                                </td>
+
+                                                                <!--Modelo Capa-->
+                                                                <td>
+                                                                    <input type="number" 
+                                                                    id="modeloCapaVendaManual_1"
+                                                                    class="form-control text-center" 
+                                                                    placeholder="Nº Capa">
+                                                                </td>
+
+                                                                <!--personalização-->
+                                                                <td>
+                                                                    <input type="text" 
+                                                                    id="nomePersonalizadoVendaManual_1"
+                                                                    class="form-control text-center" 
+                                                                    placeholder="Nome Personalizado" 
+                                                                    value="">
+                                                                </td>
+
+                                                                <td>
+                                                                    <button class="btn btn-danger btn-sm"
+                                                                    onclick="removeNovoProdutoCadastro()"
+                                                                    id="btnRemoveLinha_1">
+                                                                        <i class="fa fa-trash"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>                                              
+
+                                            <div class="card-footer mt-2">                                                    
                                                 <div class="row">
                                                     <!--OBSERVAÇÕES-->
-                                                    <div class="col my-3 mt-4">
+                                                    <div class="col my-3 mt-2">
                                                         <label for="">Observações Importantes</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-primary text-white">

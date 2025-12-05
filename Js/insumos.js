@@ -19,7 +19,6 @@ function balancarSino() {
     }
 }
 
-
 // ========================================= GERAL DE INSUMOS =========================================
 //ATUALIZA A DATA DO MODAL CADASTRO PARA DATA ATUAL [OK]
 function formatarDataCadastroInsumo() {
@@ -36,6 +35,8 @@ function formatarDataCadastroInsumo() {
 // ========================================= INSUMOS VARIÁVEIS =========================================
 var listaInsumosVariaveis = JSON.parse(localStorage.getItem("listaInsumosVariaveis")) || [];
 var listaCategoriasInsumos = JSON.parse(localStorage.getItem("listaCategoriasInsumos")) || [];
+let fornecedores = JSON.parse(localStorage.getItem("fornecedores")) || [];
+
 
 //OBJETO DE INSUMO VARIAVEL [OK]
 class InsumoVariavel {
@@ -339,6 +340,32 @@ function excluirInsumoVariavel(codigo) {
     console.log(`🗑️ Insumo ${codigo} excluído com sucesso!`);
 }
 
+function fornecedorInsumoVariavel() {
+    const select = document.getElementById('fornecedorInsumoVariavel');
+    const fornecedores = JSON.parse(localStorage.getItem("fornecedores")) || [];
+
+    // Limpa opções antigas
+    select.innerHTML = '';
+
+    // Adiciona uma opção padrão
+    const opcaoPadrao = document.createElement('option');
+    opcaoPadrao.value = '';
+    opcaoPadrao.textContent = '-- Selecione um fornecedor --';
+    select.appendChild(opcaoPadrao);
+
+    // Adiciona cada fornecedor
+    fornecedores.forEach(fornecedor => {
+        const option = document.createElement('option');
+        option.value = fornecedor.codigoFornecedor; 
+        option.textContent = fornecedor.razaoSocialFornecedor;
+        select.appendChild(option);
+    });
+}
+
+// Chama a função ao carregar a página
+document.addEventListener('DOMContentLoaded', fornecedorInsumoVariavel);
+
+
 // ========================================= INSUMOS FIXOS =========================================
 var listaInsumosFixos = JSON.parse(localStorage.getItem("listaInsumosFixos")) || [];
 
@@ -386,7 +413,6 @@ function calculaPrecoInsumoFixo() {
     // 🔢 Agora com no máximo 2 casas decimais
     precoMinutoInsumoFixo.value = precoMinutoFinal.toFixed(2);
 }
-
 
 //MOSTRA A LISTA DE INSUMOS FIXOS CADASTRADOS NO ARRAY
 function exibirInsumosFixosSalvos() {
@@ -521,7 +547,6 @@ function salvarInsumoFixo() {
     formatarDataCadastroInsumo();
 }
 
-
 function limpaInsumoFixo() {
     // Campos principais
     document.getElementById('dataCompraInsumoFixo').value = "";
@@ -606,8 +631,6 @@ function novoCadastroInsumoFixo() {
     verificaCodigoInsumoFixo();
     formatarDataCadastroInsumo();
 }
-
-
 
 // =====================================================
 // FUNÇÕES DE CATEGORIA DE INSUMOS VARIÁVEIS
@@ -797,4 +820,6 @@ window.onload = function() {
         iconeEl.classList.remove('fa-chevron-up');
         iconeEl.classList.add('fa-chevron-down');
     });
+
+    
 };

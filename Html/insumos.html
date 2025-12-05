@@ -19,7 +19,7 @@
         <link rel="icon" href="/MONIKRIATIVA/img//favicon (1).ico" type="image/x-icon">
     </head>
 
-    <body>
+    <body id="pagina-insumos">
         <!-- Início do Menu Lateral -->
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
             style="width: 280px; height: 100%; position: fixed;" id="lateral-menu">
@@ -350,7 +350,8 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-4">
+                                            <!--NOME DO INSUMO VARIAVEL-->
+                                            <div class="col-5">
                                                 <label for="" class="label-format mb-2">Nome do Insumo</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-white">
@@ -360,22 +361,30 @@
                                                     id="nomeCadastroInsumoVariavel">
                                                 </div>
                                             </div>
-                                            <div class="col-3">
+
+                                            <!--FORNECEDOR DO INSUMO VARIAVEL-->
+                                            <div class="col">
                                                 <label for="" class="label-format mb-2">fornecedor</label>    
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-white">
                                                         <i class="fa fa-industry"></i>
                                                     </span>
                                                     <select name="" id="fornecedorInsumoVariavel" 
-                                                    class="form-select text-center">
-                                                        <option value="1">1</option>
-                                                        <option value="2">2</option>
-                                                        <option value="3">3</option>
-                                                    </select>
+                                                    class="form-select text-center"></select>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        <div class="div my-4">
+                                            <hr>
+                                        </div>
+
+
+                                        <!--SEGUNDA LINHA DE CADASTRO INSUMO VARIAVEL-->
+                                        <div class="row mb-3">
+                                            <!--CATEGORIA DO INSUMO VARIAVEL-->
                                             <div class="col-3">
-                                                <label for="" class="label-format mb-2">Categoria</label>
+                                                <label for="" class="label-format mb-2">Categoria do insumo</label>
                                                 <div class="input-group">
                                                     <span class="input-group-text bg-primary text-white">
                                                         <i class="fa-solid fa-inbox"></i>
@@ -388,17 +397,8 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="div my-4">
-                                            <hr>
-                                        </div>
-
-
-                                        <!--SEGUNDA LINHA DE CADASTRO INSUMO VARIAVEL-->
-                                        <div class="row mb-3 d-flex justify-content-center">
-                                            
-                                            <!---->
+                                            <!--QUANTIDADE DE COMPRA DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Qtd Compra</label>
                                                 <div class="input-group">
@@ -411,6 +411,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--PREÇO TOTAL DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Preço Total Compra</label>
                                                 <div class="input-group">
@@ -423,6 +424,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--PREÇO DO FRETE DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Preço Frete</label>
                                                 <div class="input-group">
@@ -434,8 +436,11 @@
                                                     value="0,00"
                                                     oninput="calculaPrecoInsumoVariavel()">
                                                 </div>
-                                            </div>
-
+                                            </div>                                
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <!--ACRÉSCIMO NO VALOR DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Acréscimo</label>
                                                 <div class="input-group">
@@ -449,6 +454,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--DESCONTO NO VALOR DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Desconto</label>
                                                 <div class="input-group">
@@ -462,6 +468,7 @@
                                                 </div>
                                             </div>
 
+                                            <!--PREÇO UNITÁRIO DO INSUMO VARIAVEL-->
                                             <div class="col-2">
                                                 <label for="" class="label-format mb-2">Preço Unitário</label>
                                                 <div class="input-group">
@@ -472,7 +479,7 @@
                                                     id="precoUnitarioCompraCadastroInsumo"
                                                     disabled>
                                                 </div>
-                                            </div>                                            
+                                            </div>    
                                         </div>
 
                                         
@@ -481,33 +488,25 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-4"></div>
+                                            <div class="col"></div>
                                             <div class="col">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <button class="btn btn-success"
-                                                        onclick="salvarInsumoVariavel()">
-                                                            <i class="fa fa-save"></i>
-                                                            <span>&nbsp;&nbsp;Salvar</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="col">
-                                                        <button class="btn btn-primary"
-                                                        onclick="editarInsumoVariavel()">
-                                                            <i class="fa fa-save"></i>
-                                                            <span>&nbsp;&nbsp;Editar</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="col">
-                                                        <button class="btn btn-danger"
-                                                        onclick="limpaInsumoVariavel()">
-                                                            <i class="fa fa-broom"></i>
-                                                            <span>&nbsp;Limpar</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                                <button class="btn btn-success"
+                                                onclick="salvarInsumoVariavel()">
+                                                    <i class="fa fa-save"></i>
+                                                    <span>&nbsp;&nbsp;Salvar</span>
+                                                </button>
+                                                <button class="btn btn-primary"
+                                                onclick="editarInsumoVariavel()">
+                                                    <i class="fa fa-save"></i>
+                                                    <span>&nbsp;&nbsp;Editar</span>
+                                                </button>
+                                                <button class="btn btn-danger"
+                                                onclick="limpaInsumoVariavel()">
+                                                    <i class="fa fa-broom"></i>
+                                                    <span>&nbsp;Limpar</span>
+                                                </button>
                                             </div>
-                                            <div class="col-4"></div>
+                                            <div class="col"></div>
                                         </div>
                                     </div>
                                 </div>

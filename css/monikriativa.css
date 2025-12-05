@@ -6,10 +6,13 @@
 }
 
 #menu-lateral .nav-link{
-    margin: 1px 0;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 #menu-lateral .nav-link:hover{
     background-color: #0d479c;
+    font-weight: bold;
 }
 #lateral-menu{
     z-index: 99;
@@ -144,12 +147,14 @@
     border: 1px solid lightgray;
 }
 .title-main{
-    font-size: 22px;
+    font-size: 17px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: bold;
     padding: 3px 5px;
+    color: rgba(220, 52, 69, 1);
 }
+
 #title-brand,
 #subtitulo-brand{
     letter-spacing: 1px;
@@ -220,6 +225,12 @@
     letter-spacing: 1px;
     font-size: 0.75rem;
 }
+.uppercase{
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+}
+
 #cardCadastroProdutos .titulo_col{
     margin-bottom: 0.5rem;
 }
@@ -274,4 +285,44 @@
     height: 60px;
     border-radius: 360px;
     font-size: 25px;
+}
+
+/*---------------------------------------------------------------------------------------------------------*/
+#btnClientes span{
+    font-size: 0.793rem;
+}
+.fa-spinner {
+    background: none !important;
+    box-shadow: none !important;
+}
+#btnEditarFornecedor {
+    margin-left: 10px; /* ajuste se quiser espaço */
+}
+
+#pagina-insumos{
+    overflow-x: hidden; /* remove scroll horizontal da página */
+
+}
+#pagina-insumos .container {
+    margin-left: 280px; /* para respeitar menu lateral */
+    max-width: calc(100% - 280px); /* garante que não ultrapasse a tela */
+    width: 100%;
+    overflow-x: hidden;
+}
+
+#pagina-insumos .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    overflow-x: hidden;
+}
+#modalBodyCadastroManualVenda .bg-orange{
+    background-color: #ee4d2d;
+    color: white;
+}
+#tabelaCadastroVenda tr td input,
+#tabelaCadastroVenda tr td select{
+    font-size: 0.79rem;
+}
+#cardCadastroVenda .letra{
+    font-size: 0.9rem;
 }

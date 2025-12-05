@@ -53,8 +53,10 @@ class CodigoDev {
 function corrigeUrlGit() {
     const entrada = document.getElementById("urlCorrecaoGit").value;
     const corrigida = entrada.replace(/\\/g, "/");
-    document.getElementById("urlCorrigidaGit").value = corrigida;
+    document.getElementById("urlCorrigidaGit").value = "cd " + corrigida;
 }
+
+
 
 //LIMPA O INPUT DE URL DO GIT
 function limpaUrlGit(){
@@ -247,14 +249,15 @@ function atualizaBotaoLink() {
     const btnLink = document.getElementById("linkGit");
 
     let valor = input.value.trim();
+    var valorAtual = '"'+valor+'"'
 
     // Troca todas as barras \ por /
-    valor = valor.replaceAll("\\", "/");
+    valor = valor.replace(/\\/g, "/");
 
-    btnLink.innerText = `cd ${valor}`; 
-    btnLink.dataset.clipboard = `cd ${valor}`;
+    // Atualiza o texto do botão e o atributo data-clipboard
+    btnLink.innerText = `cd ${valorAtual}`;
+    btnLink.dataset.clipboard = `cd ${valorAtual}`;
 }
-
 
 // 2) Copia o valor exato do botão clicado
 function copiarBotao(botao) {

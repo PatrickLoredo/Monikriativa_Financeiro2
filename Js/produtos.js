@@ -1,10 +1,10 @@
-document.addEventListener("DOMContentLoaded", function() {
+/*document.addEventListener("DOMContentLoaded", function() {
     const ModalReal = document.getElementById('modalCadastroMultiplosProduto');
     if (ModalReal) {
         const modal = new bootstrap.Modal(ModalReal);
         modal.show();
     }
-});
+});*/
 
 carregarInsumosVariaveis();
 document.addEventListener("DOMContentLoaded", function() {
@@ -904,70 +904,6 @@ function limparInputXls() {
     dadosPlanilhaLidos = [];
 }
 
-function salvarCadastroMultiplo() {
-
-    // --- VERIFICA SE O INPUT TEM ARQUIVO ---
-    const input = document.getElementById("uploadArquivoCadastroMultiplosProdutos");
-    if (!input.files || input.files.length === 0) {
-        alert("⚠  Nenhum arquivo carregado!. \n\n Importe um arquivo XLS ou XLSX modelo clicando no botão de baixar acima.");
-        return;
-    }
-
-    // --- VERIFICA SE A PLANILHA FOI LIDA ---
-    if (!dadosPlanilhaLidos || dadosPlanilhaLidos.length === 0) {
-        alert("⚠  Nenhum arquivo carregado!. \n\n Importe um arquivo XLS ou XLSX modelo clicando no botão de baixar acima.");
-        return;
-    }
-
-    const aoa = dadosPlanilhaLidos;
-
-    let primeira = null;
-    let ultima = null;
-    let encontrouVazio = false;
-    let quebra = false;
-
-    for (let i = 2; i <= 21; i++) {
-        const valor = aoa[i][1] ? aoa[i][1].toString().trim() : "";
-
-        if (valor !== "") {
-
-            if (primeira === null) {
-                primeira = i + 1;
-            }
-
-            if (encontrouVazio) {
-                quebra = true;
-                break;
-            }
-
-            ultima = i + 1;
-
-        } else {
-
-            if (primeira !== null) {
-                encontrouVazio = true;
-            }
-        }
-    }
-
-    if (primeira === null) {
-        alert("PLANILHA NAO FOI PREENCHIDA NENHUM NOME DOS PRODUTOS");
-        return;
-    }
-
-    if (quebra) {
-        alert("QUEBRA DE SEQUÊNCIA DE PREENCHIMENTO DETECTADA!\nPREENCHA NOVAMENTE SEM SALTOS.");
-        return;
-    }
-
-    if (primeira === 3 && ultima === 22) {
-        alert("TUDO PREENCHIDO!");
-        return;
-    }
-
-    alert(`PREENCHIDO DE ${primeira} ATÉ ${ultima}`);
-}
-
 function rolarParaSalvar(idDestino, distancia) {
     const destino = document.getElementById(idDestino);
     if (!destino) return;
@@ -1004,7 +940,6 @@ function rolarParaSalvar(idDestino, distancia) {
 }
 
 //====================================================
-
 // RENDERIZAR PRODUTOS
 function renderizarProdutos() {
     const exibicaoProdutosCadastrados = document.getElementById('exibicaoProdutosCadastrados');
