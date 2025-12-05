@@ -200,7 +200,7 @@ function insereNovoProdutoCadastro() {
 
     numeroLinhas++;
 }
-
+//
 function removeLinha(id) {
     const linha = document.getElementById(`linha_${id}`);
     if (linha) linha.remove();
