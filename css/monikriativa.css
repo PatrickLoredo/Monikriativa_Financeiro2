@@ -179,7 +179,7 @@
 #bodyTabelaVendas .bg-shopee{
     background-color: rgb(252, 167, 9);
 }
-#infoPrazoEntrega #btn-orange{
+#infoPrazoEntrega .btn-orange{
     background-color: rgb(255, 115, 0);
 }
 
@@ -321,8 +321,15 @@
 }
 #tabelaCadastroVenda tr td input,
 #tabelaCadastroVenda tr td select{
-    font-size: 0.79rem;
+    font-size: 0.8rem;
 }
 #cardCadastroVenda .letra{
     font-size: 0.9rem;
+}
+#infoPrazoEntrega button{
+    position: relative;
+    top: -8px;
+}
+#infoPrazoEntrega button span{
+    font-size: 0.7rem;
 }

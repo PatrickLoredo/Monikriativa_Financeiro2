@@ -974,6 +974,7 @@ function abrirModalProduto(codigoProduto) {
     document.getElementById('categoriaCadastroProduto').value = produto.categoriaCadastroProduto;
     document.getElementById('estoqueCadastroProdutos').value = produto.estoqueCadastroProdutos;
     document.getElementById('tempoProducaoProduto').value = produto.tempoProducaoProdutos;
+    document.getElementById('tempoEnvioProdutos').value = produto.tempoEnvioProdutos;
 
     // 💰 Custos
     document.getElementById('custoInsumosFixosCadastroProdutos').value = produto.custoInsumosFixosProdutos;
@@ -1287,7 +1288,7 @@ function congelarInputs() {
     const ids = [
         'dataCadastroProduto', 'codigoCadastroProduto', 'nomeCadastroProduto',
         'plataformaCadastroProduto', 'categoriaCadastroProduto', 'custoInsumosVariaveisCadastroProdutos',
-        'estoqueCadastroProdutos', 'tempoProducaoProduto','precoVendaShopeeCadastroProduto', 'custoShopeeCadastroProduto',
+        'estoqueCadastroProdutos', 'tempoProducaoProduto','tempoEnvioProdutos','precoVendaShopeeCadastroProduto', 'custoShopeeCadastroProduto',
         'lucroLiquidoShopeeCadastroInsumo', 'percentualLucroShopeeCadastroInsumo',
         'precoVendaElo7CadastroProduto', 'custoElo7CadastroProduto', 'lucroLiquidoElo7CadastroInsumo',
         'percentualLucroElo7CadastroInsumo'
@@ -1297,9 +1298,13 @@ function congelarInputs() {
 
 function descongelarInputs() {
     const ids = [
-        'dataCadastroProduto', 'nomeCadastroProduto', 'plataformaCadastroProduto',
+        'dataCadastroProduto', 
+        'nomeCadastroProduto', 
+        'plataformaCadastroProduto',
         'categoriaCadastroProduto',
-        'estoqueCadastroProdutos', 'tempoProducaoProduto',
+        'estoqueCadastroProdutos', 
+        'tempoProducaoProduto',
+        'tempoEnvioProdutos',
         'precoVendaShopeeCadastroProduto',
         'precoVendaElo7CadastroProduto'
     ];
