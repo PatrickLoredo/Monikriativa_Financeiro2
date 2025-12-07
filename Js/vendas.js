@@ -650,6 +650,15 @@ function exibirVendas() {
                             <div class="col-1 ${classePlataforma}">
                                 <span>${venda.plataforma}</span>
                             </div>
+                            <div class="col"></div>
+                            <div class="col-2 gap-2">
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="fa fa-trash"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-2">
