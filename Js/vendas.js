@@ -1,10 +1,13 @@
 const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 
-const minhasVendas = [];
+let minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
+var tamArrayVendas = minhasVendas.length;
 
 const codigoVendaManual = document.getElementById('codigoVendaManual');
-var tamArrayVendas = minhasVendas.length;
+
+let vendasPorPagina = 3;
+let paginaAtual = 1;
 
 // Lista de feriados (formato DD/MM/YYYY)
 const feriados = [
@@ -26,10 +29,13 @@ const feriados = [
     "15/11/2030","20/11/2030","25/12/2030"
 ];
 
+window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
+
+
 window.onload = function(){
-    const modalOriginal = document.getElementById('modalCadastroVenda');
+    /*const modalOriginal = document.getElementById('XXXX');
     const modalAbre = new bootstrap.Modal(modalOriginal);
-    modalAbre.show();
+    modalAbre.show();*/
 
     geraCodigoVendaManual();
     populaSelectProdutosCadastrados('produtoVendaManual_1');
@@ -37,6 +43,7 @@ window.onload = function(){
     defineDataSelect();
     verificaDiaSemana();
     verificaStatusProducao();
+    exibirVendas();
 }
 
 //================================================ MODAL CADASTRO DE VENDA MANUAL ================================================
@@ -75,11 +82,8 @@ function defineDataSelect() {
 
     const dataFormatada = `${diaHoje}/${mesHoje}/${anoHoje}`;
 
-    console.log(dataFormatada);
-
     if (campoVenda) {
         campoVenda.value = `${anoHoje}-${mesHoje}-${diaHoje}`; // define o input type="date"
-        console.log(campoVenda.value)
     }
 }
 
@@ -108,7 +112,7 @@ function insereNovoProdutoCadastro() {
 
             <!--SEXO-->
             <td>
-                <select name="" id="sexoVendaManual_1" 
+                <select name="" id="sexoVendaManual_${numeroLinhas+1}" 
                 class="form-select text-center">
                     <option value="nao escolhido">-</option>
                     <option value="Fem">Feminino</option>
@@ -200,7 +204,7 @@ function insereNovoProdutoCadastro() {
 
     numeroLinhas++;
 }
-//
+
 function removeLinha(id) {
     const linha = document.getElementById(`linha_${id}`);
     if (linha) linha.remove();
@@ -243,8 +247,6 @@ function recuperaPrecoUnitarioLinha(linhaId) {
             const insumoLinha = parseFloat(campo.value.replace(',', '.')) || 0;
             valor += insumoLinha;
         }
-
-        console.log("Total insumos:", valor.toFixed(2));
 
         lucroLiquidoRealEmpresa.value = valor.toFixed(2).replace('.', ',');
     } else {
@@ -372,13 +374,10 @@ function verificaDiaSemana() {
     tipDiaSemana.classList.add('d-block');
     tipDiaSemana.innerText = diasSemana[diaSemana];
 
-    console.log(`Dia da semana: ${diasSemana[diaSemana]}, Feriado/fim de semana: ${isFeriadoOuFimDeSemana}`);
 }
 
 let tempoMaxEnvio = 0;
 function calcularDataEnvioUtil() {
-    console.log("Número de linhas:", numeroLinhas);
-
     tempoMaxEnvio = 0; // reseta toda vez que recalcula
 
     // Verifica maior tempo de envio entre os produtos
@@ -395,10 +394,7 @@ function calcularDataEnvioUtil() {
         const diasEntrega = parseInt(produto.tempoEnvioProdutos) || 0;
         tempoMaxEnvio = Math.max(tempoMaxEnvio, diasEntrega);
 
-        console.log(`Produto linha ${i}: ${valorProduto} - Dias de entrega: ${diasEntrega}`);
     }
-
-    console.log("Tempo máximo de envio entre todos os produtos:", tempoMaxEnvio);
 
     const dataVendaManual = document.getElementById('dataVendaManual').value;
     if (!dataVendaManual) return;
@@ -434,10 +430,8 @@ function calcularDataEnvioUtil() {
 
     const mostraMaiorTempoEnvio = document.getElementById('mostraMaiorTempoEnvio');
     if (mostraMaiorTempoEnvio) {
-        mostraMaiorTempoEnvio.innerText = `${tempoMaxEnvio} dia(s) úteis`;
+        mostraMaiorTempoEnvio.innerText = `${tempoMaxEnvio}`;
     }
-
-    console.log("Data final de entrega útil:", `${diaFinal}/${mesFinal}/${anoFinal}`);
 }
 
 function verificaStatusProducao() {
@@ -493,9 +487,6 @@ function verificaStatusProducao() {
         }
     }
 
-    console.log("Status Produção:", statusProducao);
-    console.log("Data de Entrega Ajustada:", dataEntrega);
-    console.log("Hoje:", hoje);
 }
 
 function removeNovoProdutoCadastro(botao) {
@@ -510,16 +501,225 @@ function removeNovoProdutoCadastro(botao) {
     calcularDataEnvioUtil();
     verificaStatusProducao();
 }
+// Carrega vendas já existentes
+window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
+// MODELO DE OBJETO DA VENDA MANUAL
+class VendaManual{
+    constructor(
+        codigoInterno,
+        codigoPlatforma,
+        dataVenda,
+        diaSemanaVenda,
+        inputDataEnvio,
+        plataforma,
+        cliente,
+        informacoesProduto,
+        tempoEnvio,
+        lucroLiquidoVenda,
+        totalBruto,
+        receberPlataforma,
+        saldoCasa,
+        saldoEmpresa,
+        statusProducao,
+        obsercoesImportantes
+    ){
+        this.codigoInterno = codigoInterno;
+        this.codigoPlatforma = codigoPlatforma;
+        this.dataVenda = dataVenda;
+        this.diaSemanaVenda = diaSemanaVenda;
+        this.inputDataEnvio = inputDataEnvio;
+        this.plataforma = plataforma;
+        this.cliente = cliente;
+        this.informacoesProduto = informacoesProduto;
+        this.tempoEnvio = tempoEnvio;
+        this.lucroLiquidoVenda = lucroLiquidoVenda;
+        this.totalBruto = totalBruto;
+        this.receberPlataforma = receberPlataforma;
+        this.saldoEmpresa = saldoEmpresa;
+        this.saldoCasa = saldoCasa;
+        this.statusProducao = statusProducao;
+        this.obsercoesImportantes = obsercoesImportantes;
+    }
+}
 
+function salvarVendaManual() {
 
+    var codigoVendaManual = document.getElementById('codigoVendaManual');
+    var codigoPlataformaVendaManual = document.getElementById('codigoPlataformaVendaManual');
+    var dataVendaManual = document.getElementById('dataVendaManual');
+    var diaSemanaVenda = document.getElementById('diaSemanaVenda');
+    var dataEntregaManual = document.getElementById('dataEntregaManual');
+    var plataformaVendaManual = document.getElementById('plataformaVendaManual');
+    var clienteVendaManual = document.getElementById('clienteVendaManual');
+    var mostraMaiorTempoEnvio = document.getElementById('mostraMaiorTempoEnvio');
+    var resultadoLucroLiquidoVenda = document.getElementById('resultadoLucroLiquidoVenda');
+    var totalBrutoCompra = document.getElementById('totalBrutoCompra');
+    var totalReceberShopee = document.getElementById('totalReceberShopee');
+    var lucroLiquidoReal = document.getElementById('lucroLiquidoReal');
+    var lucroLiquidoRealEmpresa = document.getElementById('lucroLiquidoRealEmpresa');
+    var statusProducaoVendaManual = document.getElementById('statusProducaoVendaManual');
+    var observacoesVendaManual = document.getElementById('observacoesVendaManual');
+    
+    var informacoesProduto = [];
 
+    const linhas = document.querySelectorAll('[id^="produtoVendaManual_"]');
 
+    for(let i = 0; i < linhas.length; i++){
+        let index = i + 1;
 
+        informacoesProduto.push({
+            item_Pedido: index,
+            valor_ProdutoLinha: document.getElementById(`produtoVendaManual_${index}`).value,
+            sexo_ProdutoLinha: document.getElementById(`sexoVendaManual_${index}`).value,
+            qtd_ProdutoLinha: document.getElementById(`qtdVendaManual_${index}`).value,
+            precoUnitario_ProdutoLinha: document.getElementById(`precoUnitarioVendaManual_${index}`).value,
+            descontos_ProdutoLinha: document.getElementById(`descontoAcrescimoVendaManual_${index}`).value,
+            precoTotal_ProdutoLinha: document.getElementById(`totalVendaManual_${index}`).value,
+            precoInsumos_ProdutoLinha: document.getElementById(`insumosVendaManual_${index}`).value,
+            modeloCapa_ProdutoLinha: document.getElementById(`modeloCapaVendaManual_${index}`).value,
+            nomePersonalizado_ProdutoLinha: document.getElementById(`nomePersonalizadoVendaManual_${index}`).value
+        });
+    }
 
+    const novaVenda = new VendaManual(
+        codigoVendaManual.value,
+        codigoPlataformaVendaManual.value,
+        dataVendaManual.value,
+        diaSemanaVenda.innerText,
+        dataEntregaManual.value,
+        plataformaVendaManual.value,
+        clienteVendaManual.value,
+        informacoesProduto,
+        mostraMaiorTempoEnvio.innerText,
+        resultadoLucroLiquidoVenda.innerText,
+        totalBrutoCompra.value,
+        totalReceberShopee.value,
+        lucroLiquidoReal.value,
+        lucroLiquidoRealEmpresa.value,
+        statusProducaoVendaManual.value,
+        observacoesVendaManual.value
+    );
 
+    minhasVendas.push(novaVenda);
 
+    localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
 
+    exibirVendas();
+    limparVendaManual();
+}
 
+function limparVendaManual(){
+    location.reload();
+    geraCodigoVendaManual();
+}
 
+function formatarData(dataISO) {
+    if (!dataISO) return "";
+    const partes = dataISO.split("-");
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+function exibirVendas() {
+    const campoExibicaoVendas = document.getElementById('campoExibicaoVendas');
+    campoExibicaoVendas.innerHTML = "";
+
+    const minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
+    const totalPaginas = Math.ceil(minhasVendas.length / vendasPorPagina);
+
+    if (totalPaginas === 0) return;
+
+    // Garantir página atual válida
+    if (paginaAtual < 1) paginaAtual = 1;
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+    // Exibir os mais recentes primeiro
+    const startIndex = minhasVendas.length - (paginaAtual * vendasPorPagina);
+    const endIndex = startIndex + vendasPorPagina;
+
+    for (let i = endIndex - 1; i >= startIndex; i--) {
+        if (i < 0) continue;
+        const venda = minhasVendas[i];
+        const classePlataforma = venda.plataforma === "Shopee" ? "plataformaShopee" : "plataformaElo7";
+
+        campoExibicaoVendas.innerHTML += `
+            <div class="row my-1">
+                <div class="col">
+                    <div class="alert alert-primary fade show" role="alert">
+                        <div class="row">
+                            <div class="col-1 ${classePlataforma}">
+                                <span>${venda.plataforma}</span>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-2">
+                                <label class="uppercase fw-bold d-flex justify-content-center">data venda:</label>
+                                <span class="uppercase letra d-flex justify-content-center">${formatarData(venda.dataVenda)}</span>
+                            </div>
+                            <div class="col-2">
+                                <label class="uppercase fw-bold d-flex justify-content-center">data envio:</label>
+                                <span class="uppercase letra d-flex justify-content-center">${venda.inputDataEnvio ? formatarData(venda.inputDataEnvio) : '--/--/----'}</span>
+                            </div>
+                            <div class="col-2">
+                                <label class="uppercase fw-bold d-flex justify-content-center">id venda:</label>
+                                <span class="uppercase letra d-flex justify-content-center">${venda.codigoPlatforma || '---'}</span>
+                            </div>
+                            <div class="col-4">
+                                <label class="uppercase fw-bold d-flex justify-content-center">Cliente:</label>
+                                <span class="uppercase letra d-flex justify-content-center text-center">${venda.cliente}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    atualizarPaginacao(totalPaginas);
+}
+
+function atualizarPaginacao(totalPaginas) {
+    const paginacao = document.getElementById('paginacao');
+    paginacao.innerHTML = "";
+
+    if (totalPaginas === 0) return;
+
+    const maxBotoes = 3;
+    const startPage = Math.max(totalPaginas - maxBotoes + 1, 1);
+    const endPage = totalPaginas;
+
+    // Botão INÍCIO
+    const btnInicio = document.createElement('button');
+    btnInicio.className = 'btn btn-danger btn-sm';
+    btnInicio.innerText = 'primeira';
+    btnInicio.classList.add('uppercase','letra', 'px-2');
+    btnInicio.style.fontSize = '0.7rem';
+    btnInicio.disabled = paginaAtual === 1;
+    btnInicio.onclick = () => { paginaAtual = 1; exibirVendas(); };
+    paginacao.appendChild(btnInicio);
+
+    // Botões das páginas
+    for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-sm ' + (i === paginaAtual ? 'btn-primary' : 'btn-secondary');
+        btn.innerText = i;
+        btn.onclick = () => { paginaAtual = i; exibirVendas(); };
+        paginacao.appendChild(btn);
+    }
+
+    // Botão ÚLTIMA
+    const btnUltima = document.createElement('button');
+    btnUltima.className = 'btn btn-danger btn-sm';
+    btnUltima.innerText = 'Última';
+    btnUltima.classList.add('uppercase','letra', 'px-2');
+    btnUltima.style.fontSize = '0.7rem';
+    btnUltima.disabled = paginaAtual === totalPaginas;
+    btnUltima.onclick = () => { paginaAtual = totalPaginas; exibirVendas(); };
+    paginacao.appendChild(btnUltima);
+}
+
+// Inicialização
+window.onload = function() {
+    exibirVendas();
+}
 

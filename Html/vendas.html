@@ -257,147 +257,58 @@
                             <div class="col">
                                 <div class="card card-principal">
                                     <div class="card-body">
-                                        <div class="row d-flex justify-content-center">
+                                        <div class="row">
+
                                             <div class="col-3">
-                                                <button class="btn btn-primary w-100 m-auto"
+                                                <button class="btn btn-primary m-auto w-100"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroVenda">
-                                                    <i class="fa-solid fa-cart-shopping"></i>
-                                                    &nbsp;&nbsp;Adicionar Venda Manual
+                                                    <i class="fa-solid fa-circle-plus "></i>&nbsp;&nbsp;
+                                                    <span class="letra uppercase">cadastrar Venda</span>
                                                 </button>
                                             </div>
 
-                                            <!--MOSTRAR COLLAPSE PESQUISA VENDA-->
-                                            <div class="col" id="colCollapseCadastroVenda">
-                                                <div class="input-group mb-3">
-                                                    <span class="input-group-text bg-primary text-white">
-                                                    <i class="fa-solid fa-magnifying-glass mr-3"></i>
-                                                    &nbsp;&nbsp;Pesquisar Venda
-                                                    </span>
-
-                                                    <button class="btn btn-danger"
-                                                            data-bs-target="#campo"
-                                                            id="button-esconde-collapse">
-                                                    <i class="fa-solid fa-angle-down"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
                                             <div class="col-3">
-                                                <button class="btn btn-success w-100"
-                                                    data-bs-target="#campo"
-                                                    id="button-esconde-collapse">
-                                                    <i class="bi bi-graph-up-arrow"></i>
-                                                    &nbsp;&nbsp;Evolução de Vendas
+                                                <button class="btn btn-primary m-auto w-100">
+                                                    <i class="fa-solid fa-search "></i>&nbsp;&nbsp;
+                                                    <span class="letra uppercase">Pesquisar Venda</span>&nbsp;&nbsp;
+                                                    <i class="fa-solid fa-angle-down"></i>
+                                                </button>
+                                            </div>
+                                            <div class="col"></div>
+
+                                            <div class="col-3">
+                                                <button class="btn btn-success w-100" data-bs-target="#campo" id="button-esconde-collapse">
+                                                    <i class="bi bi-graph-up-arrow"></i>&nbsp;&nbsp;
+                                                    <span class="uppercase letra">Evolução de Vendas</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <!-- CAMPO DE PESQUISA COLLAPSE -->
-                                    <div class="card-footer" id="campoPesquisarVenda">
-                                        <div class="collapse" id="campo">
-                                            <div class="card card-body">
-                                                <div class="row">
-                                                    <div class="col-3 text-center">
-                                                        <label for="">Tipo de Busca</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-primary text-white">
-                                                                <i class="fa-solid fa-magnifying-glass"></i>
-                                                            </span>
-                                                            <select name="" id="selectFiltroVenda" class="form-select text-center">
-                                                                <option value="escolha">-</option>
-                                                                <option value="filtro-data-Venda">Data da Venda</option>
-                                                                <option value="filtro-codigo-Venda">Código da Venda</option>
-                                                                <option value="filtro-cliente-Venda">Nome do Cliente</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 d-none" id="FiltrovendaData">
-                                                        <label for="">Data da Venda</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-calendar-days"></i>
-                                                            </span>
-                                                            <input type="date" name="" 
-                                                            id="pesquisaDataVenda" 
-                                                            class="text-center form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-3 d-none" id="FiltrovendaCodigo">
-                                                        <label for="">Código da Venda</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-barcode"></i>
-                                                            </span>
-                                                            <input type="text" name="" id="" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col d-none" id="FiltrovendaCliente">
-                                                        <label for="">Nome Cliente</label>
-                                                        <div class="input-group">
-                                                            <span class="input-group-text bg-danger text-white">
-                                                                <i class="fa-solid fa-user"></i>
-                                                            </span>
-                                                            <input type="text" name="" id="" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="">&nbsp;</label>
-                                                        <button class="btn btn-dark w-15"
-                                                        data-bs-toggle="collapse"
-                                                        data-bs-target="">
-                                                            <i class="fa-solid fa-filter"></i>&nbsp; Filtrar
-                                                        </button>
-                                                        <button class="btn btn-success me-2 d-none" 
-                                                        id="btnBaixarRelatorioVendas">
-                                                            <i class="fa-solid fa-file-arrow-down"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-
-                                                <div class="row mt-5">
-                                                    <div class="card-footer" id="AreaResultadoFiltro">
-                                                <div class="row">
-
-                                                <!--RESULTADO DA FILTRAGEM DE VENDAS-->
-                                                <div class="table-responsive">
-                                                    <table class="table table-hover">
-                                                        <thead>
-                                                            <tr class="text-center">
-                                                                <th scope="col">#</th>
-                                                                <th scope="col">Loja</th>
-                                                                <th scope="col">Cliente</th>
-                                                                <th scope="col">Produto</th>
-                                                                <th scope="col">Sexo</th>
-                                                                <th scope="col">Qtd</th>
-                                                                <th scope="col">Preço Total</th>
-                                                                <th scope="col">Status</th>
-                                                                <th scope="col">&nbsp;</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="bodyTabelaVendasFiltro">
-                                                            <tr id="venda0" class="text-center">
-                                                                <th scope="row">1</th>
-                                                                <td class="bg-shopee rounded-pill d-flex align-items-center justify-content-center mt-1">
-                                                                    Shopee
-                                                                </td>
-                                                                <td>Patrick Henrique Lorêdo da Silva</td>
-                                                                <td>Caderno Universitário A5</td>
-                                                                <td>Feminino</td>
-                                                                <td>1</td>
-                                                                <td>R$ 39,90</td>
-                                                                <td>Produção</td>
-                                                                <td class="btn-container">
-                                                                    <button class="btn btn-secondary text-white">
-                                                                        <i class="fa fa-eye"></i>
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                        <!-- EXIBICAO DE VENDAS MANUAIS -->
+                        <div class="row mt-3" id="pagina_lateral">
+                            <div class="col">
+                                <div class="card card-principal">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3">
+                                                <div class="m-1 mb-0 title-main">vendas Realizadas</div>
+                                            </div>
+                                            <div class="col"></div>
+                                            <div class="col-4">
+                                                <div id="paginacao" class="d-flex align-items-center gap-2 m-1"></div>
                                             </div>
                                         </div>
+                                        
+                                    </div>
+
+                                    <!-- CAMPO DE PESQUISA COLLAPSE -->
+                                    <div class="card-footer">
+                                        <div class="" id="campoExibicaoVendas"></div>
                                     </div>
                                 </div>
                             </div>
@@ -424,6 +335,7 @@
                                         </div>
                                     </div>
 
+                                    <!--MODAL BODY DE INFORMAÇOES DA VENDA-->
                                     <div class="modal-body" id="modalBodyCadastroManualVenda">
                                         <div class="card">
 
@@ -432,7 +344,7 @@
                                                 <div class="row d-flex justify-content-center">
                                                     <!--CODIGO INTERNO VENDA-->
                                                     <div class="col-3">
-                                                        <label for="">Código Interno</label>
+                                                        <label for="" class="mb-2">Código Interno</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-primary text-white">
                                                                 <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
@@ -445,7 +357,7 @@
 
                                                     <!--CODIGO PLATAFORMA-->
                                                     <div class="col-4">
-                                                        <label for="">Código Venda - Plataforma</label>
+                                                        <label for="" class="mb-2">Código Venda - Plataforma</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-primary text-white">
                                                                 <i class="fa-solid fa-hashtag" aria-hidden="true"></i>
@@ -457,7 +369,7 @@
 
                                                     <!--DATA VENDA-->
                                                     <div class="col">
-                                                        <label for="">
+                                                        <label for="" class="mb-2">
                                                             <span>Data da Venda</span>&nbsp;&nbsp;
                                                             <span class="fw-bold" 
                                                             style="
@@ -484,7 +396,7 @@
 
                                                     <!--DATA ENVIO-->
                                                     <div class="col">
-                                                        <label for="">Data do Envio</label>
+                                                        <label for="" class="mb-2">Data do Envio</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-dark text-white">
                                                                 <i class="fa-regular fa-calendar"></i>
@@ -499,7 +411,7 @@
                                                 <div class="row mt-3">
                                                     <!--PLATAFORMA-->
                                                     <div class="col-3">
-                                                        <label for="">Plataforma</label>
+                                                        <label for="" class="mb-2">Plataforma</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-warning text-white">
                                                                 <i class="fa-solid fa-store"></i>
@@ -516,7 +428,7 @@
                                                     </div>
                                                     <div class="col-5">
                                                     <!-- CLIENTE -->
-                                                        <label for="">Cliente</label>
+                                                        <label for="" class="mb-2">Cliente</label>
                                                         <div class="input-group">
                                                             <span class="input-group-text bg-danger text-white">
                                                                 <i class="fa-solid fa-user"></i>
@@ -668,9 +580,12 @@
                                                                 <div class="col">
                                                                     <span class="btn btn-sm btn-primary text-white w-100">
                                                                         <span class="fw-bold uppercase" style="font-size: 0.7rem;">
-                                                                            maior tempo de envio: &nbsp;&nbsp;
+                                                                            maior tempo de envio: &nbsp;
                                                                         </span>
-                                                                        <span id="mostraMaiorTempoEnvio" class="fw-bold uppercase" style="font-size: 0.75rem;"></span>
+                                                                        <span  class="fw-bold uppercase" style="font-size: 0.75rem;">
+                                                                            <span id="mostraMaiorTempoEnvio"></span>
+                                                                            <span>Dias úteis</span>
+                                                                        </span>
                                                                     </span>
                                                                 </div>
 
@@ -695,7 +610,7 @@
                                                     <div class="row mt-2 m-auto">
                                                         <!--TOTAL BRUTO-->
                                                         <div class="col-2">
-                                                            <label for="">Total Bruto</label>
+                                                            <label for="" class="mb-2">Total Bruto</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text text-white bg-primary d-block">
                                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
@@ -708,7 +623,7 @@
 
                                                         <!--RECEBER PLATAFORMA-->
                                                         <div class="col-2">
-                                                            <label for="" class="fw-bold">A receber</label>
+                                                            <label for="" class="mb-2" class="fw-bold">A receber</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-dark text-white">
                                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
@@ -721,7 +636,7 @@
 
                                                         <!-- LUCRO PARA CASA-->
                                                         <div class="col-2">
-                                                            <label for="" class="">Saldo da Casa</label>
+                                                            <label for="" class="mb-2" class="">Saldo da Casa</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-success text-white">
                                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
@@ -735,7 +650,7 @@
 
                                                         <!-- Custos Insumos-->
                                                         <div class="col-2">
-                                                            <label for="" class="">Saldo empresa</label>
+                                                            <label for="" class="mb-2" class="">Saldo empresa</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-danger text-white">
                                                                     <i class="fa-solid fa-brazilian-real-sign"></i>
@@ -749,7 +664,7 @@
                                                         </div>
                                                         <div class="col-2">
                                                             <!--STATUS DE PRODUÇÃO-->
-                                                            <label for="">Status de Produção</label>
+                                                            <label for="" class="mb-2">Status de Produção</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-dark text-white">
                                                                     <i class="fa-solid fa-brush"></i>
@@ -798,7 +713,7 @@
                                                     
                                                     <div class="row">        
                                                         <div class="col mt-2">
-                                                            <label for="">Observações Importantes</label>
+                                                            <label for="" class="mb-2">Observações Importantes</label>
                                                             <div class="input-group">
                                                                 <span class="input-group-text bg-primary text-white">
                                                                     <i class="fa-solid fa-note-sticky"></i>
@@ -807,14 +722,14 @@
                                                                 id="observacoesVendaManual" 
                                                                 cols="30" rows="3" 
                                                                 class="form-control" 
-                                                                placeholder="Observações sobre a venda ou o produto..."></textarea>
+                                                                placeholder=""></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                                
-
+        
                                             <!--OBSERVAÇÕES-->
                                             <div class="card-footer mt-2">                                                    
                                                 
@@ -851,72 +766,11 @@
                 </div>
             </div>
 
-            <!--TABELA DE VENDAS REALIZADAS-->
-            <div class="card mb-3">
-                <div class="card card-principal">
-                    <div class="card-body" id="cardVendasRealizadas">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="m-1 mb-0 title-main">
-                                    Vendas Realizadas
-                                </div>
-                            </div>
-                            <div class="col"></div>
-                            <div class="col-4">
-                                <div class="input-group">
-                                    <select name="" id="" class="form-select text-center">
-                                        <option value=""> - - - -   Escolha o filtro   - - - - </option>
-                                        <option value="">Data Venda - Mais recentes Primeiro</option>
-                                        <option value="">Data Venda - Mais antigas Primeiro</option>
-                                        <option value="">Data Entrega - Mais recentes Primeiro</option>
-                                        <option value="">Data Entrega - Mais antigas Primeiro</option>
-                                    </select>
-                                    <div class="input-group-text bg-danger text-white">
-                                        <i class="fa fa-filter"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col text-end">
-                                <!-- Paginação -->
-                                <nav aria-label="...">
-                                    <ul class="pagination" id="paginationVendasRealizadas"></ul>
-                                </nav>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-6">
-                                <hr>
-                            </div>
-                        </div>
-                        <div class="row text-center">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">ID Venda</th>
-                                        <th scope="col">Loja</th>
-                                        <th scope="col">Venda</th>
-                                        <th scope="col">Entrega</th>
-                                        <th scope="col">Cliente</th>
-                                        <th scope="col">Produto</th>
-                                        <th scope="col">Sexo</th>
-                                        <th scope="col">Qtd</th>
-                                        <th scope="col">Preço Total</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">&nbsp;</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bodyTabelaVendas"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+            
             </div>
         </div>
         <!--Final do conteúdo Principal-->
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
-    </body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        </body>
 </html>
