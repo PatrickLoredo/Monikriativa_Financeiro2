@@ -357,3 +357,71 @@
 .plataformaElo7{
     background-color: #5a23c7;
 }
+#nomeMesReferenciaReceita,
+#nomeMesReferenciaDespesas{
+    position: relative;
+    top: -10px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    height: 30px;
+    border-radius: 0 20px 20px 0;
+}
+.tdUppercase,
+#receitasCasaTabelaThead th,
+#despesasCasaTabelaThead th{
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 2px;
+}
+.tdUppercase{
+    font-size: 0.73rem;
+}
+#receitasCasaTabelaThead th,
+#despesasCasaTabelaThead th{
+    text-align: center;
+    color: white;
+    font-weight: normal;
+    font-size: 0.9rem;
+}
+#receitasCasaTabelaThead th{
+    background-color: #1b8855;
+}
+#despesasCasaTabelaThead th{
+    background-color: #881f1b;
+}
+
+#receitasCasaTabelaTBody .td-titulo{
+    background-color: rgb(182, 248, 182); 
+    font-weight: 700;
+    border-bottom: 1px solid green;
+    border-top: 1px solid green;
+}
+#despesasCasaTabelaTBody .td-titulo{
+    background-color: rgb(248, 182, 182); 
+    font-weight: 700;
+    border-bottom: 1px solid #881f1b;
+    border-top: 1px solid #881f1b;
+}
+#receitasCasaTabelaTBody td,
+#receitasCasaTabelaTBody th,
+#despesasCasaTabelaTBody td,
+#despesasCasaTabelaTBody th,
+#totalFinalFinanceiroMensal th,
+#totalFinalFinanceiroMensal td{
+    text-align: center;
+    vertical-align: middle;
+}
+#totalFinalFinanceiroMensal .colRefereMes{
+    border-radius: 20px;
+    height: 35px;
+    max-width: 135px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
