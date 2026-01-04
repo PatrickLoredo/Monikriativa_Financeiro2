@@ -249,7 +249,7 @@
                                                             <i class="fa fa-bank"></i>
                                                         </span>
                                                         <select name="" id="selectTipoConta" class="form-select letra uppercase text-center"
-                                                        onchange="mudaCorTipoConta()">
+                                                        onchange="mudaCorTipoConta()" style="font-size: 0.8rem;">
                                                             <option value="receita" selected>Receita</option>
                                                             <option value="despesa">Despesa</option>
                                                         </select>
@@ -261,7 +261,8 @@
                                                         <span class="input-group-text bg-primary text-white">
                                                             <i class="fa fa-tag"></i>
                                                         </span>
-                                                        <input type="text" class="form-control">
+                                                        <input type="text" class="form-control uppercase text-center" 
+                                                        id="nomeNovaContaFinanceira" style="font-size: 0.8rem;">
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
@@ -270,15 +271,20 @@
                                                         <span class="input-group-text bg-primary text-white">
                                                             <i class="fa fa-brazilian-real-sign"></i>
                                                         </span>
-                                                        <input type="text" class="form-control" placeholder="R$ 0,00">
+                                                        <input type="text" class="form-control uppercase text-center" 
+                                                        placeholder="R$ 0,00" 
+                                                        id="saldoInicialNovaContaFinanceira"
+                                                        style="font-size: 0.8rem;">
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
                                                     <label for="" class="label-format mt-2">&nbsp;</label>
-                                                    <button class="btn btn-success">
+                                                    <button class="btn btn-success"
+                                                    onclick="salvarNovaContaFinanceira()">
                                                         <i class="fa fa-save"></i>
                                                     </button>
-                                                    <button class="btn btn-primary">
+                                                    <button class="btn btn-primary"
+                                                    onclick="limparCadastroNovaContaFinanceira()">
                                                         <i class="fa fa-broom"></i>
                                                     </button>
                                                 </div>
@@ -293,25 +299,31 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <span class="title-main d-flex justify-content-center text-dark">
-                                                            Lista de Contas Financeiras Cadastradas
+                                                            Lista de categorias Financeiras Cadastradas
                                                         </span>
                                                     </div>
                                                     <div class="card-body">
                                                         <div class="row">
                                                             <div class="col">
-                                                                <div class="row" id="exibeContasFinanceirasReceitas">
+                                                                <div class="row">
                                                                      <span class="title-main d-flex justify-content-center text-white bg-success w-50" 
                                                                      style="font-size: 0.8rem; border-radius: 0 30px 30px 0;">
                                                                         RECEiTAS
                                                                     </span>
                                                                 </div>
+                                                                <div class="row" id="exibeCategoriasFinanceirasReceitas">
+                                                                    <!--LOCAL DE EXIBICAO DE CATEGORIAS DE RECEITA CADASTRADAS-->
+                                                                </div>
                                                             </div>
                                                             <div class="col">
-                                                                <div class="row" id="exibeContasFinanceirasDespesas">
+                                                                <div class="row">
                                                                     <span class="title-main d-flex justify-content-center text-white bg-danger w-50" 
                                                                      style="font-size: 0.8rem; border-radius: 0 30px 30px 0;">
                                                                         Despesas
                                                                     </span>
+                                                                </div>
+                                                                <div class="row" id="exibeCategoriasFinanceirasDespesas">
+                                                                    <!--LOCAL DE EXIBICAO DE CATEGORIAS DE DESPESA CADASTRADAS-->
                                                                 </div>
                                                             </div>
                                                         </div>
