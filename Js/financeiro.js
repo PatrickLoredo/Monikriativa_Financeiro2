@@ -1,18 +1,42 @@
-const listaContasFinanceiras = JSON.parse(localStorage.getItem("listaContasFinanceiras")) || [];
+// CARREGA AS CONTAS DO NAVEGADOR
+let listaContasFinanceiras = JSON.parse(
+    localStorage.getItem("listaContasFinanceiras")
+) || [];
 
-/*GERA O CODIGO DA PROXIMA CONTA A SER CADASTRADA*/
-function geraProximoCodigoContaFinanceira () {
-    var tamanhoArrayContasFinanceiras = listaContasFinanceiras.length;
-    var proximoCodigoContaFinanceira = tamanhoArrayContasFinanceiras + 1;
-    var inputProximoCodigoConta = document.getElementById('inputProximoCodigoConta');
+// AO CARREGAR A PÁGINA
+document.addEventListener('DOMContentLoaded', function () {
+    geraProximoCodigoContaFinanceira();
+    exibeContaFinanceiraSalva();
+});
 
-    inputProximoCodigoConta.value = proximoCodigoContaFinanceira;
+// GERA O PRÓXIMO CÓDIGO DA CONTA
+function geraProximoCodigoContaFinanceira() {
+    let totalReceita = 0;
+    let totalDespesa = 0;
+
+    for (let i = 0; i < listaContasFinanceiras.length; i++) {
+        if (listaContasFinanceiras[i].tipo === 'receita') {
+            totalReceita++;
+        } else if (listaContasFinanceiras[i].tipo === 'despesa') {
+            totalDespesa++;
+        }
+    }
+
+    const tipoSelecionado = document.getElementById('selectTipoConta').value;
+    const inputCodigo = document.getElementById('inputProximoCodigoConta');
+
+    if (tipoSelecionado === 'receita') {
+        inputCodigo.value = totalReceita + 1;
+    } else {
+        inputCodigo.value = totalDespesa + 1;
+    }
 }
 
-/*MUDA A COR DO INPUT-GROUP-TEXT CONFORME VALUE DO TIPO DE CONTA*/
+
+// MUDA A COR DO TIPO DE CONTA
 function mudaCorTipoConta(){
-    var spanTipoConta = document.getElementById('inputGroupTipoConta');
-    var selectTipoConta = document.getElementById('selectTipoConta').value;
+    const spanTipoConta = document.getElementById('inputGroupTipoConta');
+    const selectTipoConta = document.getElementById('selectTipoConta').value;
 
     if (selectTipoConta === 'receita') {
         spanTipoConta.classList.remove('bg-danger');
@@ -23,60 +47,126 @@ function mudaCorTipoConta(){
     }
 }
 
-/*SALVA A NOVA CONTA FINANCEIRA NO ARRAY*/
+// SALVA NOVA CONTA FINANCEIRA
 function salvarNovaContaFinanceira(){
-    const codigoNovaContaFinanceira = document.getElementById('inputProximoCodigoConta').value;
-    const tipoNovaContaFinanceira = document.getElementById('selectTipoConta').value;
-    const nomeNovaContaFinanceira = document.getElementById('nomeNovaContaFinanceira').value;
-    const saldoInicialNovaContaFinanceira = document.getElementById('saldoInicialNovaContaFinanceira').value;
+    const codigo = document.getElementById('inputProximoCodigoConta').value;
+    const tipo = document.getElementById('selectTipoConta').value;
+    const nome = document.getElementById('nomeNovaContaFinanceira').value;
+    const saldoInicial = document.getElementById('saldoInicialNovaContaFinanceira').value;
 
-    if(
-        tipoNovaContaFinanceira.trim() === '' ||
-        nomeNovaContaFinanceira.trim() === '' ||
-        saldoInicialNovaContaFinanceira.trim() === ''
-    ){
+    if (
+        tipo.trim() === '' ||
+        nome.trim() === '' ||
+        saldoInicial.trim() === ''
+    ) {
         alert('Preencha todos os campos antes de Salvar!');
         return;
     }
 
     const contaExiste = listaContasFinanceiras.some(
-        conta => conta.nome === nomeNovaContaFinanceira
+        conta => conta.nome === nome
     );
 
-    if(contaExiste){
+    if (contaExiste) {
         alert('Conta já cadastrada anteriormente!');
         document.getElementById('nomeNovaContaFinanceira').value = '';
         return;
     }
 
     const novaConta = {
-        codigo: codigoNovaContaFinanceira,
-        tipo: tipoNovaContaFinanceira,
-        nome: nomeNovaContaFinanceira,
-        saldoInicial: saldoInicialNovaContaFinanceira
+        codigo: codigo,
+        tipo: tipo,
+        nome: nome,
+        saldoInicial: saldoInicial
     };
 
     listaContasFinanceiras.push(novaConta);
 
-    // ✅ SALVA NO NAVEGADOR
+    // SALVA NO LOCALSTORAGE
     localStorage.setItem(
         "listaContasFinanceiras",
         JSON.stringify(listaContasFinanceiras)
     );
 
-    alert(`Nova conta ${nomeNovaContaFinanceira} salva com sucesso!`);
+    alert(`Nova conta ${nome} salva com sucesso!`);
 
+    exibeContaFinanceiraSalva();
     limparCadastroNovaContaFinanceira();
 }
 
-/*LIMPA OS CAMPOS DE CADASTRO DE NOVA CONTA FINANCEIRA*/
+// LIMPA O FORMULÁRIO
 function limparCadastroNovaContaFinanceira(){
     document.getElementById('selectTipoConta').value = 'receita';
     document.getElementById('nomeNovaContaFinanceira').value = '';
-    document.getElementById('saldoInicialNovaContaFinanceira').value = '';
+    document.getElementById('saldoInicialNovaContaFinanceira').value = '0,00';
+
+    mudaCorTipoConta();
     geraProximoCodigoContaFinanceira();
 }
 
-function exibeContaFinanceiraSalva(){
-    
+// EXIBE AS CONTAS SALVAS
+function exibeContaFinanceiraSalva() {
+    const exibicaoReceita = document.getElementById('exibeCategoriasFinanceirasReceitas');
+    const exibicaoDespesa = document.getElementById('exibeCategoriasFinanceirasDespesas');
+
+    exibicaoReceita.innerHTML = '';
+    exibicaoDespesa.innerHTML = '';
+
+    listaContasFinanceiras.forEach((conta, index) => {
+
+        if (conta.tipo === 'receita') {
+            exibicaoReceita.innerHTML += `
+            <div class="row mt-1">
+                <div class="col">
+                    <button class="btn btn-outline-success uppercase letra w-100" style="font-size: 0.8rem">
+                        ${conta.nome}
+                    </button>
+                </div>
+                <div class="col-1">
+                    <button 
+                        class="btn btn-danger uppercase letra" 
+                        style="font-size: 0.8rem"
+                        onclick="excluirConta(${index})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <div class="col-1"></div>
+            </div>`;
+        } else {
+            exibicaoDespesa.innerHTML += `
+            <div class="row mt-1">
+                <div class="col">
+                    <button class="btn btn-outline-danger uppercase letra w-100" style="font-size: 0.8rem">
+                        ${conta.nome}
+                    </button>
+                </div>
+                <div class="col-1">
+                    <button 
+                        class="btn btn-danger uppercase letra" 
+                        style="font-size: 0.8rem"
+                        onclick="excluirConta(${index})"
+                    >
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <div class="col-1"></div>
+            </div>`;
+        }
+    });
+}
+function excluirConta(index) {
+
+    const confirmar = confirm('Deseja realmente excluir esta conta?');
+    if (!confirmar) return;
+
+    listaContasFinanceiras.splice(index, 1);
+
+    localStorage.setItem(
+        'listaContasFinanceiras',
+        JSON.stringify(listaContasFinanceiras)
+    );
+
+    exibeContaFinanceiraSalva();
+    geraProximoCodigoContaFinanceira();
 }

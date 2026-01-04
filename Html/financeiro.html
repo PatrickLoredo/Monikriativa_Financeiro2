@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt">
     <head>
-        <meta charset="UTF-a">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Monikriativa - Pagina Inicial</title>
 
@@ -11,14 +11,11 @@
         <!--FONTAWESOME-->
         <script src="https://kit.fontawesome.com/e9987e6d2b.js" crossorigin="anonymous"></script>
 
-        <!--BOOTSTRAP-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <link rel="shortcut icon" href="/img/MONIKRIATIVA/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/img/MONIKRIATIVA/favicon (1).ico" type="image/x-icon">
     </head>
 
-    <body>  
+    <body id="pagina-financeiro">  
         <!-- Início do Menu Lateral -->
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
             style="width: 280px; height: 100%; position: fixed;" id="lateral-menu">
@@ -249,7 +246,7 @@
                                                             <i class="fa fa-bank"></i>
                                                         </span>
                                                         <select name="" id="selectTipoConta" class="form-select letra uppercase text-center"
-                                                        onchange="mudaCorTipoConta()" style="font-size: 0.8rem;">
+                                                        onchange="mudaCorTipoConta(), geraProximoCodigoContaFinanceira()" style="font-size: 0.8rem;">
                                                             <option value="receita" selected>Receita</option>
                                                             <option value="despesa">Despesa</option>
                                                         </select>
@@ -262,7 +259,9 @@
                                                             <i class="fa fa-tag"></i>
                                                         </span>
                                                         <input type="text" class="form-control uppercase text-center" 
-                                                        id="nomeNovaContaFinanceira" style="font-size: 0.8rem;">
+                                                        id="nomeNovaContaFinanceira" 
+                                                        placeholder="digite o nome da categoria"
+                                                        style="font-size: 0.8rem;">
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
@@ -274,7 +273,7 @@
                                                         <input type="text" class="form-control uppercase text-center" 
                                                         placeholder="R$ 0,00" 
                                                         id="saldoInicialNovaContaFinanceira"
-                                                        style="font-size: 0.8rem;">
+                                                        style="font-size: 0.8rem;" value="0,00">
                                                     </div>
                                                 </div>
                                                 <div class="col-2">
@@ -311,8 +310,13 @@
                                                                         RECEiTAS
                                                                     </span>
                                                                 </div>
-                                                                <div class="row" id="exibeCategoriasFinanceirasReceitas">
-                                                                    <!--LOCAL DE EXIBICAO DE CATEGORIAS DE RECEITA CADASTRADAS-->
+                                                                <div class="row mt-4" >
+                                                                    <div class="col-11">
+                                                                        <div class="card">
+                                                                            <!--EXIBICAO DE CATEGORIAS DE RECEITAS-->
+                                                                            <div class="card-body" id="exibeCategoriasFinanceirasReceitas"></div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col">
@@ -322,8 +326,13 @@
                                                                         Despesas
                                                                     </span>
                                                                 </div>
-                                                                <div class="row" id="exibeCategoriasFinanceirasDespesas">
-                                                                    <!--LOCAL DE EXIBICAO DE CATEGORIAS DE DESPESA CADASTRADAS-->
+                                                                <div class="row mt-4">
+                                                                    <div class="col">
+                                                                        <div class="card">
+                                                                            <!--EXIBICAO DE CATEGORIAS DE DESPESAS-->
+                                                                            <div class="card-body" id="exibeCategoriasFinanceirasDespesas"></div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
