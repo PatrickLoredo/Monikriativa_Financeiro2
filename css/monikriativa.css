@@ -4,7 +4,6 @@
     font-size: 0.9rem;
     font-weight: 800;
 }
-
 #menu-lateral .nav-link{
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -21,6 +20,16 @@
     position: absolute;
     bottom: 10px;
 }
+#buttonTime{
+    position: absolute;
+    top: 2.5%;
+    left: 80%;
+    z-index: 10;
+    height: 40px;
+    min-width: 15%;
+    border-radius: 30px;
+}
+
 #button-alert-main{
     float: right;
     position: fixed;

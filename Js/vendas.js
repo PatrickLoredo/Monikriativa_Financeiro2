@@ -31,7 +31,6 @@ const feriados = [
 
 window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
-
 window.onload = function(){
     /*const modalOriginal = document.getElementById('XXXX');
     const modalAbre = new bootstrap.Modal(modalOriginal);
@@ -46,6 +45,24 @@ window.onload = function(){
     exibirVendas();
 }
 
+function mostraDataHora() {
+    const data = new Date();
+
+    const dia = String(data.getDate()).padStart(2, '0');
+    const mes = String(data.getMonth() + 1).padStart(2, '0');
+    const ano = data.getFullYear();
+
+    const horas = String(data.getHours()).padStart(2, '0');
+    const minutos = String(data.getMinutes()).padStart(2, '0');
+    const segundos = String(data.getSeconds()).padStart(2, '0');
+
+    const dataHoraFormatada = `${dia}/${mes}/${ano} - ${horas}:${minutos}:${segundos}`;
+
+    document.getElementById('buttonTime').innerText = dataHoraFormatada;
+}
+
+mostraDataHora();
+setInterval(mostraDataHora, 1000);
 //================================================ MODAL CADASTRO DE VENDA MANUAL ================================================
 //GERA O CODIGO AUTOMATICO DA VENDA MANUAL
 function geraCodigoVendaManual(){

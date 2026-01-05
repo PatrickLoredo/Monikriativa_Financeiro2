@@ -127,35 +127,19 @@
         </div>
         <!--FINAL BADGE-->
 
-        <!--Botão Loja Shopee
-        <div id="btnShopee">
-            <a href="https://seller.shopee.com.br/" target="_blank">
-                <button class="btn btn-orange text-white" id="button-shopee">
-                    <span class="label-format">Shopee</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>
-
-        Botão Loja Elo7
-        <div id="btnElo7">
-            <a href="https://www.elo7.com.br/monikriativa" target="_blank">
-                <button class="btn btn-orange text-white" id="button-Elo7">
-                    <span class="label-format">Elo7</span>
-                    <i class="fa-solid fa-store"></i>
-                </button>
-            </a>
-        </div>-->
-
-        <!--Botão Whatsapp-->
+        <!--Botão Whatsapp
         <div>
             <a href="https://wa.me/5537988550748" target="_blank">
                 <button class="btn btn-success" id="button-whatsapp">
                     <i class="fa fa-whatsapp fa-bounce"></i>
                 </button>
             </a>
+        </div>-->
+
+        <!--Botão Data e Hora-->
+        <div>
+            <button class="btn btn-dark uppercase" id="buttonTime" style="font-size: 0.9rem; letter-spacing: 1px;"></button>
         </div>
-        <!--Final Botão Whatsapp-->
 
         <!-- Início do Conteúdo Principal -->
         <div class="b-example-divider">
@@ -165,6 +149,7 @@
                         <div class="col mt-3">
                             <div class="card card-principal">
                                 <div class="card-body">
+                                    <!--TITULO INICIAL-->
                                     <div class="row">
                                         <div class="col">
                                             <div class="m-1 title-main">
@@ -177,6 +162,8 @@
                                             <hr>
                                         </div>
                                     </div>
+
+                                    <!--LINHA INICIAL DE BUTTONS DE CONTAS / DESPESAS CASA / DESPESAS LOJA-->
                                     <div class="row">
                                         <div class="col-3">
                                             <button class="btn btn-outline-dark uppercase letra w-100" style="font-size: 0.8rem;"
@@ -208,8 +195,9 @@
                                         <div class="col"></div>
                                     </div>
 
-                                    <!--SUB LISTA DE BUTTONS CONTAS FINANCEIRAS = ADICIONAR CONTA / LISTA DE CONTAS-->
+                                    <!--COLLAPSES DE DESPESAS E CONTAS-->
                                     <div class="row mt-4">
+                                        <!--SUB LISTA DE BUTTONS CONTAS FINANCEIRAS = ADICIONAR CONTA / LISTA DE CONTAS-->
                                         <div class="row collapse" id="contasFinanceirasCollapse">
                                             <div class="col-3">
                                                 <button class="btn btn-outline-primary uppercase letra w-100" style="font-size: 0.7rem;"
@@ -230,6 +218,7 @@
                                             </div>
                                         </div>
 
+                                        <!--COLLAPSE DE CADASTRO DE NOVA CATEGORIA-->
                                         <div class="row mt-4 collapse" id="collapseAdicionaNovaContaFinanceira">
                                             <div class="row">
                                                 <hr>
@@ -290,6 +279,7 @@
                                             </div>
                                         </div>
 
+                                        <!--MOSTRA LISTA DE CATEGORIAS SALVAS-->
                                         <div class="row mt-4 collapse" id="collapseListaContasFinanceiras">
                                             <div class="row">
                                                 <hr>
@@ -343,23 +333,27 @@
                                     </div>
 
                                     <!--SUB LISTA DE BUTTONS DESPESAS DE CASA = RECEITA / DESPESA / BALANÇO FINAL / MESES-->
-                                    <div class="row mt-4 collapse" id="exibeDespesasCasa">
+                                    <div class="row mt-4 " id="exibeDespesasCasa">
                                         <div class="row">
                                             <hr>
                                         </div>
+                                        
+                                        <!--ATALHO DE BUTTONS PARA IR AO COLLAPSE-->
                                         <div class="row">
                                             <div class="col">
                                                 <div class="row mt-3">
                                                     <div class="col">
                                                         <button class="btn btn-success"
                                                         data-bs-toggle="collapse"
-                                                        data-bs-target="#exibeReceitaTabela">
+                                                        data-bs-target="#exibeReceitaTabela"
+                                                        onclick="gerarTabelaReceitasCasa()">
                                                             <i class="fa fa-money"></i>&nbsp;
                                                             <span class="uppercase">Receita</span>
                                                         </button>
                                                         <button class="btn btn-danger"
                                                         data-bs-toggle="collapse"
-                                                        data-bs-target="#exibeDespesaTabela">
+                                                        data-bs-target="#exibeDespesaTabela"
+                                                        onclick="gerarTabelaDespesasCasa()">
                                                             <i class="fa fa-wallet"></i>&nbsp;
                                                             <span class="uppercase">Despesas</span>
                                                         </button>
@@ -371,14 +365,17 @@
                                                         </button>
                                                     </div>
                                                     <div class="col-4">
-                                                        <button class="btn btn-outline-primary">
+                                                        <button class="btn btn-outline-primary"
+                                                        onclick="voltarMesTabela()">
                                                             <i class="fa fa-chevron-left"></i>
                                                         </button>
-                                                        <button class="btn btn-outline-dark uppercase" style="font-size: 0.8rem;">
+                                                        <button class="btn btn-outline-dark uppercase" style="font-size: 0.8rem;"
+                                                        onclick="selecionaMesAtualTabela()">
                                                             <i class="fa fa-calendar"></i>
                                                             <span>Mês atual</span>
                                                         </button>
-                                                        <button class="btn btn-outline-primary">
+                                                        <button class="btn btn-outline-primary"
+                                                        onclick="avancarMesTabela()">
                                                             <i class="fa fa-chevron-right"></i>
                                                         </button>
                                                     </div>
@@ -388,7 +385,7 @@
 
                                         <!--TABELA RECEITAS-->
                                         <div class="row">
-                                            <div class="row collapse" id="exibeReceitaTabela">
+                                            <div class="row" id="exibeReceitaTabela">
                                                 <div class="col">
                                                     <table class="table mt-3 table-bordered">
                                                         <thead>
@@ -399,144 +396,14 @@
                                                         <thead id="receitasCasaTabelaThead">
                                                             <tr>
                                                                 <th scope="col">Receitas</th>
-                                                                <th scope="col">Janeiro</th>
-                                                                <th scope="col">Fevereiro</th>
-                                                                <th scope="col">Março</th>
-                                                                <th scope="col">Abril</th>
-                                                                <th scope="col">Maio</th>
+                                                                <th scope="col" id="mes01Receita" style="font-size: 0.81rem;"></th>
+                                                                <th scope="col" id="mes02Receita" style="font-size: 0.81rem;"></th>
+                                                                <th scope="col" id="mes03Receita" style="font-size: 0.81rem;"></th>
+                                                                <th scope="col" id="mes04Receita" style="font-size: 0.81rem;"></th>
+                                                                <th scope="col" id="mes05Receita" style="font-size: 0.81rem;"></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="receitasCasaTabelaTBody">
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Saldo Inicial</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                </tr>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Ecocardiograma</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Saldo Shopee</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Carteira Shopee</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Saldo Casa</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Outras Receitas</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase" style="background-color: purple; color: white;">
-                                                                    Total Receitas
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
+                                                        <tbody id="receitasCasaTabelaTBody"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -555,144 +422,14 @@
                                                         <thead id="despesasCasaTabelaThead">
                                                             <tr>
                                                                 <th scope="col">Despesas</th>
-                                                                <th scope="col">Janeiro</th>
-                                                                <th scope="col">Fevereiro</th>
-                                                                <th scope="col">Março</th>
-                                                                <th scope="col">Abril</th>
-                                                                <th scope="col">Maio</th>
+                                                                <th scope="col" id="mes01Despesa"></th>
+                                                                <th scope="col" id="mes02Despesa"></th>
+                                                                <th scope="col" id="mes03Despesa"></th>
+                                                                <th scope="col" id="mes04Despesa"></th>
+                                                                <th scope="col" id="mes05Despesa"></th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody id="despesasCasaTabelaTBody">
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Cartão Crédito</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                </tr>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Alimentação</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Gasolina</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Internet</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Remédios</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase td-titulo">Outras despesas</td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="tdUppercase" style="background-color: purple; color: white;">
-                                                                    Total Despesas
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                                <td class="tdUppercase">
-                                                                    <input type="text" class="form-control">
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
+                                                        <tbody id="despesasCasaTabelaTBody"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
