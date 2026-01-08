@@ -1,3 +1,17 @@
+document.addEventListener('DOMContentLoaded', function () {
+    console.log("DOM carregado");
+
+    const modalElement = document.getElementById('modalCadastroInsumoVariavel');
+    console.log("Modal encontrado:", modalElement);
+
+    if (modalElement) {
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+        console.log("Modal deveria ter aberto");
+    } else {
+        console.log("Modal NÃO encontrado no DOM");
+    }
+});
 // ------------------------------ NOTIFICAÇÕES
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 var badgeNotificacao = document.getElementById("badge-notificacao");
@@ -39,10 +53,12 @@ mostraDataHora();
 setInterval(mostraDataHora, 1000);
 
 window.onload = function () {
-    var modal = document.getElementById('modalCadastroInsumoVariavel');
-    var novoModal = new bootstrap.Modal(modal);
+    var Nmodal = document.getElementById('modalCadastroInsumoVariavel');
+    var novoModal = new bootstrap.Modal(Nmodal);
     novoModal.show();
 };
+
+
 
 // ========================================= GERAL DE INSUMOS =========================================
 //ATUALIZA A DATA DO MODAL CADASTRO PARA DATA ATUAL [OK]

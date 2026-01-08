@@ -143,8 +143,9 @@ function renderizarCategorias() {
         col.classList.add('col-auto');
 
         const btn = document.createElement('button');
-        btn.className = 'btn btn-outline-primary rounded-pill d-flex align-items-center justify-content-center px-3 py-1';
+        btn.className = 'btn btn-outline-primary uppercase letra rounded-pill d-flex align-items-center justify-content-center px-3 py-1';
         btn.textContent = categoria.categoria;
+        btn.style= 'font-size: 0.7rem';
         btn.onclick = () => mostraCategoriaCadastradaProduto(index);
 
         col.appendChild(btn);
@@ -193,10 +194,10 @@ function renderizarListaCompletaCategorias() {
 
     listaCategoriasProdutos.forEach((c, index) => {
         const linha = document.createElement('div');
-        linha.classList.add('row', 'mb-1', 'align-items-center');
+        linha.classList.add('row', 'mb-1', 'align-items-center','linha-hover-lista-produtos-categorias');
         linha.innerHTML = `
-            <div class="col-4 text-center">${c.dataCadastro}</div>
-            <div class="col-4 text-center">${c.categoria}</div>
+            <div class="col-4 text-center uppercase letra">${c.dataCadastro}</div>
+            <div class="col-4 text-center letra uppercase">${c.categoria}</div>
             <div class="col-4 text-center">
                 <button class="btn btn-sm btn-primary me-2" onclick="editarCategoria(${index})"><i class="fa fa-edit"></i></button>
                 <button class="btn btn-sm btn-danger" onclick="excluirCategoria(${index})"><i class="fa fa-trash"></i></button>

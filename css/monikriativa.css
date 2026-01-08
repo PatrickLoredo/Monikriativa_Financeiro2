@@ -464,7 +464,8 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.linha-hover-lista-insumos-categorias:hover{
+.linha-hover-lista-insumos-categorias:hover,
+.linha-hover-lista-produtos-categorias:hover{
     background-color: rgb(190, 231, 245);
     font-weight: bold;
 }
