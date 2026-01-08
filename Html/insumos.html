@@ -322,6 +322,7 @@
                                             Cadastro de Novo Insumo variável
                                         </h1>
                                     </div>
+                                    <div class="col-2"></div>
                                     <div class="col-2">
                                         <div class="col">
                                             <div class="input-group">
@@ -333,7 +334,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-">
+                                    <div class="col-1 d-flex justify-content-center">
                                         <button type="button" class="btn-danger btn" data-bs-dismiss="modal"
                                             aria-label="Close">
                                             <i class="fa fa-x"></i>
@@ -487,89 +488,134 @@
                                             </div>
                                         </div>
                                         <div class="col-1"></div>
-                                        <div class="col-3">
+
+                                        <!--CALCULADORA-->
+                                        <div class="col-3 " id="calculadoraInsumoVariavel">
                                             <div class="card">
                                                 <div class="card-header bg-dark text-white d-flex align-items-end justify-content-end" 
-                                                style="min-height: 20vh; font-size: 2.2rem;">
-                                                    1
+                                                style="min-height: 12vh; font-size: 2.2rem;"
+                                                id="visorCalculadora"
+                                                tabindex="0">
+                                                    
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="row">
                                                         <div class="col">
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
-                                                                <i class="fa-solid fa-"></i>
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('C')"
+                                                            id="buttonCalc_C">
+                                                                <i class="fa-solid fa-c"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
-                                                                <i class="fa-solid fa-"></i>
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Potencia')"
+                                                            id="buttonCalc_Potencia">
+                                                                <i class="fa-solid fa-superscript"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Limpa')"
+                                                            id="buttonCalc_Limpa">
                                                                 <i class="fa-solid fa-delete-left"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Multiplica')"
+                                                            id="buttonCalc_Multiplica">
                                                                 <i class="fa-solid fa-xmark"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="row my-1">
                                                         <div class="col">
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('7')"
+                                                            id="buttonCalc_7">
                                                                 <i class="fa-solid fa-7"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('8')"
+                                                            id="buttonCalc_8">
                                                                 <i class="fa-solid fa-8"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('9')"
+                                                            id="buttonCalc_9">
                                                                 <i class="fa-solid fa-9"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Divide')"
+                                                            id="buttonCalc_Divide">
                                                                 <i class="fa-solid fa-divide"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="row my-1">
                                                         <div class="col">
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('4')"
+                                                            id="buttonCalc_4">
                                                                 <i class="fa-solid fa-4"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('5')"
+                                                            id="buttonCalc_5">
                                                                 <i class="fa-solid fa-5"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('6')"
+                                                            id="buttonCalc_6">
                                                                 <i class="fa-solid fa-6"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Soma')"
+                                                            id="buttonCalc_Soma">
                                                                 <i class="fa-solid fa-plus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="row my-1">
                                                         <div class="col">
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('1')"
+                                                            id="buttonCalc_1">
                                                                 <i class="fa-solid fa-1"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('2')"
+                                                            id="buttonCalc_2">
                                                                 <i class="fa-solid fa-2"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('3')"
+                                                            id="buttonCalc_3">
                                                                 <i class="fa-solid fa-3"></i>
                                                             </button>
-                                                            <button class="btn btn-dark" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-dark" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Subtrai')"
+                                                            id="buttonCalc_Subtrai">
                                                                 <i class="fa-solid fa-minus"></i>
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div class="row my-1">
                                                         <div class="col">
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
-                                                                <i class="fa-solid fa-"></i>
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Porcentagem')"
+                                                            id="buttonCalc_Porcentagem">
+                                                                <i class="fa-solid fa-percent"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh;"
+                                                            onclick="calcular('0')"
+                                                            id="buttonCalc_0">
                                                                 <i class="fa-solid fa-0"></i>
                                                             </button>
-                                                            <button class="btn btn-primary" style="min-width: 7.56vh;">
-                                                                <i class="fa-solid fa-"></i>
+                                                            <button class="btn btn-primary" style="min-width: 7.56vh; font-size: 1rem; height:38px; padding:0;"
+                                                            onclick="calcular('Virgula')"
+                                                            id="buttonCalc_Virgula">
+                                                                <span class="d-flex justify-content-center align-items-center m-auto" 
+                                                                style="font-size: 1.5rem; line-height:1;">,</span>
                                                             </button>
-                                                            <button class="btn btn-danger" style="min-width: 7.56vh;">
+                                                            <button class="btn btn-danger" style="min-width: 7.56vh;"
+                                                            onclick="calcular('Igual')"
+                                                            id="buttonCalc_Igual">
                                                                 <i class="fa-solid fa-equals"></i>
                                                             </button>
                                                         </div>

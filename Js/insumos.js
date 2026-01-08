@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    console.log("DOM carregado");
-
     const modalElement = document.getElementById('modalCadastroInsumoVariavel');
-    console.log("Modal encontrado:", modalElement);
 
     if (modalElement) {
         const modal = new bootstrap.Modal(modalElement);
@@ -864,3 +861,131 @@ window.onload = function() {
 
     
 };
+
+function calcular(tecla) {
+    const visor = document.getElementById('visorCalculadora');
+
+    switch (tecla) {
+
+        case 'C':
+            visor.innerText = '';
+            break;
+
+        case 'Limpa':
+            visor.innerText = visor.innerText.slice(0, -1);
+            break;
+
+        case 'Soma':
+            visor.innerText += '+';
+            break;
+
+        case 'Subtrai':
+            visor.innerText += '-';
+            break;
+
+        case 'Multiplica':
+            visor.innerText += '*';
+            break;
+
+        case 'Divide':
+            visor.innerText += '/';
+            break;
+
+        case 'Porcentagem':
+            aplicarPorcentagem();
+            break;
+
+        case 'Potencia':
+            aplicarPotencia();
+            break;
+
+        case 'Virgula':
+            visor.innerText += '.';
+            break;
+
+        case 'Igual':
+            calcularResultado();
+            break;
+
+        default:
+            // Números 0–9
+            visor.innerText += tecla;
+            break;
+    }
+}
+
+function calcularResultado() {
+    const visor = document.getElementById('visorCalculadora');
+
+    try {
+        visor.innerText = eval(visor.innerText);
+    } catch (e) {
+        visor.innerText = 'Erro';
+    }
+}
+
+function aplicarPotencia() {
+    const visor = document.getElementById('visorCalculadora');
+    let expressao = visor.innerText;
+
+    if (expressao === '') return;
+
+    let match = expressao.match(/(\d+\.?\d*)$/);
+
+    if (match) {
+        let numero = match[0];
+        let elevado = `(${numero}**2)`;
+        visor.innerText = expressao.replace(/(\d+\.?\d*)$/, elevado);
+    }
+}
+
+function aplicarPorcentagem() {
+    const visor = document.getElementById('visorCalculadora');
+    let expressao = visor.innerText;
+
+    if (expressao === '') return;
+
+    let match = expressao.match(/(\d+\.?\d*)$/);
+
+    if (match) {
+        let numero = match[0];
+        let porcento = `(${numero}/100)`;
+        visor.innerText = expressao.replace(/(\d+\.?\d*)$/, porcento);
+    }
+}
+
+const visor = document.getElementById('visorCalculadora');
+
+visor.addEventListener('keydown', function (event) {
+    const tecla = event.key;
+
+    // Permitir números
+    if (!isNaN(tecla)) {
+        visor.innerText += tecla;
+        return;
+    }
+
+    // Operadores
+    if (tecla === '+') visor.innerText += '+';
+    if (tecla === '-') visor.innerText += '-';
+    if (tecla === '*') visor.innerText += '*';
+    if (tecla === '/') visor.innerText += '/';
+    if (tecla === '.') visor.innerText += '.';
+
+    // Enter = igual
+    if (tecla === 'Enter') {
+        event.preventDefault();
+        calcularResultado();
+    }
+
+    // Backspace = apagar
+    if (tecla === 'Backspace') {
+        visor.innerText = visor.innerText.slice(0, -1);
+    }
+
+    // Escape = limpar tudo
+    if (tecla === 'Escape') {
+        visor.innerText = '';
+    }
+});
+
