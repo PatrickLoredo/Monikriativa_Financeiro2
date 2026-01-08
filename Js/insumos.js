@@ -145,7 +145,7 @@ function exibirInsumosVariaveisSalvos() {
     // Se não houver dados, mostra uma mensagem
     if (lista.length === 0) {
         exibicao.innerHTML = `
-            <div class="alert alert-secondary mt-3" role="alert">
+            <div class="alert alert-secondary uppercase letra mt-3" role="alert">
                 Nenhum insumo variável cadastrado ainda.
             </div>`;
         return;
@@ -155,26 +155,26 @@ function exibirInsumosVariaveisSalvos() {
     lista.forEach(insumo => {
         exibicao.innerHTML += `
             <div class="row mt-2 mb-1">
+                <div class="col-6">
+                    <input type="text" class="form-control text-center uppercase letra" 
+                    value="${insumo.nomeInsumoVariavel}" disabled
+                    style="font-size: 0.7rem">
+                </div>
                 <div class="col-2">
-                    <input type="text" class="form-control text-center" value="${insumo.codigoInsumoVariavel}" disabled>
-                </div>
-                <div class="col-4">
-                    <input type="text" class="form-control text-center" value="${insumo.nomeInsumoVariavel}" disabled>
+                    <input type="text" class="form-control text-center uppercase letra" 
+                    value="${insumo.fornecedorInsumoVariavel}" disabled
+                    style="font-size: 0.7rem">
                 </div>
                 <div class="col-2">
-                    <input type="text" class="form-control text-center" value="${insumo.fornecedorInsumoVariavel}" disabled>
-                </div>
-                <div class="col-1">
-                    <input type="text" class="form-control text-center" value="${parseFloat(insumo.precoTotalCompraInsumoVariavel).toFixed(2)}" disabled>
-                </div>
-                <div class="col-1">
-                    <input type="text" class="form-control text-center" value="${parseFloat(insumo.precoUnitarioInsumoVariavel).toFixed(2)}" disabled>
+                    <input type="text" class="form-control text-center uppercase letra" 
+                    value="${parseFloat(insumo.precoUnitarioInsumoVariavel).toFixed(2)}" disabled
+                    style="font-size: 0.7rem">
                 </div>
                 <div class="col">
-                    <button class="btn btn-primary" onclick="visualizarCadastroInsumoVariavel('${insumo.codigoInsumoVariavel}')">
+                    <button class="btn btn-primary btn-sm" onclick="visualizarCadastroInsumoVariavel('${insumo.codigoInsumoVariavel}')">
                         <i class="fa fa-eye"></i>
                     </button>
-                    <button class="btn btn-danger" onclick="excluirInsumoVariavel('${insumo.codigoInsumoVariavel}')">
+                    <button class="btn btn-danger btn-sm" onclick="excluirInsumoVariavel('${insumo.codigoInsumoVariavel}')">
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
@@ -381,7 +381,7 @@ function fornecedorInsumoVariavel() {
     // Adiciona cada fornecedor
     fornecedores.forEach(fornecedor => {
         const option = document.createElement('option');
-        option.value = fornecedor.codigoFornecedor; 
+        option.value = fornecedor.razaoSocialFornecedor; 
         option.textContent = fornecedor.razaoSocialFornecedor;
         select.appendChild(option);
     });
