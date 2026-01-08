@@ -758,11 +758,11 @@ function renderizarListaCategoriasInsumos() {
     // Linhas
     listaCategoriasInsumos.forEach((c, i) => {
         const row = document.createElement('div');
-        row.classList.add('row', 'mb-1', 'align-items-center');
+        row.classList.add('row', 'mb-1', 'align-items-center', 'linha-hover-lista-insumos-categorias');
 
         row.innerHTML = `
-            <div class="col-4 text-center">${c.dataCadastro}</div>
-            <div class="col-4 text-center">${c.categoria}</div>
+            <div class="col-4 text-center uppercase letra">${c.dataCadastro}</div>
+            <div class="col-4 text-center uppercase letra">${c.categoria}</div>
             <div class="col-4 text-center">
                 <button class="btn btn-sm btn-primary me-2" onclick="editarCategoriaInsumo(${i})"><i class="fa fa-edit"></i></button>
                 <button class="btn btn-sm btn-danger" onclick="excluirCategoriaInsumo(${i})"><i class="fa fa-trash"></i></button>

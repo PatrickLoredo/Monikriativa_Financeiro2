@@ -464,3 +464,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+.linha-hover-lista-insumos-categorias:hover{
+    background-color: rgb(190, 231, 245);
+    font-weight: bold;
+}
