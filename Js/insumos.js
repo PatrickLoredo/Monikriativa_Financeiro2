@@ -38,6 +38,12 @@ function mostraDataHora() {
 mostraDataHora();
 setInterval(mostraDataHora, 1000);
 
+window.onload = function () {
+    var modal = document.getElementById('modalCadastroInsumoVariavel');
+    var novoModal = new bootstrap.Modal(modal);
+    novoModal.show();
+};
+
 // ========================================= GERAL DE INSUMOS =========================================
 //ATUALIZA A DATA DO MODAL CADASTRO PARA DATA ATUAL [OK]
 function formatarDataCadastroInsumo() {

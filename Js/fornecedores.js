@@ -234,6 +234,7 @@ function salvarFornecedor() {
     limpaCamposFornecedor();
     geraCodigoFornecedor();
     exibeTodosFornecedores();
+
 }
 
 function exibeTodosFornecedores(){
@@ -243,16 +244,16 @@ function exibeTodosFornecedores(){
     if(fornecedores.length > 0){
         for (let i = 0; i < fornecedores.length; i++) {
         mostraTodosFornecedores.innerHTML += `
-        <tr class="uppercase">
+        <tr class="uppercase" style="font-size: 0.8rem">
             <th scope="row">${fornecedores[i].codigoFornecedor}</th>
-            <td>${fornecedores[i].razaoSocialFornecedor}</td>
+            <td class="texto-limitado">${fornecedores[i].razaoSocialFornecedor}</td>
             <td>${fornecedores[i].cnpjFornecedor}</td>
             <td>${fornecedores[i].telefoneFornecedor}</td>
             <td>
-                <button class="btn btn-primary" onclick="reabreCadastroFornecedor(${i}), controleCollapse('cadastroFornecedor')">
+                <button class="btn btn-primary btn-sm" onclick="reabreCadastroFornecedor(${i}), controleCollapse('cadastroFornecedor')">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button class="btn btn-danger" onclick="removerFornecedor(${i})">
+                <button class="btn btn-danger btn-sm" onclick="removerFornecedor(${i})">
                     <i class="fa fa-trash"></i>
                 </button>
             </td>
@@ -333,23 +334,34 @@ function editarDadosFornecedor(){
     document.getElementById("inputEmailFornecedor").disabled = false ;
 }
 
-function controleCollapse(acao){
-    const collapseCadastro = document.getElementById("exibicaoCadastroFornecedor");
-    const collapseExibicao = document.getElementById("exibicaoListaFornecedores");
+function controleCollapse(acao) {
+    const cadastro = document.getElementById("exibicaoCadastroFornecedor");
+    const lista = document.getElementById("exibicaoListaFornecedores");
 
     const iconeCadastro = document.getElementById("iconeCadastroFornecedor");
     const iconeLista = document.getElementById("iconeListaFornecedores");
 
-    if(acao === 'cadastroFornecedor'){
-        // Fecha a lista de fornecedores
-        const bsExibicao = bootstrap.Collapse.getOrCreateInstance(collapseExibicao);
-        bsExibicao.hide();
+    const bsCadastro = bootstrap.Collapse.getOrCreateInstance(cadastro, { toggle: false });
+    const bsLista = bootstrap.Collapse.getOrCreateInstance(lista, { toggle: false });
+
+    if (acao === 'cadastro') {
+        bsCadastro.toggle();
+        bsLista.hide();
+
+        iconeCadastro.classList.toggle('fa-chevron-up');
+        iconeCadastro.classList.toggle('fa-chevron-down');
+
         iconeLista.classList.remove('fa-chevron-up');
         iconeLista.classList.add('fa-chevron-down');
-    } else if(acao === 'ExibirFornecedor'){
-        // Fecha o cadastro de fornecedor
-        const bsCadastro = bootstrap.Collapse.getOrCreateInstance(collapseCadastro);
+    }
+
+    if (acao === 'lista') {
+        bsLista.toggle();
         bsCadastro.hide();
+
+        iconeLista.classList.toggle('fa-chevron-up');
+        iconeLista.classList.toggle('fa-chevron-down');
+
         iconeCadastro.classList.remove('fa-chevron-up');
         iconeCadastro.classList.add('fa-chevron-down');
     }

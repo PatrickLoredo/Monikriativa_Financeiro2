@@ -292,7 +292,7 @@
     font-size: 25px;
 }
 
-/*---------------------------------------------------------------------------------------------------------*/
+/*--------------------------------------------CLIENTES-------------------------------------------------------------*/
 #btnClientes span{
     font-size: 0.793rem;
 }
@@ -343,14 +343,14 @@
 #infoPrazoEntrega button span{
     font-size: 0.7rem;
 }
-
 .plataformaShopee,
-.plataformaElo7{
+.plataformaElo7,
+.statusProducao_Produção,
+.statusProducao_Enviado,
+.statusProducao_Cancelado{
     color: white;
     border-radius: 0px 30px 30px 0;
     position: relative;
-    top: -17px;
-    right: 5px;
     height: 30px;
     min-width: 100px;
     display: flex;
@@ -361,12 +361,33 @@
     font-size: 0.75rem;
     font-weight: 600;
 }
+.plataformaShopee,
+.plataformaElo7{
+    top: -17px;
+    right: 5px;
+}
+.statusProducao_Produção,
+.statusProducao_Enviado,
+.statusProducao_Cancelado{
+    top: -17px;
+    right: -1%;
+    border-radius: 30px;
+    min-width: 400px;
+
+}
 .plataformaShopee{
     background-color: #ee4d2d;
 }
 .plataformaElo7{
     background-color: #5a23c7;
 }
+.plataformaElo7{
+    background-color: #5a23c7;
+}
+.statusProducao_Produção{
+    background-color: #246d28;
+}
+/*------------------------------------------------------*/
 #nomeMesReferenciaReceita,
 #nomeMesReferenciaDespesas{
     position: relative;
@@ -434,4 +455,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+/*----------------------------------------------------------*/
+.texto-limitado {
+    max-width: 300px; /* ajuste conforme seu layout */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

@@ -63,6 +63,7 @@ function mostraDataHora() {
 
 mostraDataHora();
 setInterval(mostraDataHora, 1000);
+
 //================================================ MODAL CADASTRO DE VENDA MANUAL ================================================
 //GERA O CODIGO AUTOMATICO DA VENDA MANUAL
 function geraCodigoVendaManual(){
@@ -667,12 +668,16 @@ function exibirVendas() {
                             <div class="col-1 ${classePlataforma}">
                                 <span>${venda.plataforma}</span>
                             </div>
+                            <div class="col-2 statusProducao_${venda.statusProducao}">
+                                <span>Status do Pedido: &nbsp;&nbsp;${venda.statusProducao}</span>
+                            </div>
                             <div class="col"></div>
                             <div class="col-2 gap-2">
                                 <button class="btn btn-sm btn-primary">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger">
+                                <button class="btn btn-sm btn-danger"
+                                 onclick="removerVenda(${i})">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -703,6 +708,30 @@ function exibirVendas() {
 
     atualizarPaginacao(totalPaginas);
 }
+
+function removerVenda(index) {
+    let minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
+
+    // segurança extra
+    if (index < 0 || index >= minhasVendas.length) {
+        console.warn("Índice inválido para remoção:", index);
+        return;
+    }
+
+    // remove do array
+    minhasVendas.splice(index, 1);
+
+    // salva novamente
+    localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
+
+    // corrige pagina atual se necessário
+    const totalPaginas = Math.ceil(minhasVendas.length / vendasPorPagina);
+    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
+
+    // reexibe
+    exibirVendas();
+}
+
 
 function atualizarPaginacao(totalPaginas) {
     const paginacao = document.getElementById('paginacao');
