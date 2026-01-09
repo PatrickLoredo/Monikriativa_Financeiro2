@@ -1,5 +1,3 @@
-const listaCadastroProdutos = JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
-
 let minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
 var tamArrayVendas = minhasVendas.length;
@@ -11,39 +9,45 @@ let paginaAtual = 1;
 
 // Lista de feriados (formato DD/MM/YYYY)
 const feriados = [
-    "01/01/2025","03/03/2025","04/03/2025","18/04/2025","21/04/2025",
-    "01/05/2025","19/06/2025","07/09/2025","12/10/2025","02/11/2025",
-    "15/11/2025","20/11/2025","25/12/2025","01/01/2026","16/02/2026",
-    "17/02/2026","03/04/2026","21/04/2026","01/05/2026","04/06/2026",
-    "07/09/2026","12/10/2026","02/11/2026","15/11/2026","20/11/2026",
-    "25/12/2026","01/01/2027","08/02/2027","09/02/2027","26/03/2027",
-    "21/04/2027","01/05/2027","27/05/2027","07/09/2027","12/10/2027",
-    "02/11/2027","15/11/2027","20/11/2027","25/12/2027","01/01/2028",
-    "28/02/2028","29/02/2028","14/04/2028","21/04/2028","01/05/2028",
-    "15/06/2028","07/09/2028","12/10/2028","02/11/2028","15/11/2028",
-    "20/11/2028","25/12/2028","01/01/2029","12/02/2029","13/02/2029",
-    "30/03/2029","21/04/2029","01/05/2029","31/05/2029","07/09/2029",
-    "12/10/2029","02/11/2029","15/11/2029","20/11/2029","25/12/2029",
-    "01/01/2030","04/03/2030","05/03/2030","19/04/2030","21/04/2030",
-    "01/05/2030","20/06/2030","07/09/2030","12/10/2030","02/11/2030",
-    "15/11/2030","20/11/2030","25/12/2030"
+    "01/01/2025", "03/03/2025", "04/03/2025", "18/04/2025", "21/04/2025",
+    "01/05/2025", "19/06/2025", "07/09/2025", "12/10/2025", "02/11/2025",
+    "15/11/2025", "20/11/2025", "25/12/2025", "01/01/2026", "16/02/2026",
+    "17/02/2026", "03/04/2026", "21/04/2026", "01/05/2026", "04/06/2026",
+    "07/09/2026", "12/10/2026", "02/11/2026", "15/11/2026", "20/11/2026",
+    "25/12/2026", "01/01/2027", "08/02/2027", "09/02/2027", "26/03/2027",
+    "21/04/2027", "01/05/2027", "27/05/2027", "07/09/2027", "12/10/2027",
+    "02/11/2027", "15/11/2027", "20/11/2027", "25/12/2027", "01/01/2028",
+    "28/02/2028", "29/02/2028", "14/04/2028", "21/04/2028", "01/05/2028",
+    "15/06/2028", "07/09/2028", "12/10/2028", "02/11/2028", "15/11/2028",
+    "20/11/2028", "25/12/2028", "01/01/2029", "12/02/2029", "13/02/2029",
+    "30/03/2029", "21/04/2029", "01/05/2029", "31/05/2029", "07/09/2029",
+    "12/10/2029", "02/11/2029", "15/11/2029", "20/11/2029", "25/12/2029",
+    "01/01/2030", "04/03/2030", "05/03/2030", "19/04/2030", "21/04/2030",
+    "01/05/2030", "20/06/2030", "07/09/2030", "12/10/2030", "02/11/2030",
+    "15/11/2030", "20/11/2030", "25/12/2030"
 ];
+
+function getListaCadastroProdutos() {
+    return JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
+}
+
 
 window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
-window.onload = function(){
-    /*const modalOriginal = document.getElementById('XXXX');
-    const modalAbre = new bootstrap.Modal(modalOriginal);
-    modalAbre.show();*/
-
+window.addEventListener('load', function () {
     geraCodigoVendaManual();
-    populaSelectProdutosCadastrados('produtoVendaManual_1');
-    calcularDataEnvioUtil();
     defineDataSelect();
     verificaDiaSemana();
     verificaStatusProducao();
     exibirVendas();
-}
+
+    const modal = document.getElementById('modalCadastroVenda');
+
+    modal.addEventListener('shown.bs.modal', function () {
+        // sempre que o modal abrir, popula o primeiro select
+        populaSelectProdutosCadastrados('produtoVendaManual_1');
+    });
+});
 
 function mostraDataHora() {
     const data = new Date();
@@ -66,12 +70,12 @@ setInterval(mostraDataHora, 1000);
 
 //================================================ MODAL CADASTRO DE VENDA MANUAL ================================================
 //GERA O CODIGO AUTOMATICO DA VENDA MANUAL
-function geraCodigoVendaManual(){
-    if(tamArrayVendas<10){
-        codigoVendaManual.value = `VND_MN 0${minhasVendas.length+1}`;
+function geraCodigoVendaManual() {
+    if (tamArrayVendas < 10) {
+        codigoVendaManual.value = `VND_MN 0${minhasVendas.length + 1}`;
     }
-    else{
-        codigoVendaManual.value = `VND_MN ${minhasVendas.length+1}`;
+    else {
+        codigoVendaManual.value = `VND_MN ${minhasVendas.length + 1}`;
     }
 }
 
@@ -79,15 +83,23 @@ function geraCodigoVendaManual(){
 function populaSelectProdutosCadastrados(id) {
     const select = document.getElementById(id);
 
-    // limpa antes
-    select.innerHTML = '<option value="escolha" selected>Escolha o Produto</option>';
+    if (!select) {
+        console.warn("Select não encontrado:", id);
+        return;
+    }
+
+    const listaCadastroProdutos = getListaCadastroProdutos();
+
+    select.innerHTML = '<option value="escolha">Escolha o Produto</option>';
 
     listaCadastroProdutos.forEach(produto => {
         const option = document.createElement("option");
-        option.value = produto.nomeCadastroProduto;   // precisa ser igual ao que você usa na função
+        option.value = produto.nomeCadastroProduto;
         option.textContent = produto.nomeCadastroProduto;
         select.appendChild(option);
     });
+
+    console.log("Produtos usados no select:", listaCadastroProdutos);
 }
 
 function defineDataSelect() {
@@ -106,105 +118,70 @@ function defineDataSelect() {
 }
 
 let numeroLinhas = 1;
-function insereNovoProdutoCadastro() {
 
-    const linhaId = numeroLinhas + 1;
+function insereNovoProdutoCadastro() {
+    numeroLinhas++;
+
     const tabelaCadastroVenda = document.getElementById('tabelaCadastroVenda');
 
-    tabelaCadastroVenda.insertAdjacentHTML("beforeend", 
-    `
-        <tr>
-            <!--PRODUTO-->
-            <td id="${numeroLinhas+1}">
-                <select name="" id="produtoVendaManual_${numeroLinhas+1}" 
+    tabelaCadastroVenda.insertAdjacentHTML("beforeend",
+        `
+        <tr id="linha_${numeroLinhas}">
+            <td>
+                <select id="produtoVendaManual_${numeroLinhas}" 
                     class="form-select text-center"
-                    onchange="recuperaPrecoUnitarioLinha(${numeroLinhas+1}), 
-                    calculoBrutoLinha(${numeroLinhas+1}),
+                    onchange="recuperaPrecoUnitarioLinha(${numeroLinhas}), 
+                    calculoBrutoLinha(${numeroLinhas}),
                     calcularLucro(),
                     calcularDataEnvioUtil()">
-                    <option value="escolha" selected>
-                        Escolha o Produto
-                    </option>
+                    <option value="escolha" selected>Escolha o Produto</option>
                 </select>
             </td>
 
-            <!--SEXO-->
             <td>
-                <select name="" id="sexoVendaManual_${numeroLinhas+1}" 
-                class="form-select text-center">
+                <select id="sexoVendaManual_${numeroLinhas}" class="form-select text-center">
                     <option value="nao escolhido">-</option>
                     <option value="Fem">Feminino</option>
                     <option value="Masc">Masculino</option>
                 </select>
             </td>
 
-            <!--QTD-->
             <td>
-                <input type="number" 
-                id="qtdVendaManual_${numeroLinhas+1}"
-                class="form-control text-center" 
-                placeholder="qtd"
-                value="1"
-                oninput="recuperaPrecoUnitarioLinha(${numeroLinhas+1});
-                calculoBrutoLinha(${numeroLinhas+1});
-                verificaQtdProdutos(),
-                calcularLucro()"
-                onchange="calcularLucro()">
+                <input type="number" id="qtdVendaManual_${numeroLinhas}"
+                class="form-control text-center" value="1"
+                oninput="recuperaPrecoUnitarioLinha(${numeroLinhas});
+                calculoBrutoLinha(${numeroLinhas});
+                calcularLucro()">
             </td>
 
-            <!--P.UNITARIO-->
             <td>
-                <input type="text" 
-                    id="precoUnitarioVendaManual_${numeroLinhas+1}"
-                    class="form-control text-center" 
-                    placeholder="R$ 0,00"
-                    oninput="calculoBrutoLinha(${numeroLinhas+1})"
-                    onchange="calcularLucro()"                                                                        >
+                <input type="text" id="precoUnitarioVendaManual_${numeroLinhas}"
+                class="form-control text-center">
             </td>
 
-            <!--ACRESCIMO-->
             <td>
-                <input type="text" 
-                    id="descontoAcrescimoVendaManual_${numeroLinhas+1}"
-                    class="form-control text-center" 
-                    placeholder="R$ 0,00"
-                    value="0,00"
-                    oninput="calculoBrutoLinha(${numeroLinhas+1}),
-                    calcularLucro()">
+                <input type="text" id="descontoAcrescimoVendaManual_${numeroLinhas}"
+                class="form-control text-center" value="0,00">
             </td>
 
-            <!--P.total venda-->
             <td>
-                <input type="text" 
-                    id="totalVendaManual_${numeroLinhas+1}"
-                    class="form-control text-center" 
-                    placeholder="R$ 0,00"
-                    onchange="calcularLucro()">
+                <input type="text" id="totalVendaManual_${numeroLinhas}"
+                class="form-control text-center">
             </td>
 
-            <!--P.total insumos-->
             <td>
-                <input type="text" 
-                    id="insumosVendaManual_${numeroLinhas+1}"
-                    class="form-control text-center" 
-                    placeholder="R$ 0,00" disabled>
+                <input type="text" id="insumosVendaManual_${numeroLinhas}"
+                class="form-control text-center" disabled>
             </td>
 
-            <!--Modelo Capa-->
             <td>
-                <input type="number" 
-                id="modeloCapaVendaManual_${numeroLinhas+1}"
-                class="form-control text-center" 
-                placeholder="Nº Capa">
+                <input type="number" id="modeloCapaVendaManual_${numeroLinhas}"
+                class="form-control text-center">
             </td>
 
-            <!--personalização-->
             <td>
-                <input type="text" 
-                id="nomePersonalizadoVendaManual_${numeroLinhas+1}"
-                class="form-control text-center" 
-                placeholder="Nome Personalizado" 
-                value="">
+                <input type="text" id="nomePersonalizadoVendaManual_${numeroLinhas}"
+                class="form-control text-center">
             </td>
 
             <td>
@@ -213,14 +190,11 @@ function insereNovoProdutoCadastro() {
                     <i class="fa fa-trash"></i>
                 </button>
             </td>
-
         </tr>
     `);
 
-    // agora popula corretamente o select da linha
-    populaSelectProdutosCadastrados(`produtoVendaManual_${linhaId}`);
-
-    numeroLinhas++;
+    // 🔥 POPULA IMEDIATAMENTE O SELECT QUE ACABOU DE NASCER
+    populaSelectProdutosCadastrados(`produtoVendaManual_${numeroLinhas}`);
 }
 
 function removeLinha(id) {
@@ -243,7 +217,7 @@ function recuperaPrecoUnitarioLinha(linhaId) {
         return;
     }
 
-    const produto = listaCadastroProdutos.find(p => p.nomeCadastroProduto === produtoEscolhido);
+    const produto = getListaCadastroProdutos().find(p => p.nomeCadastroProduto === produtoEscolhido);
 
     if (produto) {
 
@@ -347,8 +321,8 @@ function calcularLucro() {
     const lucroBruto = precoTotal - taxaPlataforma;
     const lucroLiquido = lucroBruto - insumos;
 
-    const percentualLucro = precoTotal > 0 
-        ? (lucroLiquido / precoTotal) * 100 
+    const percentualLucro = precoTotal > 0
+        ? (lucroLiquido / precoTotal) * 100
         : 0;
 
     // === Atualizando o SPAN certo ===
@@ -366,7 +340,7 @@ function calcularLucro() {
 }
 
 function verificaDiaSemana() {
-    const diasSemana = ['Domingo','Segunda-Feira','Terça-Feira','Quarta-Feira','Quinta-Feira','Sexta-Feira','Sábado'];
+    const diasSemana = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
 
     const inputDataVenda = document.getElementById('dataVendaManual').value;
     const tipDiaSemana = document.getElementById('diaSemanaVenda');
@@ -377,7 +351,7 @@ function verificaDiaSemana() {
     const data = new Date(ano, mes - 1, dia);
 
     const diaSemana = data.getDay();
-    const dataFormatada = `${String(dia).padStart(2,'0')}/${String(mes).padStart(2,'0')}/${ano}`;
+    const dataFormatada = `${String(dia).padStart(2, '0')}/${String(mes).padStart(2, '0')}/${ano}`;
 
     // Verifica se é sábado, domingo ou feriado
     const isFeriadoOuFimDeSemana = diaSemana === 0 || diaSemana === 6 || feriados.includes(dataFormatada);
@@ -406,7 +380,8 @@ function calcularDataEnvioUtil() {
         const valorProduto = inputProduto.value;
         if (valorProduto === "escolha") continue;
 
-        const produto = listaCadastroProdutos.find(p => p.nomeCadastroProduto === valorProduto);
+        const produto = getListaCadastroProdutos().find(p => p.nomeCadastroProduto === valorProduto);
+
         if (!produto) continue;
 
         const diasEntrega = parseInt(produto.tempoEnvioProdutos) || 0;
@@ -429,7 +404,7 @@ function calcularDataEnvioUtil() {
         data.setDate(data.getDate() + 1);
 
         const diaSemana = data.getDay(); // 0 = domingo, 6 = sábado
-        const dataFormatadaCheck = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2,'0')}/${data.getFullYear()}`;
+        const dataFormatadaCheck = `${String(data.getDate()).padStart(2, '0')}/${String(data.getMonth() + 1).padStart(2, '0')}/${data.getFullYear()}`;
 
         // Só conta o dia se não for sábado, domingo ou feriado
         if (diaSemana !== 0 && diaSemana !== 6 && !feriados.includes(dataFormatadaCheck)) {
@@ -523,7 +498,7 @@ function removeNovoProdutoCadastro(botao) {
 window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
 // MODELO DE OBJETO DA VENDA MANUAL
-class VendaManual{
+class VendaManual {
     constructor(
         codigoInterno,
         codigoPlatforma,
@@ -541,7 +516,7 @@ class VendaManual{
         saldoEmpresa,
         statusProducao,
         obsercoesImportantes
-    ){
+    ) {
         this.codigoInterno = codigoInterno;
         this.codigoPlatforma = codigoPlatforma;
         this.dataVenda = dataVenda;
@@ -578,12 +553,12 @@ function salvarVendaManual() {
     var lucroLiquidoRealEmpresa = document.getElementById('lucroLiquidoRealEmpresa');
     var statusProducaoVendaManual = document.getElementById('statusProducaoVendaManual');
     var observacoesVendaManual = document.getElementById('observacoesVendaManual');
-    
+
     var informacoesProduto = [];
 
     const linhas = document.querySelectorAll('[id^="produtoVendaManual_"]');
 
-    for(let i = 0; i < linhas.length; i++){
+    for (let i = 0; i < linhas.length; i++) {
         let index = i + 1;
 
         informacoesProduto.push({
@@ -627,7 +602,7 @@ function salvarVendaManual() {
     limparVendaManual();
 }
 
-function limparVendaManual(){
+function limparVendaManual() {
     location.reload();
     geraCodigoVendaManual();
 }
@@ -747,7 +722,7 @@ function atualizarPaginacao(totalPaginas) {
     const btnInicio = document.createElement('button');
     btnInicio.className = 'btn btn-danger btn-sm';
     btnInicio.innerText = 'primeira';
-    btnInicio.classList.add('uppercase','letra', 'px-2');
+    btnInicio.classList.add('uppercase', 'letra', 'px-2');
     btnInicio.style.fontSize = '0.7rem';
     btnInicio.disabled = paginaAtual === 1;
     btnInicio.onclick = () => { paginaAtual = 1; exibirVendas(); };
@@ -766,15 +741,10 @@ function atualizarPaginacao(totalPaginas) {
     const btnUltima = document.createElement('button');
     btnUltima.className = 'btn btn-danger btn-sm';
     btnUltima.innerText = 'Última';
-    btnUltima.classList.add('uppercase','letra', 'px-2');
+    btnUltima.classList.add('uppercase', 'letra', 'px-2');
     btnUltima.style.fontSize = '0.7rem';
     btnUltima.disabled = paginaAtual === totalPaginas;
     btnUltima.onclick = () => { paginaAtual = totalPaginas; exibirVendas(); };
     paginacao.appendChild(btnUltima);
-}
-
-// Inicialização
-window.onload = function() {
-    exibirVendas();
 }
 

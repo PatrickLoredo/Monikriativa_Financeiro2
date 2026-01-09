@@ -184,13 +184,13 @@
                                     </div>
                                 </div>
 
-                                <div class="col-5">
+                                <div class="col-6">
                                     <!-- Botão para abrir modal de lista completa -->
                                     <button class="btn btn-primary w-100" data-bs-toggle="modal"
                                         data-bs-target="#modalListaCategoriasInsumos"
                                         onclick="renderizarListaCategoriasInsumos()">
                                         <i class="fa fa-eye">&nbsp;&nbsp;</i>
-                                        <span>Lista de Categorias - Insumos Variáveis</span>
+                                        <span class="uppercase letra" style="font-size: 0.8rem;">Lista de Categorias - Insumos Variáveis</span>
                                     </button>
                                 </div>
                             </div>
@@ -486,8 +486,23 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row mt-5 pt-5">
+                                                <div class="col d-flex justify-content-center gap-2">
+                                                    <button class="btn btn-success uppercase letra" style="font-size: 0.8rem;" onclick="salvarInsumoVariavel()">
+                                                        <i class="fa fa-save"></i>
+                                                        <span>&nbsp;&nbsp;Salvar</span>
+                                                    </button>
+                                                    <button class="btn btn-primary uppercase letra" style="font-size: 0.8rem;" onclick="editarInsumoVariavel()">
+                                                        <i class="fa fa-save"></i>
+                                                        <span>&nbsp;&nbsp;Editar</span>
+                                                    </button>
+                                                    <button class="btn btn-danger uppercase letra" style="font-size: 0.8rem;" onclick="limpaInsumoVariavel()">
+                                                        <i class="fa fa-broom"></i>
+                                                        <span>&nbsp;Limpar</span>
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-1"></div>
 
                                         <!--CALCULADORA-->
                                         <div class="col-3 " id="calculadoraInsumoVariavel">
@@ -624,29 +639,6 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="div my-4">
-                                        <hr>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="col"></div>
-                                        <div class="col">
-                                            <button class="btn btn-success" onclick="salvarInsumoVariavel()">
-                                                <i class="fa fa-save"></i>
-                                                <span>&nbsp;&nbsp;Salvar</span>
-                                            </button>
-                                            <button class="btn btn-primary" onclick="editarInsumoVariavel()">
-                                                <i class="fa fa-save"></i>
-                                                <span>&nbsp;&nbsp;Editar</span>
-                                            </button>
-                                            <button class="btn btn-danger" onclick="limpaInsumoVariavel()">
-                                                <i class="fa fa-broom"></i>
-                                                <span>&nbsp;Limpar</span>
-                                            </button>
-                                        </div>
-                                        <div class="col"></div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -760,30 +752,20 @@
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-4"></div>
-                                    <div class="col">
-                                        <div class="row">
-                                            <div class="col">
-                                                <button class="btn btn-success" onclick="salvarInsumoFixo()">
-                                                    <i class="fa fa-save"></i>
-                                                    <span>&nbsp;&nbsp;Salvar</span>
-                                                </button>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-primary" onclick="editarInsumosFixo()">
-                                                    <i class="fa fa-save"></i>
-                                                    <span>&nbsp;&nbsp;Editar</span>
-                                                </button>
-                                            </div>
-                                            <div class="col">
-                                                <button class="btn btn-danger" onclick="limpaInsumoFixo()">
-                                                    <i class="fa fa-broom"></i>
-                                                    <span>&nbsp;Limpar</span>
-                                                </button>
-                                            </div>
-                                        </div>
+                                    <div class="col d-flex justify-content-center gap-2">
+                                        <button class="btn btn-success uppercase letra" style="font-size: 0.8rem;" onclick="salvarInsumoFixo()">
+                                            <i class="fa fa-save"></i>
+                                            <span>&nbsp;&nbsp;Salvar</span>
+                                        </button>
+                                        <button class="btn btn-primary uppercase letra" style="font-size: 0.8rem;" onclick="editarInsumosFixo()">
+                                            <i class="fa fa-save"></i>
+                                            <span>&nbsp;&nbsp;Editar</span>
+                                        </button>
+                                        <button class="btn btn-danger uppercase letra" style="font-size: 0.8rem;" onclick="limpaInsumoFixo()">
+                                            <i class="fa fa-broom"></i>
+                                            <span>&nbsp;Limpar</span>
+                                        </button>
                                     </div>
-                                    <div class="col-4"></div>
                                 </div>
                             </div>
                         </div>

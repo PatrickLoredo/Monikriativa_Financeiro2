@@ -1,14 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const modalElement = document.getElementById('modalCadastroInsumoVariavel');
 
-    if (modalElement) {
-        const modal = new bootstrap.Modal(modalElement);
-        modal.show();
-        console.log("Modal deveria ter aberto");
-    } else {
-        console.log("Modal NÃO encontrado no DOM");
-    }
-});
 // ------------------------------ NOTIFICAÇÕES
 let notificacoes = parseInt(localStorage.getItem("notificacoes")) || 1;
 var badgeNotificacao = document.getElementById("badge-notificacao");
@@ -48,13 +38,6 @@ function mostraDataHora() {
 
 mostraDataHora();
 setInterval(mostraDataHora, 1000);
-
-window.onload = function () {
-    var Nmodal = document.getElementById('modalCadastroInsumoVariavel');
-    var novoModal = new bootstrap.Modal(Nmodal);
-    novoModal.show();
-};
-
 
 
 // ========================================= GERAL DE INSUMOS =========================================
@@ -735,7 +718,8 @@ function renderizarCategoriasInsumos() {
         col.classList.add('col-auto');
 
         const btn = document.createElement('button');
-        btn.className = 'btn btn-outline-primary rounded-pill d-flex align-items-center justify-content-center px-3 py-1';
+        btn.className = 'btn btn-outline-primary rounded-pill d-flex align-items-center justify-content-center px-3 py-1 uppercase letra';
+        btn.style = 'font-size: 0.7rem'
         btn.textContent = categoria.categoria;
         btn.onclick = () => editarCategoriaInsumo(index); // ao clicar edita
 

@@ -469,3 +469,8 @@
     background-color: rgb(190, 231, 245);
     font-weight: bold;
 }
+
+.linha-hover-lista-insumos-variaveis-novoProduto:hover{
+    background-color: rgb(252, 186, 186);
+    font-weight: bold;
+}

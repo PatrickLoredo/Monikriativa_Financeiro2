@@ -1076,24 +1076,44 @@ function carregarInsumosVariaveis() {
         const precoUnit = parseFloat(insumo.precoUnitarioInsumoVariavel) || 0;
 
         const divRow = document.createElement("div");
-        divRow.classList.add("row", "mb-2", "align-items-center");
+        divRow.classList.add("row", "mb-2", "align-items-center", 'linha-hover-lista-insumos-variaveis-novoProduto');
 
         divRow.innerHTML = `
             <div class="col-2">
-                <input type="text" class="form-control text-center" disabled value="${insumo.codigoInsumoVariavel || index + 1}">
+                <input type="text" class="form-control text-center uppercase letra" 
+                style="font-size: 0.8rem; cursor: not-allowed;"
+                readonly value="${insumo.codigoInsumoVariavel || index + 1}">
             </div>
             <div class="col-5">
-                <input type="text" class="form-control text-center" disabled value="${insumo.nomeInsumoVariavel || ''}">
+                <input type="text" class="form-control text-center uppercase letra" 
+                style="font-size: 0.7rem; cursor: not-allowed;" 
+                readonly value="${insumo.nomeInsumoVariavel || ''}">
             </div>
             <div class="col-2">
-                <input type="text" class="form-control text-center preco-unitario" disabled value="${precoUnit.toFixed(2)}">
+                <div class="input-group">
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="fa fa-brazilian-real-sign"></i>
+                    </span>
+                    <input type="text" class="form-control text-center preco-unitario uppercase letra" 
+                    style="font-size: 0.85rem; cursor: not-allowed;" 
+                    readonly value="${precoUnit.toFixed(2)}">
+                </div>
             </div>
             <div class="col-1">
-                <input type="number" class="form-control text-center qtd-uso" value="0" min="0" id="qtd_utilizada_Produto${index}"
+                <input type="number" class="form-control text-center qtd-uso uppercase letra" 
+                style="font-size: 0.7rem;" 
+                value="0" min="0" id="qtd_utilizada_Produto${index}"
                 onclick="calculaTaxas()">
             </div>
             <div class="col-2">
-                <input type="text" class="form-control text-center total-linha" disabled value="0,00">
+                <div class="input-group">
+                    <span class="input-group-text bg-primary text-white">
+                        <i class="fa fa-brazilian-real-sign"></i>
+                    </span>
+                    <input type="text" class="form-control text-center total-linha uppercase letra" 
+                    style="font-size: 0.85rem;" 
+                    disabled value="0,00">
+                </div>
             </div>
         `;
 
@@ -1478,7 +1498,7 @@ function adicionarCadastroCapasProduto() {
 }
 
 function irParaGaleriaCapas() {
-    window.location.href = "/MONIKRIATIVA/html/galeriaCapas.html";
+    window.location.href = "/html/galeriaCapas.html";
 }
 
 function carregarCapasFemininas() {
