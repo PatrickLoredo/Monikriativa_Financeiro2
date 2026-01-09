@@ -31,7 +31,6 @@ function getListaCadastroProdutos() {
     return JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 }
 
-
 window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
 window.addEventListener('load', function () {
@@ -133,7 +132,8 @@ function insereNovoProdutoCadastro() {
                     onchange="recuperaPrecoUnitarioLinha(${numeroLinhas}), 
                     calculoBrutoLinha(${numeroLinhas}),
                     calcularLucro(),
-                    calcularDataEnvioUtil()">
+                    calcularDataEnvioUtil(),
+                    verificaTempoEnvio()">
                     <option value="escolha" selected>Escolha o Produto</option>
                 </select>
             </td>
@@ -425,6 +425,9 @@ function calcularDataEnvioUtil() {
     if (mostraMaiorTempoEnvio) {
         mostraMaiorTempoEnvio.innerText = `${tempoMaxEnvio}`;
     }
+
+    verificaTempoEnvio();
+
 }
 
 function verificaStatusProducao() {
@@ -747,4 +750,35 @@ function atualizarPaginacao(totalPaginas) {
     btnUltima.onclick = () => { paginaAtual = totalPaginas; exibirVendas(); };
     paginacao.appendChild(btnUltima);
 }
+
+function verificaTempoEnvio() {
+    const dataInput = document.getElementById('dataEntregaManual');
+    const btnPrazo = document.getElementById('btn-envioPrazo');
+    const btnAtraso = document.getElementById('btn-envioAtraso');
+
+    if (!dataInput || !btnPrazo || !btnAtraso) {
+        console.warn("Elementos de envio não encontrados");
+        return;
+    }
+
+    btnPrazo.classList.add('d-none');
+    btnAtraso.classList.add('d-none');
+
+    if (!dataInput.value) return;
+
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const [ano, mes, dia] = dataInput.value.split("-");
+    const dataEntrega = new Date(ano, mes - 1, dia);
+    dataEntrega.setHours(0, 0, 0, 0);
+
+    if (dataEntrega < hoje) {
+        btnAtraso.classList.remove('d-none');
+    } else {
+        btnPrazo.classList.remove('d-none');
+    }
+}
+
+
 

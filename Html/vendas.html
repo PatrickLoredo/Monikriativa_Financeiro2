@@ -381,9 +381,7 @@
                                                         <span class="input-group-text bg-dark text-white">
                                                             <i class="fa-regular fa-calendar"></i>
                                                         </span>
-                                                        <input type="date" name="" id="dataEntregaManual"
-                                                            class="form-control text-center"
-                                                            oninput="calcularDataEnvioUtil()">
+                                                        <input type="date" id="dataEntregaManual" class="form-control text-center">
                                                     </div>
                                                 </div>
                                             </div>
@@ -404,7 +402,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-5">
+                                                <div class="col-4">
                                                     <!-- CLIENTE -->
                                                     <label for="" class="mb-2">Cliente</label>
                                                     <div class="input-group">
@@ -414,6 +412,16 @@
                                                         <input type="text" class="form-control" id="clienteVendaManual"
                                                             placeholder="Nome do Cliente">
                                                     </div>
+                                                </div>
+                                                <div class="col-3">
+                                                    <label for="">&nbsp;</label>
+                                                    <button class="btn btn-lg btn-success mt-2 uppercase letra d-none w-100" id="btn-envioPrazo"  style="font-size: 0.7rem;">
+                                                        <i class="fa fa-check-circle uppercase letra"></i> Dentro do Prazo
+                                                    </button>
+
+                                                    <button class="btn btn-lg btn-danger mt-2 uppercase letra d-none w-100" id="btn-envioAtraso" style="font-size: 0.7rem;">
+                                                        <i class="fa fa-clock"></i> Pedido em Atraso
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -451,7 +459,6 @@
                                                                         calculoBrutoLinha(1),
                                                                         calcularLucro(),
                                                                         calcularDataEnvioUtil(),
-                                                                        verificaStatusEnvio(),
                                                                         verificaStatusProducao()"
                                                                     oninput="verificaStatusProducao()">
                                                                     <option value="escolha" selected>
@@ -640,32 +647,6 @@
                                                             <option value="Cancelado">Cancelado</option>
                                                         </select>
                                                     </div>
-                                                </div>
-
-                                                <!--INFO BUTTON DE PRAZOS DE ENVIOS-->
-                                                <div class="col" id="infoPrazoEntrega">
-                                                    <label for="">&nbsp;</label>
-                                                    <button class="button btn btn-sm btn-success w-100 d-none"
-                                                        id="btnPedidoDentroPrazo">
-                                                        <i class="fa fa-box"></i>
-                                                        <i class="fa fa-hourglass-half"></i>
-                                                        <span class="label-format">Dentro do Prazo</span>
-                                                    </button>
-
-                                                    <button class="button btn btn-sm btn-danger w-100 d-none"
-                                                        id="btnPedidoAtrasado">
-                                                        <i class="fa fa-clock"></i>
-                                                        <i class="fa fa-hourglass-end"></i>
-                                                        <span class="label-format">Pedido Atrasado</span>
-                                                    </button>
-
-                                                    <button
-                                                        class="button btn btn-sm btn-primary text-white w-100 d-none"
-                                                        id="btnPedidoEnviado">
-                                                        <i class="fa fa-box"></i>
-                                                        <i class="fa fa-truck-fast"></i>
-                                                        <span class="label-format">Pedido Enviado</span>
-                                                    </button>
                                                 </div>
                                             </div>
 
