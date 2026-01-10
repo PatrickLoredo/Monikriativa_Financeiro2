@@ -146,6 +146,7 @@
                         <div class="col">
                             <div class="card card-principal" id="cardResumoVendas">
                                 <div class="card-body">
+
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="m-1 mb-0 title-main">Resumo de Vendas</div>
@@ -153,9 +154,8 @@
                                         <div class="col-4">
                                             <div class="d-flex justify-content-end">
                                                 <div class="input-group" id="selectFiltroResumoVendas">
-                                                    <select class="form-select text-center"
-                                                        aria-label="Default select example">
-                                                        <option selected> - - - Selecione o Período - - - </option>
+                                                    <select id="filtroResumoPeriodo" class="form-select text-center" aria-label="Default select example">
+                                                        <option value="0"> - - - Selecione o Período - - - </option>
                                                         <option value="1">Últimos 7 dias</option>
                                                         <option value="2">Últimos 30 dias</option>
                                                         <option value="3">Últimos 60 dias</option>
@@ -171,73 +171,91 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-2"></div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <hr>
-                                        </div>
-                                    </div>
+
+                                    <hr>
+
                                     <div class="row text-center">
                                         <div class="col-2">
-                                            <label for="">Vendas Realizadas</label>
+                                            <label>Vendas Realizadas</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-bag-shopping"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoTotalVendas" disabled style="font-size: 0.85rem;">
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-2">
-                                            <label for="">Produtos Vendidos</label>
+                                            <label>Produtos Vendidos</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-box-open"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa-solid fa-basket-shopping"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoProdutosVendidos" disabled style="font-size: 0.85rem;">
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-2">
-                                            <label for="">Total Bruto</label>
+                                            <label>Total Bruto</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa fa-brazilian-real-sign"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoTotalBruto" disabled style="font-size: 0.85rem;">
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-2">
-                                            <label for="">Total Líquido</label>
+                                            <label>Total Líquido</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa fa-brazilian-real-sign"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoTotalLiquido" disabled style="font-size: 0.85rem;">
+                                                </div>
                                             </div>
                                         </div>
+
                                         <div class="col-2">
-                                            <label for="">Ticket Médio</label>
+                                            <label>Ticket Médio</label>
                                             <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-brazilian-real-sign"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <label for="">Campeão de Vendas</label>
-                                            <div class="input-group">
-                                                <span class="input-group-text">
-                                                    <i class="fa-solid fa-medal"></i>
-                                                </span>
-                                                <input type="text" class="form-control" disabled>
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa fa-brazilian-real-sign"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoTicketMedio" disabled style="font-size: 0.85rem;">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <label>Campeão de Vendas</label>
+                                            <div class="input-group">
+                                                <div class="input-group">
+                                                    <span class="input-group-text bg-dark text-white">
+                                                        <i class="fa-solid fa-medal"></i>
+                                                    </span>
+                                                    <input type="text" class="form-control text-center uppercase letra" id="resumoCampeaoVendas" disabled style="font-size: 0.85rem;">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                     <!-- ADICIONAR VENDA MANUAL -->
                     <div class="row mt-3" id="pagina_lateral">
@@ -246,7 +264,7 @@
                                 <div class="card-body">
                                     <div class="row">
 
-                                        <div class="col-3">
+                                        <div class="col-3 mt-3">
                                             <button class="btn btn-primary m-auto w-100" data-bs-toggle="modal"
                                                 data-bs-target="#modalCadastroVenda" onclick="geraCodigoVendaManual()">
                                                 <i class="fa-solid fa-circle-plus "></i>&nbsp;&nbsp;
@@ -254,21 +272,29 @@
                                             </button>
                                         </div>
 
-                                        <div class="col-3">
+                                        <div class="col-3 mt-3">
                                             <button class="btn btn-primary m-auto w-100">
                                                 <i class="fa-solid fa-search "></i>&nbsp;&nbsp;
                                                 <span class="letra uppercase">Pesquisar Venda</span>&nbsp;&nbsp;
                                                 <i class="fa-solid fa-angle-down"></i>
                                             </button>
                                         </div>
-                                        <div class="col"></div>
 
-                                        <div class="col-3">
-                                            <button class="btn btn-success w-100" data-bs-target="#campo"
-                                                id="button-esconde-collapse">
-                                                <i class="bi bi-graph-up-arrow"></i>&nbsp;&nbsp;
-                                                <span class="uppercase letra">Evolução de Vendas</span>
-                                            </button>
+                                        <div class="col-2" id="paginacaoVendas">
+                                            <label class="label-format">Qtd Vendas Exibição</label>
+                                            <select id="selectQtdVendas" class="form-select text-center uppercase letra" style="font-size: 0.75rem;">
+                                                <option value="3">03 vendas</option>
+                                                <option value="5">05 vendas</option>
+                                                <option value="10">10 vendas</option>
+                                                <option value="50">50 vendas</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-1"></div>
+
+                                        <div class="col mt-3" id="botoesPaginacaoContainer">
+                                            <button id="btnPrevPage" class="btn btn-primary"><i class="fa fa-chevron-left"></i></button>
+                                            <span id="infoPagina" class="mx-2"></span>
+                                            <button id="btnNextPage" class="btn btn-primary"><i class="fa fa-chevron-right"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -423,6 +449,9 @@
                                                         <i class="fa fa-clock"></i> Pedido em Atraso
                                                     </button>
                                                 </div>
+                                                <div class="col d-none">
+                                                    <input type="text" class="form-control mt-4" value="" id="statusEnvioVendaManual">
+                                                </div>
                                             </div>
                                         </div>
 
@@ -507,14 +536,14 @@
                                                             <td>
                                                                 <input type="text" id="totalVendaManual_1"
                                                                     class="form-control text-center"
-                                                                    placeholder="R$ 0,00" onchange="calcularLucro()">
+                                                                    placeholder="R$ 0,00" onchange="calcularLucro()" readonly style="cursor: not-allowed">
                                                             </td>
 
                                                             <!--P.total insumos-->
                                                             <td>
                                                                 <input type="text" id="insumosVendaManual_1"
                                                                     class="form-control text-center"
-                                                                    placeholder="R$ 0,00">
+                                                                    placeholder="R$ 0,00" readonly style="cursor: not-allowed">
                                                             </td>
 
                                                             <!--Modelo Capa-->
@@ -600,7 +629,7 @@
                                                             <i class="fa-solid fa-brazilian-real-sign"></i>
                                                         </span>
                                                         <input type="text" id="totalReceberShopee"
-                                                            class="form-control text-center bg-orange text-white letra"
+                                                            class="form-control text-center bg-orange letra"
                                                             placeholder="R$ 0,00">
                                                     </div>
                                                 </div>

@@ -4,8 +4,33 @@ var tamArrayVendas = minhasVendas.length;
 
 const codigoVendaManual = document.getElementById('codigoVendaManual');
 
-let vendasPorPagina = 3;
+let vendasPorPagina = 3; // padrão inicial
 let paginaAtual = 1;
+
+// Seleção da quantidade de vendas por página
+const selectQtdVendas = document.getElementById('selectQtdVendas');
+selectQtdVendas.value = vendasPorPagina;
+
+selectQtdVendas.addEventListener('change', function () {
+    vendasPorPagina = parseInt(this.value) || 3;
+    paginaAtual = 1; // reset pra primeira página
+    exibirVendas();
+});
+
+// Botões de navegação
+document.getElementById('btnPrevPage').addEventListener('click', function () {
+    if (paginaAtual > 1) {
+        paginaAtual--;
+        exibirVendas();
+    }
+});
+document.getElementById('btnNextPage').addEventListener('click', function () {
+    const totalPaginas = Math.ceil(minhasVendas.length / vendasPorPagina);
+    if (paginaAtual < totalPaginas) {
+        paginaAtual++;
+        exibirVendas();
+    }
+});
 
 // Lista de feriados (formato DD/MM/YYYY)
 const feriados = [
@@ -31,8 +56,6 @@ function getListaCadastroProdutos() {
     return JSON.parse(localStorage.getItem("listaCadastroProdutos")) || [];
 }
 
-window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
-
 window.addEventListener('load', function () {
     geraCodigoVendaManual();
     defineDataSelect();
@@ -46,6 +69,12 @@ window.addEventListener('load', function () {
         // sempre que o modal abrir, popula o primeiro select
         populaSelectProdutosCadastrados('produtoVendaManual_1');
     });
+
+    /*var modalis = document.getElementById('modalCadastroVenda');
+    var novissimo = new bootstrap.Modal(modalis);
+    novissimo.show();*/
+    atualizarResumoVendas();
+
 });
 
 function mostraDataHora() {
@@ -156,32 +185,32 @@ function insereNovoProdutoCadastro() {
 
             <td>
                 <input type="text" id="precoUnitarioVendaManual_${numeroLinhas}"
-                class="form-control text-center">
+                class="form-control text-center" placeholder="R$ 0,00">
             </td>
 
             <td>
                 <input type="text" id="descontoAcrescimoVendaManual_${numeroLinhas}"
-                class="form-control text-center" value="0,00">
+                class="form-control text-center" value="0,00" >
             </td>
 
             <td>
                 <input type="text" id="totalVendaManual_${numeroLinhas}"
-                class="form-control text-center">
+                class="form-control text-center" placeholder="R$ 0,00" readonly style="cursor: not-allowed">
             </td>
 
             <td>
                 <input type="text" id="insumosVendaManual_${numeroLinhas}"
-                class="form-control text-center" disabled>
+                class="form-control text-center" placeholder="R$ 0,00" readonly style="cursor: not-allowed">
             </td>
 
             <td>
                 <input type="number" id="modeloCapaVendaManual_${numeroLinhas}"
-                class="form-control text-center">
+                class="form-control text-center" placeholder="Nº Capa">
             </td>
 
             <td>
                 <input type="text" id="nomePersonalizadoVendaManual_${numeroLinhas}"
-                class="form-control text-center">
+                class="form-control text-center" placeholder="Nome Personalizado">
             </td>
 
             <td>
@@ -497,8 +526,6 @@ function removeNovoProdutoCadastro(botao) {
     calcularDataEnvioUtil();
     verificaStatusProducao();
 }
-// Carrega vendas já existentes
-window.vendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
 
 // MODELO DE OBJETO DA VENDA MANUAL
 class VendaManual {
@@ -518,6 +545,7 @@ class VendaManual {
         saldoCasa,
         saldoEmpresa,
         statusProducao,
+        statusEnvio,
         obsercoesImportantes
     ) {
         this.codigoInterno = codigoInterno;
@@ -535,12 +563,12 @@ class VendaManual {
         this.saldoEmpresa = saldoEmpresa;
         this.saldoCasa = saldoCasa;
         this.statusProducao = statusProducao;
+        this.statusEnvio = statusEnvio;
         this.obsercoesImportantes = obsercoesImportantes;
     }
 }
 
 function salvarVendaManual() {
-
     var codigoVendaManual = document.getElementById('codigoVendaManual');
     var codigoPlataformaVendaManual = document.getElementById('codigoPlataformaVendaManual');
     var dataVendaManual = document.getElementById('dataVendaManual');
@@ -555,7 +583,20 @@ function salvarVendaManual() {
     var lucroLiquidoReal = document.getElementById('lucroLiquidoReal');
     var lucroLiquidoRealEmpresa = document.getElementById('lucroLiquidoRealEmpresa');
     var statusProducaoVendaManual = document.getElementById('statusProducaoVendaManual');
+    var statusEnvioVendaManual = document.getElementById('statusEnvioVendaManual');
     var observacoesVendaManual = document.getElementById('observacoesVendaManual');
+
+    // 🔥 BLOQUEIO DE DUPLICIDADE
+    const codigoPlataforma = codigoPlataformaVendaManual.value.trim();
+
+    if (codigoPlataforma) {
+        const jaExiste = minhasVendas.some(venda => venda.codigoPlatforma === codigoPlataforma);
+
+        if (jaExiste) {
+            alert("❌ Este código de plataforma já foi cadastrado!");
+            return;
+        }
+    }
 
     var informacoesProduto = [];
 
@@ -588,12 +629,13 @@ function salvarVendaManual() {
         clienteVendaManual.value,
         informacoesProduto,
         mostraMaiorTempoEnvio.innerText,
-        resultadoLucroLiquidoVenda.innerText,
+        lucroLiquidoReal.value,
         totalBrutoCompra.value,
         totalReceberShopee.value,
         lucroLiquidoReal.value,
         lucroLiquidoRealEmpresa.value,
         statusProducaoVendaManual.value,
+        statusEnvioVendaManual.value,
         observacoesVendaManual.value
     );
 
@@ -602,6 +644,7 @@ function salvarVendaManual() {
     localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
 
     exibirVendas();
+    atualizarResumoVendas();
     limparVendaManual();
 }
 
@@ -620,42 +663,37 @@ function exibirVendas() {
     const campoExibicaoVendas = document.getElementById('campoExibicaoVendas');
     campoExibicaoVendas.innerHTML = "";
 
-    const minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
     const totalPaginas = Math.ceil(minhasVendas.length / vendasPorPagina);
 
     if (totalPaginas === 0) return;
 
-    // Garantir página atual válida
     if (paginaAtual < 1) paginaAtual = 1;
     if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
 
-    // Exibir os mais recentes primeiro
-    const startIndex = minhasVendas.length - (paginaAtual * vendasPorPagina);
+    const startIndex = (paginaAtual - 1) * vendasPorPagina;
     const endIndex = startIndex + vendasPorPagina;
 
-    for (let i = endIndex - 1; i >= startIndex; i--) {
-        if (i < 0) continue;
+    for (let i = startIndex; i < endIndex; i++) {
+        if (!minhasVendas[i]) continue;
         const venda = minhasVendas[i];
-        const classePlataforma = venda.plataforma === "Shopee" ? "plataformaShopee" : "plataformaElo7";
 
         campoExibicaoVendas.innerHTML += `
             <div class="row my-1">
                 <div class="col">
                     <div class="alert alert-primary fade show" role="alert">
                         <div class="row">
-                            <div class="col-1 ${classePlataforma}">
+                            <div class="col-1 ${venda.plataforma === "Shopee" ? "plataformaShopee" : "plataformaElo7"}">
                                 <span>${venda.plataforma}</span>
                             </div>
                             <div class="col-2 statusProducao_${venda.statusProducao}">
-                                <span>Status do Pedido: &nbsp;&nbsp;${venda.statusProducao}</span>
+                                <span>Status do Envio: &nbsp;&nbsp;${venda.statusEnvio}</span>
                             </div>
                             <div class="col"></div>
                             <div class="col-2 gap-2">
                                 <button class="btn btn-sm btn-primary">
                                     <i class="fa fa-eye"></i>
                                 </button>
-                                <button class="btn btn-sm btn-danger"
-                                 onclick="removerVenda(${i})">
+                                <button class="btn btn-sm btn-danger" onclick="removerVenda(${i})">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </div>
@@ -684,29 +722,18 @@ function exibirVendas() {
         `;
     }
 
-    atualizarPaginacao(totalPaginas);
+    // Atualiza informação da página
+    const infoPagina = document.getElementById('infoPagina');
+    if (infoPagina) infoPagina.textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+
+    // Atualiza resumo
+    const filtroAtual = getFiltroAtualResumo();
+    atualizarResumoVendasComFiltro(filtroAtual);
 }
 
 function removerVenda(index) {
-    let minhasVendas = JSON.parse(localStorage.getItem("minhasVendas")) || [];
-
-    // segurança extra
-    if (index < 0 || index >= minhasVendas.length) {
-        console.warn("Índice inválido para remoção:", index);
-        return;
-    }
-
-    // remove do array
     minhasVendas.splice(index, 1);
-
-    // salva novamente
     localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
-
-    // corrige pagina atual se necessário
-    const totalPaginas = Math.ceil(minhasVendas.length / vendasPorPagina);
-    if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
-
-    // reexibe
     exibirVendas();
 }
 
@@ -755,12 +782,14 @@ function verificaTempoEnvio() {
     const dataInput = document.getElementById('dataEntregaManual');
     const btnPrazo = document.getElementById('btn-envioPrazo');
     const btnAtraso = document.getElementById('btn-envioAtraso');
+    const statusEnvioVendaManual = document.getElementById('statusEnvioVendaManual');
 
-    if (!dataInput || !btnPrazo || !btnAtraso) {
+    if (!dataInput || !btnPrazo || !btnAtraso || !statusEnvioVendaManual) {
         console.warn("Elementos de envio não encontrados");
         return;
     }
 
+    // Esconde os dois inicialmente
     btnPrazo.classList.add('d-none');
     btnAtraso.classList.add('d-none');
 
@@ -774,11 +803,127 @@ function verificaTempoEnvio() {
     dataEntrega.setHours(0, 0, 0, 0);
 
     if (dataEntrega < hoje) {
+        // ATRASADO
         btnAtraso.classList.remove('d-none');
+        statusEnvioVendaManual.value = 'Envio atrasado';
     } else {
+        // NO PRAZO
         btnPrazo.classList.remove('d-none');
+        statusEnvioVendaManual.value = 'Envio dentro do prazo';
     }
 }
+
+function atualizarResumoVendasComFiltro(tipoFiltro = "8") {
+
+    const resumoTotalVendas = document.getElementById('resumoTotalVendas');
+    const resumoProdutosVendidos = document.getElementById('resumoProdutosVendidos');
+    const resumoTotalBruto = document.getElementById('resumoTotalBruto');
+    const resumoTotalLiquido = document.getElementById('resumoTotalLiquido');
+    const resumoTicketMedio = document.getElementById('resumoTicketMedio');
+    const resumoCampeaoVendas = document.getElementById('resumoCampeaoVendas');
+
+    let vendasFiltradas = [...minhasVendas];
+    const hoje = new Date();
+
+    function converterData(dataISO) {
+        if (!dataISO) return null;
+        const [ano, mes, dia] = dataISO.split('-');
+        return new Date(ano, mes - 1, dia);
+    }
+
+    if (tipoFiltro !== "8") {
+        vendasFiltradas = minhasVendas.filter(venda => {
+            const dataVenda = converterData(venda.dataVenda);
+            if (!dataVenda) return false;
+
+            const diffTime = hoje - dataVenda;
+            const diffDays = diffTime / (1000 * 60 * 60 * 24);
+
+            switch (tipoFiltro) {
+                case "1": return diffDays <= 7;
+                case "2": return diffDays <= 30;
+                case "3": return diffDays <= 60;
+                case "4": return diffDays <= 90;
+
+                case "5":
+                    return dataVenda.getMonth() === hoje.getMonth() &&
+                           dataVenda.getFullYear() === hoje.getFullYear();
+
+                case "6":
+                    const mesAnterior = new Date(hoje.getFullYear(), hoje.getMonth() - 1, 1);
+                    return dataVenda.getMonth() === mesAnterior.getMonth() &&
+                           dataVenda.getFullYear() === mesAnterior.getFullYear();
+
+                case "7":
+                    return dataVenda.getFullYear() === hoje.getFullYear();
+
+                default:
+                    return true;
+            }
+        });
+    }
+
+    let totalVendas = vendasFiltradas.length;
+    let totalProdutos = 0;
+    let totalBruto = 0;
+    let totalLiquido = 0;
+    let contadorProdutos = {};
+
+    vendasFiltradas.forEach(venda => {
+
+        venda.informacoesProduto.forEach(produto => {
+            const qtd = parseInt(produto.qtd_ProdutoLinha) || 0;
+            totalProdutos += qtd;
+
+            const nome = produto.valor_ProdutoLinha;
+            if (nome && nome !== "escolha") {
+                contadorProdutos[nome] = (contadorProdutos[nome] || 0) + qtd;
+            }
+        });
+
+        const bruto = parseFloat(String(venda.totalBruto).replace(',', '.')) || 0;
+        totalBruto += bruto;
+
+        const liquido = parseFloat(String(venda.receberPlataforma).replace(',', '.')) || 0;
+        totalLiquido += liquido;
+    });
+
+    let ticketMedio = totalVendas > 0 ? (totalBruto / totalVendas) : 0;
+
+    let campeao = "-";
+    let maiorQtd = 0;
+    for (let produto in contadorProdutos) {
+        if (contadorProdutos[produto] > maiorQtd) {
+            maiorQtd = contadorProdutos[produto];
+            campeao = produto;
+        }
+    }
+
+    resumoTotalVendas.value = totalVendas;
+    resumoProdutosVendidos.value = totalProdutos;
+    resumoTotalBruto.value = totalBruto.toFixed(2).replace('.', ',');
+    resumoTotalLiquido.value = totalLiquido.toFixed(2).replace('.', ',');
+    resumoTicketMedio.value = ticketMedio.toFixed(2).replace('.', ',');
+    resumoCampeaoVendas.value = campeao;
+}
+
+
+document.getElementById('filtroResumoPeriodo').addEventListener('change', function () {
+    atualizarResumoVendasComFiltro(this.value);
+});
+
+window.addEventListener('load', function () {
+    const select = document.getElementById('filtroResumoPeriodo');
+    select.value = "8";
+    atualizarResumoVendasComFiltro("8");
+});
+
+function getFiltroAtualResumo() {
+    const select = document.getElementById('filtroResumoPeriodo');
+    return select ? select.value : "8";
+}
+
+
 
 
 

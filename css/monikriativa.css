@@ -178,17 +178,16 @@
 
 /*-----------------------------VENDAS--------------------------------------*/
 #cardResumoVendas{
-    height: 28vh;
+    min-height: 28vh;
 }
 
 #selectFiltroResumoVendas .bg-orange,
 #bodyTabelaVendasFiltro .bg-shopee,
-#bodyTabelaVendas .bg-shopee{
+#bodyTabelaVendas .bg-shopee,
+#infoPrazoEntrega .btn-orange{
     background-color: rgb(252, 167, 9);
 }
-#infoPrazoEntrega .btn-orange{
-    background-color: rgb(255, 115, 0);
-}
+
 
 #selectFiltroResumoVendas .bg-orange,
 #bodyTabelaVendasFiltro .bg-shopee,
@@ -325,10 +324,7 @@
     margin-left: 0 !important;
     margin-right: 0 !important;
 }
-#modalBodyCadastroManualVenda .bg-orange{
-    background-color: #ee4d2d;
-    color: white;
-}
+
 #tabelaCadastroVenda tr td input,
 #tabelaCadastroVenda tr td select{
     font-size: 0.8rem;
