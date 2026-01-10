@@ -649,9 +649,56 @@ function salvarVendaManual() {
 }
 
 function limparVendaManual() {
-    location.reload();
+    // 1️⃣ Limpa todos os inputs, selects e textareas dentro do modal
+    const inputs = document.querySelectorAll('#modalCadastroVenda input, #modalCadastroVenda select, #modalCadastroVenda textarea');
+    inputs.forEach(input => {
+        if (input.type === 'checkbox' || input.type === 'radio') {
+            input.checked = false;
+        } else if (input.hasAttribute('disabled')) {
+            input.value = ''; // opcionalmente limpa campos desabilitados
+        } else {
+            input.value = '';
+        }
+    });
+
+    // 2️⃣ Limpa elementos que usam innerText
+    const innerTextElements = ['diaSemanaVenda', 'mostraMaiorTempoEnvio', 'resultadoLucroLiquidoVenda'];
+    innerTextElements.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = '';
+    });
+
+    // 3️⃣ Limpa todas as linhas de produtos, exceto a primeira (se quiser resetar a primeira linha)
+    const tabela = document.getElementById('tabelaCadastroVenda');
+    // Remove todas as linhas de produtos, mantendo o cabeçalho e a primeira linha
+    while (tabela.rows.length > 2) {
+        tabela.deleteRow(2);
+    }
+
+    // Limpa os campos da primeira linha de produto
+    const primeiraLinhaIds = [
+        'produtoVendaManual_1',
+        'sexoVendaManual_1',
+        'qtdVendaManual_1',
+        'precoUnitarioVendaManual_1',
+        'descontoAcrescimoVendaManual_1',
+        'totalVendaManual_1',
+        'insumosVendaManual_1',
+        'modeloCapaVendaManual_1',
+        'nomePersonalizadoVendaManual_1'
+    ];
+    primeiraLinhaIds.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            if (el.tagName === 'SELECT') el.selectedIndex = 0;
+            else el.value = el.type === 'number' ? 1 : '';
+        }
+    });
+
+    // 4️⃣ Gera novo código de venda
     geraCodigoVendaManual();
 }
+
 
 function formatarData(dataISO) {
     if (!dataISO) return "";
