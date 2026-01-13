@@ -137,7 +137,7 @@ function defineDataSelect() {
     const dataFormatada = `${diaHoje}/${mesHoje}/${anoHoje}`;
 
     if (campoVenda) {
-        campoVenda.value = `${anoHoje}-${mesHoje}-${diaHoje}`; // define o input type="date"
+        document.getElementById('dataVendaManual').value = minhasVendas[tamArrayVendas-1].dataVenda
     }
 }
 
@@ -832,7 +832,9 @@ function exibirVendas() {
                             </div>
                             <div class="col-4">
                                 <label class="uppercase fw-bold d-flex justify-content-center">Cliente:</label>
-                                <span class="uppercase letra d-flex justify-content-center text-center">${venda.cliente}</span>
+                                <span class="uppercase letra d-flex justify-content-center text-center">
+                                ${venda.cliente.length > 25 ? venda.cliente.substring(0, 25) + "..." : venda.cliente}
+                            </span>
                             </div>
                             
                             <div class="col-2 gap-2">
@@ -1287,7 +1289,6 @@ function limparCamposVendaManual() {
 
     // SELECTS
     document.getElementById('statusProducaoVendaManual').value = "Produção";
-    document.getElement
 }
 
 
