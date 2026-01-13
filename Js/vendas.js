@@ -65,10 +65,6 @@ window.addEventListener('load', function () {
 
     const modal = document.getElementById('modalCadastroVenda');
 
-    modal.addEventListener('shown.bs.modal', function () {
-        // sempre que o modal abrir, popula o primeiro select
-        populaSelectProdutosCadastrados('produtoVendaManual_1');
-    });
 
     /*var modalis = document.getElementById('modalCadastroVenda');
     var novissimo = new bootstrap.Modal(modalis);
@@ -689,10 +685,10 @@ function limparVendaManual() {
     ];
     primeiraLinhaIds.forEach(id => {
         const el = document.getElementById(id);
-        if (el) {
-            if (el.tagName === 'SELECT') el.selectedIndex = 0;
-            else el.value = el.type === 'number' ? 1 : '';
+        if (el.tagName === 'SELECT') {
+            el.innerHTML = '<option value="escolha">Escolha o Produto</option>';
         }
+
     });
 
     // 4️⃣ Gera novo código de venda
@@ -735,11 +731,14 @@ function exibirVendas() {
                             <div class="col-2 statusProducao_${venda.statusProducao}">
                                 <span>Status do Envio: &nbsp;&nbsp;${venda.statusEnvio}</span>
                             </div>
+
                             <div class="col"></div>
+
                             <div class="col-2 gap-2">
-                                <button class="btn btn-sm btn-primary">
+                                <button class="btn btn-sm btn-primary" onclick="abrirVendaNoModal(${i})">
                                     <i class="fa fa-eye"></i>
                                 </button>
+
                                 <button class="btn btn-sm btn-danger" onclick="removerVenda(${i})">
                                     <i class="fa fa-trash"></i>
                                 </button>
@@ -970,7 +969,118 @@ function getFiltroAtualResumo() {
     return select ? select.value : "8";
 }
 
+function abrirVendaNoModal(index) {
+    const venda = minhasVendas[index];
+    if (!venda) return;
+
+    // === ABRE O MODAL ===
+    const modalEl = document.getElementById('modalCadastroVenda');
+    const modal = new bootstrap.Modal(modalEl);
+    modal.show();
+
+    // === LIMPA ANTES DE PREENCHER (deve manter a linha 1) ===
+    limparVendaManual();
+
+    // === CAMPOS SIMPLES ===
+    document.getElementById('codigoVendaManual').value = venda.codigoInterno || '';
+    document.getElementById('codigoPlataformaVendaManual').value = venda.codigoPlatforma || '';
+    document.getElementById('dataVendaManual').value = venda.dataVenda || '';
+    document.getElementById('dataEntregaManual').value = venda.inputDataEnvio || '';
+    document.getElementById('plataformaVendaManual').value = venda.plataforma || 'escolha';
+    document.getElementById('clienteVendaManual').value = venda.cliente || '';
+    document.getElementById('statusProducaoVendaManual').value = venda.statusProducao || 'Produção';
+    document.getElementById('statusEnvioVendaManual').value = venda.statusEnvio || '';
+    document.getElementById('observacoesVendaManual').value = venda.obsercoesImportantes || '';
+
+    document.getElementById('mostraMaiorTempoEnvio').innerText = venda.tempoEnvio || '';
+    document.getElementById('resultadoLucroLiquidoVenda').innerText = venda.lucroLiquidoVenda || '';
+    document.getElementById('totalBrutoCompra').value = venda.totalBruto || '';
+    document.getElementById('totalReceberShopee').value = venda.receberPlataforma || '';
+    document.getElementById('lucroLiquidoReal').value = venda.saldoCasa || '';
+    document.getElementById('lucroLiquidoRealEmpresa').value = venda.saldoEmpresa || '';
+
+    // === DIA DA SEMANA ===
+    if (venda.diaSemanaVenda) {
+        const diaSemanaSpan = document.getElementById('diaSemanaVenda');
+        diaSemanaSpan.innerText = venda.diaSemanaVenda;
+        diaSemanaSpan.classList.remove('d-none');
+    }
+
+    // === PRODUTOS ===
+
+    // garante base limpa
+    numeroLinhas = 1;
+
+    // limpa linhas extras manualmente (sem resetar a 1)
+    const tabela = document.getElementById('tabelaCadastroVenda');
+    while (tabela.rows.length > 2) {
+        tabela.deleteRow(2);
+    }
+
+    // percorre os produtos da venda
+    venda.informacoesProduto.forEach((produto, idx) => {
+
+        const linha = idx + 1;
+
+        // cria nova linha se necessário
+        if (idx > 0) {
+            insereNovoProdutoCadastro();
+        }
+
+        // 🔥 POPULA O SELECT PRIMEIRO
+        populaSelectProdutosCadastrados(`produtoVendaManual_${linha}`);
+
+        const selectProduto = document.getElementById(`produtoVendaManual_${linha}`);
+
+        // 🔥 SETA O VALUE
+        selectProduto.value = produto.valor_ProdutoLinha;
+
+        // 🔒 fallback se não existir option (diferença de texto)
+        if (selectProduto.value !== produto.valor_ProdutoLinha) {
+            const opt = document.createElement("option");
+            opt.value = produto.valor_ProdutoLinha;
+            opt.text = produto.valor_ProdutoLinha;
+            opt.selected = true;
+            selectProduto.appendChild(opt);
+        }
+
+        document.getElementById(`sexoVendaManual_${linha}`).value = produto.sexo_ProdutoLinha || 'nao escolhido';
+        document.getElementById(`qtdVendaManual_${linha}`).value = produto.qtd_ProdutoLinha || 1;
+        document.getElementById(`precoUnitarioVendaManual_${linha}`).value = produto.precoUnitario_ProdutoLinha || '';
+        document.getElementById(`descontoAcrescimoVendaManual_${linha}`).value = produto.descontos_ProdutoLinha || '0,00';
+        document.getElementById(`totalVendaManual_${linha}`).value = produto.precoTotal_ProdutoLinha || '';
+        document.getElementById(`insumosVendaManual_${linha}`).value = produto.precoInsumos_ProdutoLinha || '';
+        document.getElementById(`modeloCapaVendaManual_${linha}`).value = produto.modeloCapa_ProdutoLinha || '';
+        document.getElementById(`nomePersonalizadoVendaManual_${linha}`).value = produto.nomePersonalizado_ProdutoLinha || '';
+    });
 
 
+
+    // === REAPLICA CÁLCULOS E STATUS ===
+    verificaDiaSemana();
+    calcularDataEnvioUtil();
+    verificaTempoEnvio();
+    verificaStatusProducao();
+    calcularLucro();
+
+    // === GUARDA QUAL ÍNDICE ESTÁ SENDO EDITADO ===
+    window.indexVendaEmEdicao = index;
+}
+
+function editarVendaManual() {
+    if (window.indexVendaEmEdicao === undefined) {
+        alert("Nenhuma venda selecionada para edição.");
+        return;
+    }
+
+    // Remove a venda antiga
+    minhasVendas.splice(window.indexVendaEmEdicao, 1);
+
+    // Salva novamente como nova (reaproveita sua função)
+    salvarVendaManual();
+
+    // Limpa índice
+    window.indexVendaEmEdicao = undefined;
+}
 
 
