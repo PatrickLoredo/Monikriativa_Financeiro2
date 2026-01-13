@@ -565,6 +565,7 @@ class VendaManual {
 }
 
 function salvarVendaManual() {
+
     var codigoVendaManual = document.getElementById('codigoVendaManual');
     var codigoPlataformaVendaManual = document.getElementById('codigoPlataformaVendaManual');
     var dataVendaManual = document.getElementById('dataVendaManual');
@@ -582,17 +583,38 @@ function salvarVendaManual() {
     var statusEnvioVendaManual = document.getElementById('statusEnvioVendaManual');
     var observacoesVendaManual = document.getElementById('observacoesVendaManual');
 
-    // 🔥 BLOQUEIO DE DUPLICIDADE
+    const codigoInterno = codigoVendaManual.value.trim();
     const codigoPlataforma = codigoPlataformaVendaManual.value.trim();
 
-    if (codigoPlataforma) {
-        const jaExiste = minhasVendas.some(venda => venda.codigoPlatforma === codigoPlataforma);
+    if (!codigoInterno) {
+        alert("❌ Código interno não encontrado.");
+        return;
+    }
 
-        if (jaExiste) {
-            alert("❌ Este código de plataforma já foi cadastrado!");
+    // ==============================
+    // 🔍 VERIFICA SE JÁ EXISTE VENDA
+    // ==============================
+
+    const indexVendaExistente = minhasVendas.findIndex(v => v.codigoInterno === codigoInterno);
+
+    // ==============================
+    // 🔒 BLOQUEIO DUPLICIDADE PLATAFORMA
+    // ==============================
+
+    if (codigoPlataforma) {
+        const duplicado = minhasVendas.some((venda, index) => {
+            return venda.codigoPlatforma === codigoPlataforma && index !== indexVendaExistente;
+        });
+
+        if (duplicado) {
+            alert("❌ Este código de plataforma já foi cadastrado em outra venda!");
             return;
         }
     }
+
+    // ==============================
+    // 🧱 MONTA PRODUTOS
+    // ==============================
 
     var informacoesProduto = [];
 
@@ -601,9 +623,13 @@ function salvarVendaManual() {
     for (let i = 0; i < linhas.length; i++) {
         let index = i + 1;
 
+        const produto = document.getElementById(`produtoVendaManual_${index}`)?.value;
+
+        if (!produto || produto === "escolha") continue;
+
         informacoesProduto.push({
             item_Pedido: index,
-            valor_ProdutoLinha: document.getElementById(`produtoVendaManual_${index}`).value,
+            valor_ProdutoLinha: produto,
             sexo_ProdutoLinha: document.getElementById(`sexoVendaManual_${index}`).value,
             qtd_ProdutoLinha: document.getElementById(`qtdVendaManual_${index}`).value,
             precoUnitario_ProdutoLinha: document.getElementById(`precoUnitarioVendaManual_${index}`).value,
@@ -615,8 +641,12 @@ function salvarVendaManual() {
         });
     }
 
+    // ==============================
+    // 🧾 MONTA OBJETO VENDA
+    // ==============================
+
     const novaVenda = new VendaManual(
-        codigoVendaManual.value,
+        codigoInterno,
         codigoPlataformaVendaManual.value,
         dataVendaManual.value,
         diaSemanaVenda.innerText,
@@ -635,14 +665,33 @@ function salvarVendaManual() {
         observacoesVendaManual.value
     );
 
-    minhasVendas.push(novaVenda);
+    // ==============================
+    // 🔁 ATUALIZA OU 🆕 CRIA
+    // ==============================
+
+    if (indexVendaExistente !== -1) {
+        // 🔁 ATUALIZA
+        minhasVendas[indexVendaExistente] = novaVenda;
+        console.log("🔁 Venda atualizada:", codigoInterno);
+    } else {
+        // 🆕 NOVA
+        minhasVendas.push(novaVenda);
+        console.log("🆕 Nova venda criada:", codigoInterno);
+    }
+
+    // ==============================
+    // 💾 SALVA
+    // ==============================
 
     localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
 
     exibirVendas();
     atualizarResumoVendas();
     limparVendaManual();
+
+    alert("✅ Venda salva com sucesso!");
 }
+
 
 function limparVendaManual() {
     // 1️⃣ Limpa todos os inputs, selects e textareas dentro do modal
@@ -694,7 +743,6 @@ function limparVendaManual() {
     // 4️⃣ Gera novo código de venda
     geraCodigoVendaManual();
 }
-
 
 function formatarData(dataISO) {
     if (!dataISO) return "";
@@ -782,7 +830,6 @@ function removerVenda(index) {
     localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
     exibirVendas();
 }
-
 
 function atualizarPaginacao(totalPaginas) {
     const paginacao = document.getElementById('paginacao');
@@ -953,7 +1000,6 @@ function atualizarResumoVendasComFiltro(tipoFiltro = "8") {
     resumoCampeaoVendas.value = campeao;
 }
 
-
 document.getElementById('filtroResumoPeriodo').addEventListener('change', function () {
     atualizarResumoVendasComFiltro(this.value);
 });
@@ -973,12 +1019,12 @@ function abrirVendaNoModal(index) {
     const venda = minhasVendas[index];
     if (!venda) return;
 
-    // === ABRE O MODAL ===
+    window.indexVendaEmEdicao = index;
+
     const modalEl = document.getElementById('modalCadastroVenda');
     const modal = new bootstrap.Modal(modalEl);
     modal.show();
 
-    // === LIMPA ANTES DE PREENCHER (deve manter a linha 1) ===
     limparVendaManual();
 
     // === CAMPOS SIMPLES ===
@@ -1063,6 +1109,8 @@ function abrirVendaNoModal(index) {
     verificaStatusProducao();
     calcularLucro();
 
+    desabilitarTodosCamposModal();
+
     // === GUARDA QUAL ÍNDICE ESTÁ SENDO EDITADO ===
     window.indexVendaEmEdicao = index;
 }
@@ -1073,14 +1121,41 @@ function editarVendaManual() {
         return;
     }
 
-    // Remove a venda antiga
-    minhasVendas.splice(window.indexVendaEmEdicao, 1);
-
-    // Salva novamente como nova (reaproveita sua função)
-    salvarVendaManual();
-
-    // Limpa índice
-    window.indexVendaEmEdicao = undefined;
+    habilitarCamposEdicao();
 }
+
+function desabilitarTodosCamposModal() {
+    const campos = document.querySelectorAll('#modalCadastroVenda input, #modalCadastroVenda select, #modalCadastroVenda textarea');
+
+    campos.forEach(el => {
+        el.disabled = true;
+    });
+}
+function habilitarCamposEdicao() {
+
+    // libera todos primeiro
+    const campos = document.querySelectorAll('#modalCadastroVenda input, #modalCadastroVenda select, #modalCadastroVenda textarea');
+    campos.forEach(el => el.disabled = false);
+
+    // agora trava os que NÃO podem ser editados
+    const camposBloqueados = [
+        'codigoVendaManual',
+        'statusEnvioVendaManual',
+        'mostraMaiorTempoEnvio',
+        'resultadoLucroLiquidoVenda',
+        'totalBrutoCompra',
+        'totalReceberShopee',
+        'lucroLiquidoReal',
+        'lucroLiquidoRealEmpresa'
+    ];
+
+    camposBloqueados.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = true;
+    });
+}
+
+
+
 
 
