@@ -269,7 +269,12 @@
 
                                         <div class="col-3 mt-3">
                                             <button class="btn btn-primary m-auto w-100" data-bs-toggle="modal"
-                                                data-bs-target="#modalCadastroVenda" onclick="geraCodigoVendaManual()">
+                                                data-bs-target="#modalCadastroVenda" 
+                                                onclick="limparCamposVendaManual(), 
+                                                geraCodigoVendaManual(), 
+                                                defineDataSelect(),
+                                                verificaDiaSemana(), 
+                                                populaSelectProdutosCadastrados('produtoVendaManual_1')">
                                                 <i class="fa-solid fa-circle-plus "></i>&nbsp;&nbsp;
                                                 <span class="letra uppercase">cadastrar Venda</span>
                                             </button>

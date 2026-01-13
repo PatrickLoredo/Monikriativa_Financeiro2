@@ -702,13 +702,6 @@ function salvarVendaManual() {
     // 📣 ALERTA + FECHA MODAL
     // ==============================
 
-        mostrarToastVenda("✅ Venda salva com sucesso!", "success");
-
-        setTimeout(() => {
-            const modalEl = document.getElementById('modalCadastroVenda');
-            const modalInstance = bootstrap.Modal.getInstance(modalEl);
-            if (modalInstance) modalInstance.hide();
-        }, 200);
 
     const modalEl = document.getElementById('modalCadastroVenda');
     const modalInstance = bootstrap.Modal.getInstance(modalEl);
@@ -718,8 +711,13 @@ function salvarVendaManual() {
 
     window.indexVendaEmEdicao = undefined;
 
-}
+    // aguarda o modal fechar e redireciona para vendas.html
+    setTimeout(() => {
+        window.location.href = "http://127.0.0.1:5500/Html/vendas.html";
+    }, 300);
 
+
+}
 
 function limparVendaManual() {
     // 1️⃣ Limpa todos os inputs, selects e textareas dentro do modal
@@ -789,37 +787,36 @@ function exibirVendas() {
     if (paginaAtual < 1) paginaAtual = 1;
     if (paginaAtual > totalPaginas) paginaAtual = totalPaginas;
 
+    const vendasInvertidas = [...minhasVendas].reverse();
+
     const startIndex = (paginaAtual - 1) * vendasPorPagina;
     const endIndex = startIndex + vendasPorPagina;
 
     for (let i = startIndex; i < endIndex; i++) {
-        if (!minhasVendas[i]) continue;
-        const venda = minhasVendas[i];
+        if (!vendasInvertidas[i]) continue;
+        const venda = vendasInvertidas[i];
 
+
+        
         campoExibicaoVendas.innerHTML += `
             <div class="row my-1">
                 <div class="col">
                     <div class="alert alert-primary fade show" role="alert">
                         <div class="row">
+                            <div class="col-2 idInternoVendaManual">
+                                <span> ${venda.codigoInterno}</span>
+                            </div>
+                            
                             <div class="col-1 ${venda.plataforma === "Shopee" ? "plataformaShopee" : "plataformaElo7"}">
                                 <span>${venda.plataforma}</span>
                             </div>
-                            <div class="col-2 statusProducao_${venda.statusProducao}">
-                                <span>Status do Envio: &nbsp;&nbsp;${venda.statusEnvio}</span>
-                            </div>
-
                             <div class="col"></div>
 
-                            <div class="col-2 gap-2">
-                                <button class="btn btn-sm btn-primary" onclick="abrirVendaNoModal(${i})">
-                                    <i class="fa fa-eye"></i>
-                                </button>
-
-                                <button class="btn btn-sm btn-danger" onclick="removerVenda(${i})">
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                            <div class="col-2 statusProduc statusProducao_${venda.statusProducao}">
+                                <span>Status do Envio: &nbsp;&nbsp;${venda.statusEnvio}</span>
                             </div>
                         </div>
+
                         <div class="row mt-2">
                             <div class="col-2">
                                 <label class="uppercase fw-bold d-flex justify-content-center">data venda:</label>
@@ -836,6 +833,16 @@ function exibirVendas() {
                             <div class="col-4">
                                 <label class="uppercase fw-bold d-flex justify-content-center">Cliente:</label>
                                 <span class="uppercase letra d-flex justify-content-center text-center">${venda.cliente}</span>
+                            </div>
+                            
+                            <div class="col-2 gap-2">
+                                <button class="btn btn-sm btn-primary" onclick="abrirVendaNoModal(${i})">
+                                    <i class="fa fa-eye"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-danger" onclick="removerVenda(${i})">
+                                    <i class="fa fa-trash"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1193,9 +1200,95 @@ function fecharModalCadastroVenda() {
     }
 }
 
+function verificarStatusEnvioAutomatico() {
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0); // zera horas para comparação limpa
 
+    let alterou = false;
 
+    minhasVendas.forEach((venda, index) => {
 
+        // ❌ Ignora vendas já enviadas
+        if (venda.statusProducao === "Enviado") return;
+
+        if (!venda.inputDataEnvio) return;
+
+        const dataEnvio = new Date(venda.inputDataEnvio);
+        dataEnvio.setHours(0, 0, 0, 0);
+
+        let novoStatus = "";
+
+        if (dataEnvio > hoje) {
+            novoStatus = "Envio dentro do prazo";
+        } else {
+            novoStatus = "Pedido em Atraso";
+        }
+
+        // Só atualiza se mudou
+        if (venda.statusEnvio !== novoStatus) {
+            minhasVendas[index].statusEnvio = novoStatus;
+            alterou = true;
+        }
+    });
+
+    if (alterou) {
+        localStorage.setItem("minhasVendas", JSON.stringify(minhasVendas));
+        exibirVendas();
+        atualizarResumoVendas();
+        console.log("🔄 Status de envio atualizado automaticamente");
+    }
+}
+
+function agendarVerificacaoDiaria(hora = 8, minuto = 0) {
+    function calcularDelay() {
+        const agora = new Date();
+        const proximaExecucao = new Date();
+
+        proximaExecucao.setHours(hora, minuto, 0, 0);
+
+        if (proximaExecucao <= agora) {
+            proximaExecucao.setDate(proximaExecucao.getDate() + 1);
+        }
+
+        return proximaExecucao - agora;
+    }
+
+    function iniciarLoop() {
+        verificarStatusEnvioAutomatico();
+
+        // depois roda a cada 24h
+        setInterval(verificarStatusEnvioAutomatico, 24 * 60 * 60 * 1000);
+    }
+
+    const delay = calcularDelay();
+
+    setTimeout(iniciarLoop, delay);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    agendarVerificacaoDiaria(8, 0); // 08:00 da manhã
+});
+
+function limparCamposVendaManual() {
+
+    // CAMPOS SIMPLES
+    document.getElementById('codigoPlataformaVendaManual').value = "";
+    document.getElementById('dataVendaManual').value = "";
+    document.getElementById('diaSemanaVenda').innerText = "";
+    document.getElementById('dataEntregaManual').value = "";
+    document.getElementById('clienteVendaManual').value = "";
+    document.getElementById('mostraMaiorTempoEnvio').innerText = "";
+    document.getElementById('resultadoLucroLiquidoVenda').innerText = "";
+    document.getElementById('totalBrutoCompra').value = "";
+    document.getElementById('totalReceberShopee').value = "";
+    document.getElementById('lucroLiquidoReal').value = "";
+    document.getElementById('lucroLiquidoRealEmpresa').value = "";
+    document.getElementById('observacoesVendaManual').value = "";
+
+    // SELECTS
+    document.getElementById('statusProducaoVendaManual').value = "Produção";
+    document.getElement
+}
 
 
 
