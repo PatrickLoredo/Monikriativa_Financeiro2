@@ -665,6 +665,9 @@ function salvarVendaManual() {
         observacoesVendaManual.value
     );
 
+    let mensagem = "";
+    let tipo = "";
+
     // ==============================
     // 🔁 ATUALIZA OU 🆕 CRIA
     // ==============================
@@ -672,11 +675,17 @@ function salvarVendaManual() {
     if (indexVendaExistente !== -1) {
         // 🔁 ATUALIZA
         minhasVendas[indexVendaExistente] = novaVenda;
-        console.log("🔁 Venda atualizada:", codigoInterno);
+        mensagemAtualiza = `✅ Venda ${codigoPlataforma} atualizada com sucesso!`;
+        tipo = "atualizacao";
+        alert(mensagemAtualiza)
+        fecharModalCadastroVenda();
     } else {
         // 🆕 NOVA
         minhasVendas.push(novaVenda);
-        console.log("🆕 Nova venda criada:", codigoInterno);
+        mensagemSalva = `✅ Venda ${codigoPlataforma} cadastrada com sucesso!`;
+        tipo = "nova";
+        alert(mensagemSalva)
+        fecharModalCadastroVenda();
     }
 
     // ==============================
@@ -689,7 +698,26 @@ function salvarVendaManual() {
     atualizarResumoVendas();
     limparVendaManual();
 
-    alert("✅ Venda salva com sucesso!");
+    // ==============================
+    // 📣 ALERTA + FECHA MODAL
+    // ==============================
+
+        mostrarToastVenda("✅ Venda salva com sucesso!", "success");
+
+        setTimeout(() => {
+            const modalEl = document.getElementById('modalCadastroVenda');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+        }, 200);
+
+    const modalEl = document.getElementById('modalCadastroVenda');
+    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+    if (modalInstance) {
+        modalInstance.hide();
+    }
+
+    window.indexVendaEmEdicao = undefined;
+
 }
 
 
@@ -1131,6 +1159,7 @@ function desabilitarTodosCamposModal() {
         el.disabled = true;
     });
 }
+
 function habilitarCamposEdicao() {
 
     // libera todos primeiro
@@ -1154,6 +1183,18 @@ function habilitarCamposEdicao() {
         if (el) el.disabled = true;
     });
 }
+
+function fecharModalCadastroVenda() {
+    const modalEl = document.getElementById('modalCadastroVenda');
+    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+
+    if (modalInstance) {
+        modalInstance.hide();
+    }
+}
+
+
+
 
 
 
